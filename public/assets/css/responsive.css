@@ -1,0 +1,366 @@
+@media only screen and (max-width: 1440px) {
+    #main .dashboard_col > .row-2 { padding-right: 0; }
+    #main .dashboard_col > .row-2 > div > div { flex: 0 0 33.3%; max-width: 33.3%; }
+    
+    .teck-table .rwd-table { width: 1350px; }
+    .teck-table { overflow-x: scroll; width: 100%; }
+    
+    #main #document .row-2 > div > .box-1 { margin: 0 1% 50px; flex: 0 0 31.3%; max-width: 31.3%; }
+}
+
+
+@media only screen and (max-width: 1366px) {
+    #burger-menu img { width: 25px; cursor: pointer; }
+    #sidebar > .main-menu { padding: 0; display: flex; flex-direction: column; align-items: center; }
+    #burger-menu { display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+    #sidebar > .last-text, #burger-menu .close-menu, #sidebar > .heading-menu, #sidebar > .main-menu > .menu-item > a > span { display: none; }
+    
+    #sidebar > .last-text { padding: 0; margin: 60px 0 0; }
+    .active-menu #burger-menu > .open-menu { display: none; }
+    #main { flex: 0 0 100%; max-width: 100%; padding-left: 80px; }
+    .active-menu #burger-menu { justify-content: end; display: flex; }
+    #sidebar { flex: 0 0 70px; max-width: 70px; min-width: 70px; position: absolute; height: 100%; background: #fff; transition: .5s; box-shadow: 0 0 0 1px #f3f3f3; }
+    #sidebar.active-menu { flex: 0 0 25%; max-width: 25%; min-width: 300px; transition: .5s; padding: 50px 3% 0; }
+    .active-menu #burger-menu > .close-menu, #sidebar.active-menu > .main-menu > .menu-item > a > span, #sidebar.active-menu > .main-menu, #sidebar.active-menu > .last-text { display: block; }
+    
+    #main .dashboard-heading-desc { padding:0; }
+    #main .activity_col .rwd-table > tbody tr th:first-child, #main .activity_col .rwd-table > tbody tr td:first-child { padding-left: 1%; }
+}
+
+
+@media only screen and (max-width: 1024px) {
+    #crew-members .btn-filter { margin-top: 10px; }
+    .btm-row .pagination-row { justify-content: center; margin-top: 5px; }
+    #main #crew-members .btn-filter .teck-btn:first-child { margin-left: 0; }
+    #all-activities .btn-filter, #my-activities > .dashboard_Sec .teck-btn, #crew-members .btn-filter, #activity-items .teck-btn { justify-content: center !important; }
+    .btm-row, #all-activities .dashboard_Sec > :first-child, #my-activities > .dashboard_Sec, #crew-members > .dashboard_Sec, #activity-items > .dashboard_Sec { text-align: center; }
+    
+    #main #document .row-2 > div > .box-1 { flex: 0 0 46%; max-width: 46%; margin: 0 2% 30px; }
+    #main #my-account .dashboard-heading-desc > div { display: block; margin: -5px 0 40px; }
+    
+    .profile-picture { margin: 0; }
+}
+
+
+@media only screen and (max-width: 767px) {
+    html, body { overflow-x: hidden; }
+    #main .dashboard-heading-desc > div { text-align: center; }
+    #main .dashboard_col > .row-2 > div > div { flex: 0 0 50%; max-width: 50%; margin-bottom: 21px; }
+    #main .dashboard-heading-desc .teck-btn-view-activites { justify-content: center !important; margin-bottom: 20px; }
+    
+    #main #document .row-2 > div > .box-1:first-child { margin-top: 40px; }
+    #main #document .row-2 > div > .box-1 { flex: 0 0 90%; max-width: 90%; margin: 0 auto  40px; }
+    
+    #analysis > .dashboard_Sec { text-align: center; }
+    #analysis .btn-filter { justify-content: center !important; }
+    
+    .profile-picture>img { width: 100%; }
+    
+    #all-activities-edit .active-btn-ready { text-align: center; }
+    #main #all-activities-edit .dashboard-heading-desc .ready { align-items: center; }
+}
+
+
+@media only screen and (max-width: 480px) {
+    #header { padding: 15px 0; }
+    #header > div { padding: 0; }
+    #header .notification { height: 80px; }
+    #header .notification > span { top: 17px; }
+    #header .icon-div ul { margin: 0; padding:0; }
+    #header .icon-div .profile > img { object-fit: cover; max-width: 40px; }
+    #header .icon-div .profile .profile-matter { padding: 0; margin-top: 6px; }
+    #header .icon-div .profile { flex-direction: column; align-items: flex-start; }
+
+    #main .icon-box img { padding: 0; width: 50px; margin-right: 10px; }
+    .dashboard_Sec h1 { font-size: 21px; line-height: 1.2; margin-bottom: 10px; }
+    #main .dashboard_Sec { text-align: center; padding-top: 0; margin-top: 15px; }
+    #main { flex: 0 0 97%; max-width: 97%; margin-left: auto; padding-right: 5%; background: #f9f9f9; }
+    #main .dashboard_col > .row-2 > div > div, #sidebar.active-menu { flex: 0 0 100%; max-width: 100%; }
+    
+    #main .btn-filter { flex-wrap: wrap; }
+    #main .btn-filter .teck-btn > a { width: 100%; }
+    #main .btn-filter .teck-btn:first-child { margin-bottom: 15px; }
+    #main .btn-filter .teck-btn { flex-wrap: wrap; width: 100%; margin: 0; }
+    .main-heading-desc p { font-size: 16px; line-height: 1.2; margin-bottom: 20px; }
+    
+    .teck-acticites > p { font-size: 16px; line-height: 1.2; margin-top: 2px; }
+    
+    #document > .document_Sec ~ .documents_Sec { padding: 0; }
+    #document > .document_Sec { text-align: center; padding: 30px 0 0; }
+    #document > .document_Sec ~ .documents_Sec .teck-btn { justify-content: center !important; }
+    
+    #crew-members .activity_col { margin-top: 20px; }
+    #main .btn-filter { flex-direction: column-reverse; }
+    #main .btn-filter > .teck-btn { margin-bottom: 15px; }
+}
+
+@media only screen and (max-width: 414px) {
+    #main .activity_col { padding: 1% 1% 30px; }
+    #main .pagination > li { padding: 4px 16px; }
+    .pagination-row .teck-arrow { border-radius: 0; padding: 0 10px; }
+    #main .teck-showin-text { font-size: 14px; line-height: 1.2; margin-bottom: 10px; padding: 0; }
+    #main .pagination > li:hover, #main .pagination > .active, #main .pagination { border-radius: 0; }
+    
+    .document-icon { margin: 0; }
+    .border-line span { font-size: 16px; }
+    .border-line, #document .box-1 > ul { text-align: left; }
+    
+    .teck-form > .teck-btn { margin-top: 5px; }
+    .teck-form .teck-btn { justify-content: center; margin-top: 10px; }
+    
+    #my-account .activity_col { padding-top: 20px; }
+    #my-account > .dashboard_Sec { padding: 0; margin: 30px 0 -30px; }
+}
+
+@media only screen and (max-width: 375px) {
+    #main .teck-showin-text { width: 90%; }
+    #main .icon-box p span { font-size:26px; }
+    #main .upcoming_activities h4 { font-size: 21px; line-height: 1.2; }
+    #main .teck-btn-view-activites >a { min-width: auto; padding: 0 10px; }
+    .upcoming_activities .circle-green { margin-left: 0; font-size: 14px; width: 25px; height: 25px; line-height: 26px; }
+    
+    #main { flex: 0 0 100%; max-width: 100%; padding-left: 60px; }
+    #sidebar { flex: 0 0 40px; max-width: 40px; min-width: 40px; padding: 50px 10px 0; } 
+}
+
+@media only screen and (max-width: 320px) {
+    #header .icon-div { padding: 5px; }
+    #header .icon-div .profile .profile-matter, .profile-matter p { font-size: 14px; }
+}
+
+
+
+
+
+
+
+
+
+/*@media only screen and (max-width: 1600px) {*/
+    /** dashboard **/
+/*     #main .teck-btn-view-activites >a { margin-left: 31%; }*/
+/*    .upcoming_activities h4 { font-family: poppins; font-size: 22px; font-weight: 600; padding: 2% 0%; color: rgb(32 32 32); line-height: 1.2; margin-bottom: 0; }*/
+/*    .col-12-descrapction { font-family: poppins; font-size: 16px; font-weight: 400; color: rgb(199 199 199); padding-top: 15px; }*/
+/*    .th { font-size: 18px; }*/
+/*    .table-div p { margin-left: 25px; margin-bottom: 0; margin-right: 20px; }*/
+/*    .active-btn, .active-btn-2 { width: 95% !important; }*/
+    
+/*    .menu-item { padding-top: 25px; }*/
+/*    .table-div p { margin-left: 30px; margin-bottom: 0; } */
+/*    .active-btn, .active-btn-2 { width: 85%; }*/
+/*    #main .teck-btn.bg-white>a {margin-right: 25px; }*/
+/*    .th-heading { font-size: 18px; }*/
+/*    .th-heading-brief { font-size: 18px; }*/
+    
+    /** Documents **/
+/*    .border-line span-1, .border-line span-2, .border-line span-3 {  font-size: 19px; }*/
+/*    .document-icon-2 {  margin-left: 20%; }*/
+/*    .document-icon {  margin-left: 25%; }*/
+/*    .doc-last-text { font-size: 14px; padding-top: 1px;  }*/
+/*    .document-icon-4 {  margin-left: 37%; }*/
+    /** my-activites **/
+/*    .btm-row { width: 100%; }*/
+/*}*/
+
+
+/*@media only screen and (max-width: 1440px) {*/
+    /** dashboard **/
+/*    #main .teck-btn-view-activites >a { margin-left: 20%; }*/
+/*    .menu-item span { font-size: 16px; }*/
+/*    .col-12-descrapction { font-size: 18px;  padding-top: 11px; }*/
+/*    #main .activity_col .rwd-table > tbody > tr { font-size: 16px; } */
+/*    .active-btn { border-radius: 10px; align-items: center; justify-content: space-between; width: 100%; padding: 10px 10px; font-size: 16px; font-weight: 400; }*/
+/*    .icon-box img{ height: 78px; }*/
+/*    .active-btn-2 { width: 100% !important; }*/
+    
+/*    #main .teck-btn.bg-white>a { margin-right: 15px; }*/
+/*    .menu-item span { font-size: 16px; }*/
+/*    .active-btn, .active-btn-2 { width: 95%;}*/
+    
+/*    .document-icon-4 {  margin-left: 32%; }*/
+/*    .box-li { font-size: 16px; }*/
+/*    #main .teck-btn.bg-white>a {  padding-left: 13px; padding-right: 13px; }*/
+/*    .teck-form label { font-size: 15px; }*/
+    
+    /** douments**/
+/*    .border-line span-1, .border-line span-2, .border-line span-3 { font-size: 14px; }*/
+/*    .document-icon-2 {  margin-left: 25%; }*/
+/*    .document-icon-4 { margin-left: 37%; }*/
+/*}*/
+
+/*@media only screen and (max-width: 1366px) {*/
+    /** dashboard **/
+/*    #main .teck-btn-view-activites >a { margin-left: 16%; }*/
+    
+/*    #main .teck-btn.bg-white>a { margin-right: 15px; width: 100%; padding-left: 8px; padding-right: 8px; margin-left: 8px; }*/
+/*    .td { font-family: poppins; }*/
+/*    .table-div p { margin-left: 25px; margin-bottom: 0; }*/
+/*    .active-btn, .active-btn-2 { width: 96%; }*/
+/*    .justify-content-start { -ms-flex-pack: start!important; justify-content: flex-start!important; margin-right: 15px; } */
+/*    .rwd-table tr td { font-size: 16px; font-family: poppins; font-weight: 400; }*/
+/*    .icon-box { height: 179px; }*/
+    
+    /** documents **/
+/*    .border-line span-1 { font-size: 16px; padding-top: 7px;} */
+/*    .border-line span-2 { font-size: 16px; padding-top: 7px;} */
+/*    .border-line span-3 { font-size: 16px; padding-top: 7px;} */
+/*    .document-icon { margin-left: 20%; }*/
+/*    .document-icon-2 { margin-left: 15%; }*/
+/*    .document-icon-4 { margin-left: 30%; }*/
+/*    .box-li { font-size: 16px; }*/
+    
+/*    .profile-matter p { margin-bottom: 3px; }*/
+/*    .profile-matter p { margin-bottom: 0; padding-top: 2px; font-family: poppins; font-size: 16px; }*/
+/*    #main .teck-btn>a { font-size: 12px; }*/
+/*    #main .teck-btn.bg-white>a {  padding-left: 7px; padding-right: 13px; }*/
+    
+/*    .teck-form label { padding-bottom: 10px; }*/
+/*}*/
+
+/*@media only screen and (max-width: 1280px){*/
+    /** dashboard **/
+/*    #main .teck-btn-view-activites >a { font-size: 16px; width: 80%; }*/
+/*    .dashboard_Sec h1 { font-size: 30px; }*/
+/*    #main .icon-box p span { font-size: 30px; }*/
+/*    #main .icon-box p { font-size: 16px; margin-left: 7px;}*/
+/*    .menu-item span { font-size: 16px; }*/
+/*    .last-text { font-size: 16px; }*/
+/*    .D-paragraph { font-size: 16px; }*/
+/*    .col-12-descrapction { font-size: 16px; }*/
+/*    #main .activity_col .rwd-table > tbody > :first-child { font-size: 16px; }*/
+/*    .rwd-table tr td { font-size: 16px;  }*/
+/*    .active-btn { font-family: poppins; font-size: 16px; text-align: center; padding-right: 15px; padding-left: 15px; }*/
+/*    .active-btn-2 { font-family: poppins; margin-left: 4px; padding-right: 15px; padding-left: 15px; margin-right: -11px; font-size: 16px; }*/
+    
+    /** all-ativites **/
+/*    .main-heading-desc p { font-size: 16px; }*/
+/*    .th-heading { font-size: 12px; }*/
+/*    .th-heading-brief { font-size: 12px; }*/
+/*    .teck-showin-text { font-size: 12px; }*/
+    
+    /** my-activits **/
+/*    .teck-acticites > p { font-size: 12px; }*/
+/*    .border-line span-1 { font-size: 20px; }*/
+/*    .border-line span-2 { font-size: 20px; }*/
+/*    .border-line span-3 { font-size: 20px; }*/
+/*    .box-li { font-size: 10px; }*/
+/*    .doc-last-text {  padding-top: 20px; }*/
+/*    .document-icon { margin-left: 17%; }*/
+    
+    /** crew member **/
+/*    .sub-pages-text { font-size: 12px; }*/
+/*    #main .teck-btn>a { font-size: 12px; padding-left: 10px; padding-right: 15px; }*/
+/*    .teck-dropdown { font-size: 12px; }*/
+/*    .menu-item { padding-top: 40px; }*/
+    
+    /** ativites-item **/ 
+/*    .sub-pages-text { font-size: 12px; }*/
+    
+    /** analysis **/
+    
+    
+    /** my account **/
+/*    .teck-form label { font-size: 11px; }*/
+    
+    /** activity items-edit existing activity item **/
+/*    .last-text { padding-top: 2px; }*/
+
+/*}*/
+
+/*@media only screen and (max-width: 1024px){*/
+    
+    /** dashboard **/
+/*    .heading-menu { padding-left: 35px; }*/
+/*    .main-menu { padding-left: 5px; padding-right: 1px; }*/
+/*    .menu-item span { font-size: 16px; }*/
+/*    .last-text { padding-top: 32px; font-size: 16px; }*/
+    
+/*    .teck-first-colum  { margin-right: 20px; }*/
+/*    .teck-second-colum { margin-right: 20px; }*/
+/*    .teck-third-colum  { margin-right: 20px; }*/
+/*    .icon-box { width: 117%; } */
+/*    .icon-box img { height: 65px; }*/
+/*    #main .icon-box p { font-size: 16px; }*/
+/*    .dashboard_Sec h1 { font-size: 30px; }*/
+/*    .D-paragraph { font-size: 16px; }*/
+/*    #main .teck-btn-view-activites >a { font-size: 16px; width: 109%; margin-left: 1px; }*/
+/*    .col-12-descrapction { font-size: 16px; }*/
+/*    #main .activity_col .rwd-table > tbody > :first-child { font-size: 16px; }*/
+/*    .upcoming_activities .circle-green { font-size: 18px; }*/
+/*    .active-btn { text-align: center;  font-size: 16px; }*/
+/*    .active-btn-2 {  font-size: 16px; padding-top: 13px; padding-bottom: 13px; }*/
+/*    #main .activity_col .rwd-table > tbody tr th, #main .activity_col .rwd-table > tbody tr td { font-size: 16px; }*/
+    
+    /** all activites **/
+/*    .dashboard_Sec h1 { font-size: 30px; }*/
+/*    .main-heading-desc p { font-size: 16px; }*/
+/*    #main .teck-btn>a { font-size: 16px; padding-left: 20px; font-size: 16px; padding-left: 20px; padding-right: 20px; }*/
+/*    #main .teck-btn.bg-white>a { margin-left: -15px; padding-left: 9px; }*/
+/*    #menu-item-pag-2 { padding-top: 28px; }*/
+/*    .col-lg-4-teck-btn-pag-2-col-md-6 { flex: 100%; max-width: 100%; }*/
+    
+    
+    /** my-activites **/
+/*    .dashboard_Sec h1 { font-size: 30px; }*/
+/*    .teck-acticites > p { font-size: 16px; }*/
+/*    #menu-item-pag-2 { padding-top: 28px; }*/
+    
+    /** document **/
+/*    .col-md-7.document_Sec p {  font-size: 16px; }*/
+/*    #menu-item-pag-4 { padding-top: 17px; }*/
+/*    .doc-last-text { font-size: 16px; display: none; }*/
+/*    .document-icon { width: 25px; margin-top: -8px; margin-left: 36px; }*/
+/*    .document-icon-2 { width: 25px; margin-top: -6px; margin-left: 31px; }*/
+/*    .document-icon-4 { width: 25px; margin-top: -5px; margin-left: 70px; }*/
+/*    .dhots2-icon { width: 20px; }*/
+/*    .dhots2-icon-2 { width: 20px; }*/
+/*    .dhots2-icon-3 { width: 20px; }*/
+/*    .border-line span-1 { font-size: 16px; }*/
+/*    .border-line span-2 { font-size: 16px; }*/
+/*    .border-line span-3 { font-size: 16px; }*/
+/*    .box-li { font-size: px; }*/
+/*    .text-icon-3 { width: 20px; margin-top: -17px; margin-right: 1px; }*/
+/*    .text-icon-2 { width: 20px; }*/
+/*    .text-icon-4 { width: 20px; }*/
+/*    #teck-btn-pag-4 { margin-left: 35%; padding-left: 20px; }*/
+    
+/*    #burger-menu img { width: 40px; cursor: pointer; }*/
+/*    #sidebar > .main-menu { padding: 0; display: flex; flex-direction: column; align-items: center; }*/
+/*    #burger-menu { display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }*/
+/*    #sidebar > .last-text, #burger-menu .close-menu, #sidebar > .heading-menu, #sidebar > .main-menu > .menu-item > a > span { display: none; }*/
+    
+    
+/*    .active-menu #burger-menu > .open-menu { display: none; }*/
+/*    #main { flex: 0 0 100%; max-width: 100%; padding-left: 80px; }*/
+/*    .active-menu #burger-menu { justify-content: end; display: flex; }*/
+/*    #sidebar { flex: 0 0 70px; max-width: 70px; min-width: 70px; position: absolute; height: 100%; background: #fff; transition: .5s; }*/
+/*    #sidebar.active-menu { flex: 0 0 25%; max-width: 25%; min-width: 300px; transition: .5s; box-shadow: 0 0 0 1px #f3f3f3;  }*/
+/*    .active-menu #burger-menu > .close-menu, #sidebar.active-menu > .main-menu > .menu-item > a > span, #sidebar.active-menu > .main-menu, #sidebar.active-menu > .last-text { display: block; }*/
+    
+    
+    /*Table*/
+/*    .teck-table .rwd-table {width: 150vw;}*/
+/*    .teck-table { overflow-x: scroll; width: 100%; }*/
+/*}*/
+  
+
+/*@media only screen and (max-width: 768px){*/
+    /**dshboard**/
+/*    #logo-col { max-width: 50%; }*/
+/*    #icon-col { max-width: 50%; }*/
+/*    .teck-first-colum { margin-left: 15%; padding-top: 20px; }*/
+/*    .teck-second-colum { margin-left: 16%; padding-top: 20px; }*/
+/*    .teck-third-colum { margin-left: 16%; padding-top: 20px; }*/
+/*    .icon-box { width: 86%; }*/
+/*}*/
+
+
+/*@media only screen and (max-width: 480px){*/
+/*    .profile-picture { margin: 0; }*/
+/*    .profile-picture > img { width: 100%; }*/
+/*    #main .activity_col { padding: 5% 2% 0; }*/
+/*    #sidebar.active-menu { flex: 0 0 100%; max-width: 100%; }*/
+/*    #main .profile-picture .teck-btn.bg-white>a { margin-left: 0; padding: 10px; }*/
+/*}*/
+
+/**close media queries**/
