@@ -22,7 +22,7 @@ class ActivityController extends Controller
             if($activity){
                 return view('pages/all-activities-edit')->with("activity", $activity);
             } else {
-                abort(404);
+                abort(403);
             }
     }
 }

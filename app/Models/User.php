@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Role;
+use App\Models\Crew;
 
 class User extends Authenticatable
 {
@@ -43,4 +45,27 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+   /**
+    * Get the role associated with the User
+    *
+    * @return \Illuminate\Database\Eloquent\Relations\belongsTo
+    */
+   public function role()
+   {
+       return $this->belongsTo(Role::class);
+
+   }
+
+   /**
+    * Get the crew associated with the User
+    *
+    * @return \Illuminate\Database\Eloquent\Relations\hasOne
+    */
+    public function crew()
+    {
+        return $this->hasOne(Crew::class);
+
+    }
 }
