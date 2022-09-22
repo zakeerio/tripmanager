@@ -11,7 +11,7 @@
 
                 <div class="col-xl-4 col-lg-12">
                     <div class="teck-btn justify-content-end" id="teck-btn-pag-3">
-                        <a href="{{ route('developer.all-activities-create',2) }}"><img
+                        <a href="{{ route('all-activities-create',2) }}"><img
                                 src="{{ 'assets/images/clander icon.png' }}" class="img-fluid">Create Activity</a>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="BtnAction">
                                                 <a class="dropdown-item"
-                                                    href="{{ route('developer.all-activities-edit', 2) }}">Edit</a>
+                                                    href="{{ route('all-activities-edit', 2) }}">Edit</a>
                                                 <a class="dropdown-item" href="#">Delete</a>
                                             </div>
                                         </div>
@@ -96,7 +96,7 @@
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="BtnAction">
                                                 <a class="dropdown-item"
-                                                    href="{{ route('developer.all-activities-edit', 2) }}">Edit</a>
+                                                    href="{{ route('all-activities-edit', 2) }}">Edit</a>
                                                 <a class="dropdown-item" href="#">Delete</a>
                                             </div>
                                         </div>
@@ -131,7 +131,7 @@
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="BtnAction">
                                                 <a class="dropdown-item"
-                                                    href="{{ route('developer.all-activities-edit', 2) }}">Edit</a>
+                                                    href="{{ route('all-activities-edit', 2) }}">Edit</a>
                                                 <a class="dropdown-item" href="#">Delete</a>
                                             </div>
                                         </div>
@@ -168,7 +168,7 @@
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="BtnAction">
                                                 <a class="dropdown-item"
-                                                    href="{{ route('developer.all-activities-edit', 2) }}">Edit</a>
+                                                    href="{{ route('all-activities-edit', 2) }}">Edit</a>
                                                 <a class="dropdown-item" href="#">Delete</a>
                                             </div>
                                         </div>
@@ -202,7 +202,7 @@
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="BtnAction">
                                                 <a class="dropdown-item"
-                                                    href="{{ route('developer.all-activities-edit', 2) }}">Edit</a>
+                                                    href="{{ route('all-activities-edit', 2) }}">Edit</a>
                                                 <a class="dropdown-item" href="#">Delete</a>
                                             </div>
                                         </div>
@@ -237,7 +237,7 @@
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="BtnAction">
                                                 <a class="dropdown-item"
-                                                    href="{{ route('developer.all-activities-edit', 2) }}">Edit</a>
+                                                    href="{{ route('all-activities-edit', 2) }}">Edit</a>
                                                 <a class="dropdown-item" href="#">Delete</a>
                                             </div>
                                         </div>

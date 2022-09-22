@@ -9,6 +9,10 @@ class Role extends Model
 {
     use HasFactory;
 
+    protected $filelable = [
+        'name','guard_name'
+    ];
+
     /**
      * Get all of the role for the Role
      *

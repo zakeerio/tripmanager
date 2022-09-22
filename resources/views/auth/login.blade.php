@@ -25,7 +25,15 @@
                                           <p class="col-12-descrapction">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
                                   <div class="row">
                                       <div class="col-lg-12 col-md-12 upcoming_activities">
+                                        @if (Session::has('error'))
+                                        <div class="alert alert-danger">Error here</div>
 
+                                        @endif
+
+                                        @if (Session::has('success'))
+                                        <div class="alert alert-success">Login Successfully</div>
+
+                                        @endif
                                       </div>
                                   </div>
                              </div>
@@ -125,13 +133,13 @@
                                       <div class="form-group col-xl-6 col-lg-12">
                                           <label for="usertype">Login As</label>
                                             <select name="user_type" class="form-control @error('user_type') is-invalid @enderror " id="usertype">
-                                                <option>Select Role</option>
+                                                <option value="">Select Role</option>
 
                                                 @php
                                                 $roles = \App\Models\Role::get();
                                                 @endphp
                                                 @forelse ($roles as $role )
-                                                <option value="{{ $role->id }}">{{ $role->role_name }}</option>
+                                                <option value="{{ $role->id }}">{{ $role->name }}</option>
 
                                                 @empty
 

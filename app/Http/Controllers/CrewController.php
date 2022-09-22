@@ -17,29 +17,48 @@ class CrewController extends Controller
 
     public function index(){
 
-        // $crew_members1 = Crew::where('duplicatevall', 0)->get();
-        // foreach($crew_members1 as $member) {
-        //     $row = array(
-        //         "id" => $member->id,
-        //         "name" => $member->fullname,
-        //         "username" => $member->username,
-        //         "email" => $member->emailaddress,
-        //         "old_password" => $member->pswd,
-        //         "role_id" => $member->privilege,
-        //         "created_at" => date("Y-m-d H:i:s"),
-        //         "updated_at" => date("Y-m-d H:i:s"),
-        //     );
+        /*
+        $users = User::where('role_id', 2)->get();
 
-        //     $users = new User();
+        foreach($users as $user){
 
-        //     $entry = $users->create($row);
 
-        //     echo "<pre>"; print_r($row);
-        //     echo "</pre>";
+            $crew_members1 = Crew::where('emailaddress', $user->email)->where('username', $user->username)->get();
 
-        // }
+            // dd($crew_members1);
 
-        $crew_members = Crew::limit(100)->get();
+            foreach($crew_members1 as $member) {
+
+                // print_r($member);
+                // $row = array(
+                //     "id" => $member->id,
+                //     "name" => $member->fullname,
+                //     "username" => $member->username,
+                //     "email" => $member->emailaddress,
+                //     "old_password" => $member->pswd,
+                //     "role_id" => $member->privilege,
+                //     "created_at" => date("Y-m-d H:i:s"),
+                //     "updated_at" => date("Y-m-d H:i:s"),
+                // );
+
+                $entry = $member->update(['user_id' => $user->id]);
+                if($entry){
+
+                    // $entry = $users->update($row);
+
+                    echo "<pre>"; print_r($member);
+                    echo "</pre>";
+
+                }
+
+
+
+            }
+        }
+
+        */
+
+        $crew_members = Crew::with('user')->get();
         // dd($crew_members);
 
 
@@ -58,7 +77,9 @@ class CrewController extends Controller
 
         $user = auth()->user();
 
-        $crew_member = User::findOrFail($user->id);
+        $crew_member = Crew::findOrFail('user_id',$user->id);
+
+        dd($crew_member);
 
 
         return view('pages/my-account')->with("user", $crew_member);

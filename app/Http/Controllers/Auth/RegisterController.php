@@ -9,6 +9,10 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
+
+// use App\Models\Admin;
+// use App\Models\Developer;
+
 class RegisterController extends Controller
 {
     /*
@@ -65,6 +69,19 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $request->validate([
+                'name' => 'required',
+                'username' => 'required',
+                'email' => "required|email|unique:users,email",
+                'password' => "required|min:6|max:15",
+                'password_confirmation' => "required|same:password"
+            ],
+            [
+                'password_confirmation.required' => "The Confirm is required field.",
+                'password_confirmation.same' => "The Confirm password must match."
+            ]
+        );
+
         return User::create([
             'name' => $data['name'],
             'username' => $data['username'],

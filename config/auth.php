@@ -17,6 +17,15 @@ return [
         'guard' => 'web',
         'passwords' => 'users',
     ],
+    // 'admin' => [
+    //     'driver' => 'eloquet',
+    //     'model' => App\Models\Admin::class
+    // ],
+
+    // 'developer' => [
+    //     'driver' => 'eloquet',
+    //     'model' => App\Models\Developer::class
+    // ],
 
     /*
     |--------------------------------------------------------------------------
@@ -40,20 +49,16 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'administrator' => [
-            'driver' => 'session',
-            'provider' => 'administrator',
-        ],
 
-        'crewmember' => [
-            'driver' => 'session',
-            'provider' => 'crewmember',
-        ],
+        // 'admin' => [
+        //     'driver' => 'session',
+        //     'provider' => 'admins',
+        // ],
 
-        'developer' => [
-            'driver' => 'session',
-            'provider' => 'developer',
-        ],
+        // 'developer' => [
+        //     'driver' => 'session',
+        //     'provider' => 'developers'
+        // ],
     ],
 
     /*
@@ -76,27 +81,22 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ],
-        'administrator' => [
-            'driver' => 'eloquent',
             'model' => App\User::class,
         ],
-
-        'crewmember' => [
-            'driver' => 'eloquent',
-            'model' => App\User::class,
-        ],
-
-        'developer' => [
-            'driver' => 'eloquent',
-            'model' => App\User::class,
-        ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
+        // 'admins' => [
+        //     'driver' => 'eloquent',
+        //     'model' => App\Models\Admin::class,
         // ],
+
+        // 'developers' => [
+        //     'driver' => 'eloquent',
+        //     'model' => App\Models\Developer::class,
+        // ],
+
+        'users' => [
+            'driver' => 'database',
+            'table' => 'users',
+        ],
     ],
 
     /*
@@ -121,6 +121,14 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+        // 'admins' => [
+        //     'driver' => 'eloquent',
+        //     'model' => App\Models\Admin::class,
+        // ],
+        // 'developers' => [
+        //     'driver' => 'eloquent',
+        //     'model' => App\Models\Developer::class,
+        // ],
     ],
 
     /*

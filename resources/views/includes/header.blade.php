@@ -34,8 +34,9 @@
                                 <img src="{{ asset('/assets/images/Chacha.png'); }}" class="img-fluid" alt="">
 
                                    <div class="profile-matter">
-                                    <p> <strong> {{ Auth::user()->name }} </strong></p>
-                                    <p class="teck-name-color" >{{ Auth::user()->role['role_name'] }}</p>
+                                    <p> <strong> {{ (Auth::user() !== null) ? Auth::user()->name : '' }} </strong></p>
+                                    {{-- <p class="teck-name-color" >{{ (Auth::user() !== null) ? Auth::user()->role['name'] : ""  }}</p> --}}
+                                    <p class="teck-name-color">Admin</p>
 
                                    </div>
 
