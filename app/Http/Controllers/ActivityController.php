@@ -31,7 +31,7 @@ class ActivityController extends Controller
 
         $current_month_crews = Trip::whereBetween('departuredate', [$datefrom, $dateto])->get();
         $current_month_crews1 = DB::table('trips')->whereBetween('departuredate', [$datefrom, $dateto])->selectRaw('SELECT time(sum(TIMEDIFF( duration, duration )))')->get();
-        dd($current_month_crews);
+        // dd($current_month_crews);
 
 
         $pagetitle = "Dashboard";
