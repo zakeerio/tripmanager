@@ -21,7 +21,7 @@ Auth::routes();
 
 
 Route::group(['middleware'=>'auth'], function () {
-
+    Route::get('/roles', [ActivityController::class, 'rolespermissions'])->name('roles');
     Route::get('/dashboard', [ActivityController::class, 'dashboard'])->name('dashboard');
 
     // Route::get('/dashboard', function () {

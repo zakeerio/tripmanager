@@ -26,7 +26,7 @@
                                   <div class="row">
                                       <div class="col-lg-12 col-md-12 upcoming_activities">
                                         @if (Session::has('error'))
-                                        <div class="alert alert-danger">Error here</div>
+                                        <div class="alert alert-danger">Login failed please make sure your credentials are correct!</div>
 
                                         @endif
 

@@ -22,7 +22,7 @@
                         <img src="{{ asset('assets/images/1.png') }}" class="img-box" alt="">
 
                         <p>
-                            <span>3</span>
+                            <span>{{ $current_month_crews->count() }}</span>
                             Activities <br> This Month
 
                         </p>

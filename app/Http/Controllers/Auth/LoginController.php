@@ -105,7 +105,7 @@ class LoginController extends Controller
 
                     }
 
-                    return redirect()->route('dashboard')->with('success', "Welcome to Admin Dashboard");
+                    return redirect()->route('dashboard')->with('success', "Welcome to Crew Member Dashboard");
                 } else {
 
                     return redirect()->back()->with('error', "Login Failed");
@@ -117,6 +117,20 @@ class LoginController extends Controller
             }
             elseif($request->user_type == 3)
             {
+                if(Auth::attempt($authArray)){
+
+                    if($updatepassword == true){
+
+                        $request->session()->put('passwordtobeupdated', 'Yes');
+                        $request->session()->put('newpassword', $request->password);
+
+                    }
+
+                    return redirect()->route('dashboard')->with('success', "Welcome to Developer Dashboard");
+                } else {
+                    return redirect()->back()->with('error', "Login Failed");
+                }
+
                 // dd("Guard here");
                 // config(['auth.defaults.guard' => 'developer']); // Updating default guard to clients so auth prioritize the clients table for auth_attempt()
 
@@ -165,7 +179,7 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-     return redirect('dashboard'); // Redirects to home route after successful authentication for every user
+        return redirect('dashboard'); // Redirects to home route after successful authentication for every user
     }
 
 

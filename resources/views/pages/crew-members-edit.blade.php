@@ -25,7 +25,7 @@
                         </div>
                     </div>
                 </div>
-                <pre>
+                {{-- <pre>
                 "id" => 28
                 "initials" => "MK"
                 "fullname" => "Margaret Kiddy"
@@ -51,7 +51,7 @@
                 "created_at" => null
                 "updated_at" => null
 
-                </pre>
+                </pre> --}}
                 <div class="col-md-12">
 
                     <form class="teck-form" method="POST" action="{{ route('update-account') }}">
