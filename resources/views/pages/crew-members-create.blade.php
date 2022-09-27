@@ -28,25 +28,26 @@
 
                 <div class="col-md-12">
 
-                    <form class="teck-form">
+                    <form class="teck-form" action="" method="POST">
+                        @csrf
                         <div class="form-row">
 
                             <div class="form-group col-xl-8 col-lg-12">
                                 <div class="form-row">
                                     <div class="form-group col-xl-4 col-lg-6">
                                         <label for="Name">NAME</label>
-                                        <input type="text" class="form-control" id="Name">
+                                        <input type="text" class="form-control" id="Name" name="fullname">
                                     </div>
 
                                     <div class="form-group col-xl-4 col-lg-6">
                                         <label for="EmailAddress">EMAIL ADDRESS</label>
-                                        <input type="email" class="form-control" id="EmailAddress">
+                                        <input type="email" class="form-control" id="EmailAddress" name="emailaddress">
                                     </div>
 
 
                                     <div class="form-group col-xl-4 col-lg-6">
                                         <label for="PrimaryNumber">PRIMARY NUMBER</label>
-                                        <input type="number" class="form-control" id="PrimaryNumber">
+                                        <input type="number" class="form-control" id="PrimaryNumber" name="mobile">
                                     </div>
 
 
@@ -57,7 +58,7 @@
 
                                     <div class="form-group col-xl-4 col-lg-12">
                                         <label for="ActivityPreference">ACTIVITY PREFERENCE</label>
-                                        <select id="ActivityPreference" class="form-control">
+                                        <select id="ActivityPreference" name="boatpreference" class="form-control">
                                             <option selected>Please Select...</option>
                                             <option>...</option>
                                             <option>...</option>
@@ -78,11 +79,11 @@
 
                                             <div class="form-group col-md-6">
                                                 <label for="Initials">INITIALS</label>
-                                                <input type="text" class="form-control" id="Initials">
+                                                <input type="text" class="form-control" id="Initials" name="initials">
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="Username">USERNAME</label>
-                                                <input type="text" class="form-control" id="Username">
+                                                <input type="text" class="form-control" id="Username" name="username">
                                             </div>
 
 
@@ -90,9 +91,17 @@
                                                 <label for="AccountRole">ACCOUNT ROLE</label>
                                                 <select id="AccountRole" class="form-control">
                                                     <option selected>Please Select...</option>
-                                                    <option>...</option>
-                                                    <option>...</option>
-                                                    <option>...</option>
+                                                    @php
+                                                        $roles = \App\Models\Role::get();
+                                                    @endphp
+                                                    @forelse ($roles as $role)
+                                                        <option value="{{ $role->id }}"
+                                                            {{-- {{ isset($crew_member->user) && $crew_member->user->role['id'] == $role->id ? 'selected' : '' }}> --}}
+                                                            >
+                                                            {{ $role->role_name }}</option>
+
+                                                    @empty
+                                                    @endforelse
                                                 </select>
                                             </div>
 
@@ -100,7 +109,7 @@
 
                                             <div class="form-group col-md-6">
                                                 <label for="CctMembershipNumber">CCT MEMBERSHIP NUMBER</label>
-                                                <input type="text" class="form-control" id="CctMembershipNumber">
+                                                <input type="number" class="form-control" id="CctMembershipNumber" name="memnumber">
                                             </div>
 
 
@@ -110,30 +119,54 @@
                                         <div class="form-group col-md-12">
                                             <div><label>ADDITIONAL</label></div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="First Aid">
+                                                <input class="form-check-input" type="checkbox" placeholder="First Aid" name="firstaid">
                                                 <label class="form-check-label" for="First Aid">First Aid</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="CBA">
+                                                <input class="form-check-input" type="checkbox" placeholder="CBA" name="cba">
                                                 <label class="form-check-label" for="CBA">CBA</label>
                                             </div>
 
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="RYA">
+                                                <input class="form-check-input" type="checkbox" placeholder="RYA" name="rya">
                                                 <label class="form-check-label" for="RYA">RYA</label>
                                             </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="Key Holder">
-                                                <label class="form-check-label" for="Key Holder">Key Holder</label>
-                                            </div>
+
 
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="IWA">
+                                                <input class="form-check-input" type="checkbox" placeohlder="IWA" name="iwa">
                                                 <label class="form-check-label" for="IWA">IWA</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="Skipper">
+                                                <input class="form-check-input" type="checkbox" placeholder="Skipper" name="skipper">
                                                 <label class="form-check-label" for="Skipper">Skipper</label>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-xl-8 col-lg-12">
+                                        <div class="form-row">
+
+                                            <div class="form-group col-md-6">
+                                                <label for="privilege">Privilege</label>
+                                                <input type="number" class="form-control" name="privilege" id="privilege">
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" name="optin" id="optin" >
+                                                <label for="optin">Opted in for Details</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <label for="KeyHolder">Key Holder</label>
+                                                <input class="form-control" type="text" id="KeyHolder" name="keyholder">
+                                            </div>
+
+
+
+                                            <div class="form-group col-md-6">
+                                                <label for="privilege">First aid expiry</label>
+                                                <input type="date" class="form-control" name="traveltime" id="privilege">
                                             </div>
                                         </div>
                                     </div>
@@ -151,12 +184,12 @@
 
                                             <div class="form-group col-md-6">
                                                 <label for="TypeNewPassword">TYPE NEW PASSWORD</label>
-                                                <input type="password" class="form-control" id="TypeNewPassword">
+                                                <input type="password" class="form-control" name="password" id="TypeNewPassword" placeholder="********">
                                             </div>
 
                                             <div class="form-group col-md-6">
                                                 <label for="ReTypePassword">RE TYPE PASSWORD</label>
-                                                <input type="password" class="form-control" id="ReTypePassword">
+                                                <input type="password" class="form-control" id="ReTypePassword" name="confirmpassword" >
                                             </div>
 
                                         </div>
@@ -174,7 +207,7 @@
                                     <img src="{{ asset('assets/images/profile-picture.svg') }}" />
 
                                     <div class="teck-btn bg-white upload-btn">
-                                        <input type="file" />
+                                        <input type="file" name="profileImage" />
                                         <a href="#!"><img src="{{ asset('assets/images/camera.svg') }}"
                                                 class="btn-icon-2" alt=""> Update Image </a>
                                     </div>
@@ -192,8 +225,8 @@
 
 
                         <div class="teck-btn">
-                            <button type="submit" class="btn btn-primary"> <img
-                                    src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Create User </button>
+                            <button type="submit" class="btn btn-primary">
+                                <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Create User </button>
                         </div>
                     </form>
 

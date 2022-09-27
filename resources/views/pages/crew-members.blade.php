@@ -101,7 +101,8 @@
                                         <td> {{ $crewmember->skipper }} </td>
                                         <td> {{ $crewmember->rya }} </td>
                                         <td> {{ $crewmember->cba }} </td>
-                                        <td> {{ $crewmember->user ? Str::ucfirst($crewmember->user->role['name']) : '(No Role)' }}
+                                        <td>
+                                            {{-- {{ (isset($crewmember->user->role)) ? Str::ucfirst($crewmember->user->role['name']) : '(No Role)' }} --}}
                                         </td>
 
                                         <td class="action">
