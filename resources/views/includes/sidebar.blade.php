@@ -10,7 +10,7 @@
     <h3 class="heading-menu"> MAIN MENU </h3>
 
     <ul class="main-menu">
-        <li class="menu-item {{ (Request::path() == 'dashboard') ?  'active' : '' }}">
+        <li class="menu-item {{ ((Request::path() == 'dashboard') || (Request::path() == '/'))   ?  'active' : '' }}">
             <a href="{{ route('dashboard') }}">
                 <img src="{{ asset('assets/images/dashboard.png') }}" class="img-fluid" alt="">
                 <span>Dashboard</span>
