@@ -43,13 +43,8 @@
                 </div>
 
 
-
-
                 @php
                     $crewmember = $crew_member;
-
-                    // dd($crew_member->user);
-
 
                 @endphp
 

@@ -14,9 +14,9 @@ class ActivityController extends Controller
     //
 
     public function index(){
-        $activities = Activity::limit(1)->get();
-        // dd($activities);
-        return view('pages/all-activities')->with("activities", $activities);
+        $trips = Trip::paginate(250);
+        // dd($trips);
+        return view('pages/all-activities')->with("trips", $trips)->with('tripcrews');
 
     }
 

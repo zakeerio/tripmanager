@@ -21,7 +21,8 @@ class CreateTripcrewsTable extends Migration
             $table->char('available', 1)->nullable();
             $table->char('confirmed', 1)->nullable();
             $table->char('isskipper', 1)->nullable();
-            $table->integer('tripnumber')->nullable();
+            $table->unsignedBigInteger('tripnumber')->nullable();
+            $table->foreign('tripnumber')->references('id')->on('trips')->onDelete('cascade');
             $table->string('notes')->nullable();
 
             $table->timestamps();
