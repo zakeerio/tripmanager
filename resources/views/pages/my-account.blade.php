@@ -15,6 +15,17 @@
             <p class="sub-pages-text">This is your user account area, please make sure your information is up to date.</p>
         </div>
 
+        @if (Session::has('success'))
+                    <div class="alert alert-success col-12 mb-2 mt-3">
+                        @foreach (Session::get('success') as $msg )
+
+                            <li >{{ $msg }}</li>
+
+                        @endforeach
+                    </div>
+
+                @endif
+
         <div class="col-md-12 activies_table">
 
             <div class="row activity_col">
@@ -31,8 +42,15 @@
 
                 </div>
 
+
+
+
                 @php
-                    $crewmember = $user->crew;
+                    $crewmember = $crew_member;
+
+                    // dd($crew_member->user);
+
+
                 @endphp
 
                 <div class="col-md-12">
@@ -52,7 +70,7 @@
                                         <input type="text" class="form-control" id="Name" name="name"
                                             value="{{ $user->name }}">
 
-                                        {{-- <input type="hidden" name="id" value="{{ $crewmember->id }}"> --}}
+                                        <input type="hidden" name="id" value="{{ $crewmember->id }}">
 
                                     </div>
 
@@ -67,10 +85,6 @@
 
                                     </div>
 
-
-
-
-
                                     <div class="form-group col-xl-4 col-lg-6">
 
                                         <label for="PrimaryNumber">PRIMARY NUMBER</label>
@@ -79,10 +93,6 @@
                                             value="{{ $crewmember->mobile }}">
 
                                     </div>
-
-
-
-
 
                                     <div class="form-group col-xl-4 col-lg-6">
 
@@ -112,8 +122,6 @@
                                         </select>
 
                                     </div>
-
-
 
 
 
@@ -291,8 +299,18 @@
 
 
                                     <div class="form-group col-xl-8 col-lg-12">
-
                                         <div class="form-row">
+                                            <div class="form-group col-md-6">
+
+                                                <label for="OldTypeNewPassword">TYPE OLD PASSWORD</label>
+                                                <input type="password" class="form-control" name="old_password"
+                                                    id="OldTypeNewPassword" placeholder="*********">
+
+
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+
 
                                             <div class="form-group col-md-6">
 

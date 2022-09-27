@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Crew;
 use App\Models\User;
 use App\Http\Middleware\Authenticate;
+use Illuminate\Support\Facades\Hash;
 
 
 class CrewController extends Controller
@@ -77,32 +78,33 @@ class CrewController extends Controller
 
         $user = auth()->user();
 
-        $crew_member = Crew::findOrFail('user_id',$user->id);
 
-        dd($crew_member);
+        $crew_member = Crew::where('user_id',$user->id)->first();
+        if(!$crew_member) {
+            abort(403);
+        }
 
-
-        return view('pages/my-account')->with("user", $crew_member);
+        return view('pages/my-account')->with("user", $user)->with('crew_member', $crew_member);
 
     }
 
     public function update_crew(Request $request){
 
-        dd($request->all());
+        // dd($request->all());
 
-        $name = $request->name; //"Zahid Ali"
-        $id = $request->id; //"2"
-        $emailaddress = $request->emailaddress; //"young-jean1@sky.com"
-        $secondarynumber = $request->secondarynumber; //"03120330060"
-        $boatpreference = $request->boatpreference; //"Seth Ellis"
-        $memnumber = $request->memnumber; //"574"
-        $firstaid = ($request->firstaid == "on") ? "Y" : ''; //"Y"
-        $keyholder = $request->keyholder; //"S"
-        $skipper = ($request->skipper == "on") ? "Y" : ''; //"Y"
+        $name = $request->name;
+        $id = $request->id;
+        $emailaddress = $request->emailaddress;
+        $secondarynumber = $request->secondarynumber;
+        $boatpreference = $request->boatpreference;
+        $memnumber = $request->memnumber;
+        $firstaid = ($request->firstaid == "on") ? "Y" : '';
+        $keyholder = $request->keyholder;
+        $skipper = ($request->skipper == "on") ? "Y" : '';
         // echo $request->optin;
-        $optin = ($request->optin == "on") ? "Y" : ''; //"Y"
-        $privilege = $request->privilege; //"2"
-        $traveltime = $request->traveltime; //"2021-03-17"
+        $optin = ($request->optin == "on") ? "Y" : '';
+        $privilege = $request->privilege;
+        $traveltime = $request->traveltime;
 
 
         $fullname = $request->fullname;
@@ -110,13 +112,8 @@ class CrewController extends Controller
         $mobile = $request->mobile;
         $user_type = $request->user_type;
 
-        // "password" => null
-        // "confirmpassword" => null
-        // "profileImage" => null
-
-
-
         $crew = Crew::findOrFail($id);
+
         $crew_data = array(
             "fullname" => $name,
             "emailaddress" => $emailaddress,
@@ -127,22 +124,48 @@ class CrewController extends Controller
             "keyholder" => $keyholder,
             "skipper" => $skipper,
             "optin" => $optin,
-            "privilege" => $privilege,
+            "privilege" => $privilege
         );
 
-        ddd($crew_data);
-        // $update = $crew->update($crew_data);
+        // dd($crew_data);
+        $update = $crew->update($crew_data);
 
         if($update){
-            echo  "Updated Successfully";
+            $messages[] =  "User Data Updated Successfully";
         }
 
-        $password = $request('password');
-        $profileImage = $request('profileImage');
-        if($password != "")  {
-            // updatde user password here
-            echo "Update password as well";
+        $password = $request->password;
+        $old_password = $request->old_password;
+        $password = $request->password;
+        $confirmpassword = $request->confirmpassword;
+
+
+        if($password != "" && $old_password != "" && ($password == $confirmpassword))  {
+
+
+            #Match The Old Password
+            if(!Hash::check($old_password, auth()->user()->password)){
+                echo 'password not matched';
+                // return back()->with("error", "Old Password Doesn't match!");
+            }
+
+            #Update the new Password
+            $userupdate = User::whereId(auth()->user()->id)->update([
+                'password' => Hash::make($password),
+            ]);
+            if($userupdate){
+                $messages[] =  "Password Updated";
+            }
+
         }
+
+        $profileImage = $request->profileImage;
+
+        return redirect()->back()->with('success', $messages);
+
+
+
+
 
 
     }
