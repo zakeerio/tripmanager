@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="./assets/css/responsive.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
-    
+
     <title> All Activities - Edit </title>
 
   </head>
@@ -159,7 +159,7 @@
 
             </div>
 
-            
+
 
             <div class="col-lg-10 col-md-12" id="main">
 
@@ -172,11 +172,11 @@
 
                     </div>
 
-                    
 
-                    
 
-                    
+
+
+
 
                     <div class="col-md-12 activies_table">
 
@@ -193,13 +193,13 @@
                                         <span class="active-btn-ready"><img src="./assets/images/Activity-Ready-Button.png" class="img-fluid" alt=""> Activity Ready</span>
                                     </div>
                                 </div>
-                           </div>     
-                            
+                           </div>
+
 
                             <div class="col-md-12">
 
-                                
-                                
+
+
                                 <form class="teck-form">
                                   <div class="form-row">
                                     <div class="form-group col-xl-4 col-lg-6">
@@ -220,9 +220,9 @@
                                       <input type="date" class="form-control" id="ActivityDate" value="2020-11-06">
                                     </div>
                                   </div>
-                                  
-                                  
-                                  
+
+
+
                                   <div class="form-row">
                                     <div class="form-group col-xl-4 col-lg-6">
                                         <label for="ActivityTime">ACTIVITY TIME</label>
@@ -237,9 +237,9 @@
                                       <input type="text" class="form-control" id="BriefDescription" value="Boat trips to Staveley">
                                     </div>
                                   </div>
-                                  
-                                  
-                                  
+
+
+
                                   <div class="form-row">
                                     <div class="col-lg-12 col-md-12 upcoming_activities">
                                         <h4>Crew Information</h4>
@@ -249,15 +249,15 @@
                                       <label for="NumberCrewNeeded">NUMBER OF CREW NEEDED</label>
                                       <input type="text" class="form-control" id="NumberCrewNeeded" value="6 Crew Members">
                                     </div>
-                                    
+
                                     <div class="form-group col-md-12">
                                       <label for="NotesCrew">NOTES FOR CREW</label>
                                       <textarea class="form-control" id="NotesCrew" rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ornare orci sit amet dui sagittis porttitor. Aliquam suscipit ligula et nisl ullamcorper lacinia. Nunc sagittis vitae lectus sit amet tincidunt. Nullam tristique, orci a consequat vehicula, arcu diam vehicula eros.</textarea>
                                     </div>
                                   </div>
-                                  
-                                  
-                                  
+
+
+
                                   <div class="form-row">
                                     <div class="form-group col-xl-4 col-lg-12">
                                         <label for="ConfirmedCrew">Confirmed Crew</label>
@@ -265,15 +265,15 @@
                                             <option>No one to show</option>
                                         </select>
                                     </div>
-                                    
+
                                     <div class="form-group col-xl-4 col-lg-12">
                                         <label for="AvailableCrew">Available Crew</label>
                                         <select multiple class="form-control" id="AvailableCrew">
                                             <option>No one to show</option>
                                         </select>
                                     </div>
-                                    
-                                    
+
+
                                     <div class="form-group col-xl-4 col-lg-12">
                                         <label for="UnavailableCrew">Unavailable Crew</label>
                                         <select multiple class="form-control" id="UnavailableCrew">
@@ -289,18 +289,18 @@
                                             <option>Karen Gillan</option>
                                         </select>
                                     </div>
-                                    
+
                                   </div>
-                                  
-                                  
-                                  
-                                  
-                                  
+
+
+
+
+
                                     <div class="teck-btn">
                                         <button type="submit" class="btn btn-primary"> <img src="./assets/images/save.svg" class="img-fluid"> Update Activity</button>
                                     </div>
                                 </form>
-                                
+
 
                             </div>
 

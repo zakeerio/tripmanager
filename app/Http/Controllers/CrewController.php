@@ -17,6 +17,7 @@ class CrewController extends Controller
     // }
 
     public function index(){
+        $pagetitle = "Crew Members";
 
         /*
         $users = User::where('role_id', 2)->get();
@@ -63,28 +64,30 @@ class CrewController extends Controller
         // dd($crew_members);
 
 
-        return view('pages/crew-members')->with("crew_members", $crew_members);
+        return view('pages/crew-members')->with("crew_members", $crew_members)->with('pagetitle', $pagetitle);
 
     }
     public function edit($id){
+        $pagetitle = "Edit Crew member";
         // dd($id);
         $crew_member = Crew::findOrFail($id);
         // dd($crew_member);
-        return view('pages/crew-members-edit')->with("crew_member", $crew_member);
+        return view('pages/crew-members-edit')->with("crew_member", $crew_member)->with('pagetitle', $pagetitle);
 
     }
 
     public function myaccount(){
+        $pagetitle = "My Account";
 
         $user = auth()->user();
-
 
         $crew_member = Crew::where('user_id',$user->id)->first();
         if(!$crew_member) {
             abort(403);
         }
 
-        return view('pages/my-account')->with("user", $user)->with('crew_member', $crew_member);
+
+        return view('pages/my-account')->with("user", $user)->with('crew_member', $crew_member)->with('pagetitle', $pagetitle);
 
     }
 
@@ -162,11 +165,6 @@ class CrewController extends Controller
         $profileImage = $request->profileImage;
 
         return redirect()->back()->with('success', $messages);
-
-
-
-
-
 
     }
 }

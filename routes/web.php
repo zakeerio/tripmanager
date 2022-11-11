@@ -32,10 +32,13 @@ Route::group(['middleware'=>'auth'], function () {
     // })->name('dashboard');
 
     Route::get('/activity-items', function () {
-        return view('pages/activity-items');
+        $pagetitle = "Activity Items";
+
+        return view('pages/activity-items')->with('pagetitle',$pagetitle);
     })->name('activity-items');
     Route::get('/activity-items-create', function () {
-        return view('pages/activity-items-create');
+        $pagetitle = "Activity Item Create";
+        return view('pages/activity-items-create')->with('pagetitle',$pagetitle);
     })->name('activity-items-create');
 
     Route::get('/activity-items-edit', function () {
@@ -44,25 +47,33 @@ Route::group(['middleware'=>'auth'], function () {
 
     Route::get('/all-activities', [ActivityController::class, 'index'])->name('all-activities');
 
+    Route::get('/my-activities', [ActivityController::class, 'myactivities'])->name('my-activities');
+
     Route::get('/all-activities-create', function () {
-        return view('pages/all-activities-create');
+        $pagetitle = "Create Activity";
+        return view('pages/all-activities-create')->with('pagetitle',$pagetitle);
     })->name('all-activities-create');
 
     Route::get('/all-activities-edit/{id}', [ActivityController::class, 'edit'])->name('all-activities-edit');
 
     Route::get('/analytics', function () {
-        return view('pages/analytics');
+        $pagetitle = "Analytics";
+
+        return view('pages/analytics')->with('pagetitle',$pagetitle);
     })->name('analytics');
 
     Route::get('/contact', function () {
-        return view('pages/contact');
+        $pagetitle = "Contact";
+
+        return view('pages/contact')->with('pagetitle',$pagetitle);
     })->name('contact');
 
 
     Route::get('/crew-members', [CrewController::class, 'index'] )->name('crew-members');
 
     Route::get('/crew-members-create', function () {
-        return view('pages/crew-members-create');
+        $pagetitle = "Create Crew Member";
+        return view('pages/crew-members-create')->with("pagetitle", $pagetitle);
     })->name('crew-members-create');
 
     Route::get('/crew-members-edit/{id}', [CrewController::class, 'edit'])->name('crew-members-edit');
@@ -72,9 +83,7 @@ Route::group(['middleware'=>'auth'], function () {
     Route::post('/update-account', [CrewController::class, 'update_crew'] )->name('update-account');
 
 
-    Route::get('/my-activities', function () {
-        return view('pages/my-activities');
-    })->name('my-activities');
+
 
     Route::get('/documents', function () {
         return view('pages/documents');

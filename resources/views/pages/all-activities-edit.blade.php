@@ -35,14 +35,14 @@
 
                 <div class="col-md-12">
 
-
+                    {{-- {{ dd($activity->tripcrews) }} --}}
 
                     <form class="teck-form">
                         <div class="form-row">
                             <div class="form-group col-xl-4 col-lg-6">
                                 <label for="ActivityNumber">ACTIVITY NUMBER</label>
                                 <input type="text" name="tripnumber" class="form-control" id="ActivityNumber"
-                                    value="{{ $activity->tripnumber }}">">
+                                    value="{{ $activity->tripnumber }}">
                             </div>
                             <div class="form-group col-xl-4 col-lg-6">
                                 <label for="ActivityItem">SELECT ACTIVITY ITEM</label>
@@ -136,7 +136,10 @@
 
 
 
-                <div class="form-row">
+                <div class="form-row form-multi">
+
+
+
                     <div class="form-group col-xl-4 col-lg-12">
                         <label for="ConfirmedCrew">Confirmed Crew</label>
                         <select multiple class="form-control" id="ConfirmedCrew">
@@ -155,7 +158,14 @@
                     <div class="form-group col-xl-4 col-lg-12">
                         <label for="UnavailableCrew">Unavailable Crew</label>
                         <select multiple class="form-control" id="UnavailableCrew">
-                            <option>Andy Karen</option>
+                            @forelse ($activity->tripcrews as $crewmember )
+                            <option>{{ $crewmember->recordnumber }}</option>
+
+                            @empty
+                            <option>No one to show</option>
+
+                            @endforelse
+                            {{-- <option>Andy Karen</option>
                             <option>Karen Gillan</option>
                             <option>Anderson Smith</option>
                             <option>William</option>
@@ -164,7 +174,7 @@
                             <option>Jimmy M.</option>
                             <option>Francis Ann</option>
                             <option>Ali Brownes</option>
-                            <option>Karen Gillan</option>
+                            <option>Karen Gillan</option> --}}
                         </select>
                     </div>
 
