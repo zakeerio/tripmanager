@@ -9,7 +9,7 @@
             <h1>Activities - Edit an existing activity</h1>
             <p>Please amend any details below and click save changes to submit</p>
 
-            
+
 
         </div>
 
@@ -37,7 +37,7 @@
 
                 <div class="col-md-12">
 
-                    {{-- {{ dd($activity->tripcrews) }} --}}
+                    {{-- {{ dd($activity) }} --}}
 
                     <form class="teck-form" method="post" action="{{ route('all-activites-update') }}">
                         @csrf;
@@ -48,8 +48,8 @@
                         <div class="form-row">
                             <div class="form-group col-xl-4 col-lg-6">
                                 <label for="ActivityNumber">ACTIVITY NUMBER</label>
-                                <input type="text" name="tripnumber" class="form-control" id="ActivityNumber"
-                                    value="{{ $activity->tripnumber }}">
+                                <input type="text" disabled name="tripnumber" class="form-control" id="ActivityNumber"
+                                    value="{{ $activity->id }}">
                             </div>
                             <div class="form-group col-xl-4 col-lg-6">
                                 <label for="ActivityItem">SELECT ACTIVITY ITEM</label>
