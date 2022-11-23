@@ -73,6 +73,13 @@
             </a>
         </li>
 
+        <li class="menu-item {{ (Request::path() == 'permission') ?  'active' : '' }}">
+            <a href="{{ route('permissions') }}">
+                <img src="{{ asset('assets/images/Setting.png') }}" class="img-fluid" alt="">
+                <span>Permissions</span>
+            </a>
+        </li>
+
         <li class="menu-item">
 
             <a href="{{ route('logout') }}"

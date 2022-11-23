@@ -40,13 +40,13 @@
 
                                 </div>
 
-                           </div>     
+                           </div>
 
-                           
+
                                 @php
                                     $crewmember = $user->crew;
                                 @endphp
-                
+
 
 
 
@@ -59,7 +59,7 @@
 
                                   <div class="form-row">
 
-                                      
+
 
                                         <div class="form-group col-md-8">
 
@@ -74,7 +74,7 @@
 
                                                 </div>
 
-                                                
+
 
                                                 <div class="form-group col-xl-4 col-lg-6">
 
@@ -84,9 +84,9 @@
 
                                                 </div>
 
-                                                
 
-                                                
+
+
 
                                                 <div class="form-group col-xl-4 col-lg-6">
 
@@ -96,9 +96,9 @@
 
                                                 </div>
 
-                                                
 
-                                                
+
+
 
                                                 <div class="form-group col-xl-4 col-lg-6">
 
@@ -108,7 +108,7 @@
 
                                                 </div>
 
-                                                
+
 
                                                 <div class="form-group col-xl-4 col-lg-12">
 
@@ -128,9 +128,9 @@
 
                                                 </div>
 
-                                                
 
-                                                
+
+
 
                                                 <div class="col-lg-12 col-md-12 upcoming_activities">
 
@@ -144,7 +144,7 @@
 
                                                     <div class="form-row">
 
-                                                        
+
 
                                                         <div class="form-group col-md-6">
 
@@ -162,9 +162,9 @@
 
                                                         </div>
 
-                                                        
 
-                                                        
+
+
 
                                                         <div class="form-group col-md-6">
 
@@ -176,7 +176,7 @@
                                                             $roles = \App\Models\Role::get();
                                                             @endphp
                                                             @forelse ($roles as $role )
-                                                            <option value="{{ $role->id }}" {{ ($user->role_id == $role->id) ? "selected" : "" }}>{{ $role->role_name }}</option>
+                                                            <option value="{{ $role->id }}" {{ ($user->role_id == $role->id) ? "selected" : "" }}>{{ $role->name }}</option>
 
                                                             @empty
 
@@ -186,11 +186,11 @@
 
                                                         </div>
 
-                                                        
 
-                                                        
 
-                                                        
+
+
+
 
                                                         <div class="form-group col-md-6">
 
@@ -201,9 +201,9 @@
 
                                                         </div>
 
-                                                        
 
-                                                        
+
+
 
                                                     </div>
 
@@ -231,7 +231,7 @@
 
                                                             </div>
 
-                                                            
+
 
                                                             <div class="form-check">
 
@@ -249,7 +249,7 @@
 
                                                             </div>
 
-                                                            
+
 
                                                             <div class="form-check">
 
@@ -291,16 +291,16 @@
                                                                 <input type="date" class="form-control" name="faexpire" id="faexpire" value="{{ $crewmember->faexpire }}">
                                                             </div>
 
-                                                
 
-                                                
+
+
 
                                                             </div>
                                                        </div>
 
-                                                
 
-                                                
+
+
 
                                                 <div class="col-lg-12 col-md-12 upcoming_activities">
 
@@ -310,28 +310,28 @@
 
                                                 </div>
 
-                                                
 
-                                                
 
-                                                
+
+
+
 
                                                 <div class="form-group col-xl-8 col-lg-12">
 
                                                     <div class="form-row">
 
-                                                
+
 
                                                         <div class="form-group col-md-6">
 
                                                           <label for="TypeNewPassword">TYPE NEW PASSWORD</label>
-                                                            
+
                                                           <input type="password" class="form-control" name="password" id="TypeNewPassword" placeholder="*********">
 
 
                                                         </div>
 
-                                                        
+
 
                                                         <div class="form-group col-md-6">
 
@@ -341,25 +341,25 @@
 
                                                         </div>
 
-                                                        
+
 
                                                     </div>
 
                                                 </div>
 
-                                                
+
 
                                               </div>
 
-                                                
 
-                                                
 
-                                                
+
+
+
 
                                       </div>
 
-                                      
+
 
                                       <div class="form-group col-md-4">
 
@@ -369,7 +369,7 @@
 
                                             <img src="{{ asset("assets/images/profile-picture.png") }}" />
 
-                                            
+
 
                                             <div class="teck-btn bg-white upload-btn">
 
@@ -383,17 +383,17 @@
 
                                       </div>
 
-                                      
 
-                                      
+
+
 
                                   </div>
 
-                                  
 
-                                  
 
-                                  
+
+
+
 
                                     <div class="teck-btn">
 
@@ -403,7 +403,7 @@
 
                                 </form>
 
-                                
+
 
 
 

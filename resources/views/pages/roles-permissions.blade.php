@@ -22,6 +22,13 @@
             <div class="row activity_col">
                 <div class="col-md-12">
 
+                
+                    @can('Permission write-artical')
+
+                        <button class="btn btn-primary">Test</button>
+
+
+                    @endcan
                     <div class="teck-table">
                         <h2>Admin</h2>
                         <div class="modelname">

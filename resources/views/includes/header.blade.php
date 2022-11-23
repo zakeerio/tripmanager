@@ -36,7 +36,7 @@
                                    <div class="profile-matter">
                                     <p> <strong> {{ (Auth::user() !== null) ? Auth::user()->name : '' }} </strong></p>
                                     {{-- <p class="teck-name-color" >{{ (Auth::user() !== null) ? Auth::user()->role['name'] : ""  }}</p> --}}
-                                    <p class="teck-name-color">Admin</p>
+                                    <p class="teck-name-color">{{Session::get('role')}}</p>
 
                                    </div>
 

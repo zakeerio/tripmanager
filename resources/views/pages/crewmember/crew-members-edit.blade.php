@@ -136,7 +136,7 @@
                                                     @forelse ($roles as $role)
                                                         <option value="{{ $role->id }}"
                                                             {{ isset($crew_member->user) && $crew_member->user->role['id'] == $role->id ? 'selected' : '' }}>
-                                                            {{ $role->role_name }}</option>
+                                                            {{ $role->name }}</option>
 
                                                     @empty
                                                     @endforelse

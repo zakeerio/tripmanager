@@ -162,7 +162,7 @@
                                                     @forelse ($roles as $role)
                                                         <option value="{{ $role->id }}"
                                                             {{ $user->role_id == $role->id ? 'selected' : '' }}>
-                                                            {{ $role->role_name }}</option>
+                                                            {{ $role->name }}</option>
 
                                                     @empty
                                                     @endforelse

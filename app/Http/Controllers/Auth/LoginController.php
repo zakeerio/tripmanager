@@ -42,6 +42,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+       
         $this->middleware('guest')->except('logout');
     }
 
@@ -54,6 +55,7 @@ class LoginController extends Controller
     // Over-riding default auth() login method for handling multi-auth for different types of users
     public function login(Request $request)
     {
+      
         $vals = $request->validate([
                 'username' => 'required',
                 'password' => 'required',
@@ -61,11 +63,25 @@ class LoginController extends Controller
             ]
         );
 
+
         $updatepassword = false;
 
         $authArray = ['username' => $request->username, 'password' => $request->password, 'role_id' => $request->user_type];
+
+       
+
         if($request->has('user_type'))
         {
+
+
+            $request->session()->put('user_type', $request->user_type);
+
+            $role = DB::table('roles')->where('id',$request->user_type)->pluck('name')->toArray();
+          
+            if(!empty($role)){
+              
+               $request->session()->put('role', $role[0]);
+            }
 
             $user = DB::table('users')->where('username', $request->username)->where('old_password', md5($request->password))->whereNotNull('old_password')->where('role_id', $request->user_type)->where('password','!=', $request->password )->first();
 
@@ -74,6 +90,7 @@ class LoginController extends Controller
                 $authArray['password'] = '12345678';
             }
 
+            
 
             if($request->user_type == 1)
             {
@@ -95,7 +112,7 @@ class LoginController extends Controller
             }
             elseif($request->user_type == 2)
             {
-
+               
                 // config(['auth.defaults.guard' => 'admin']); // Updating default guard to administrator so auth prioritize the administrator table for auth_attempt()
                 if(Auth::attempt($authArray)){
                     if($updatepassword == true){
@@ -103,8 +120,11 @@ class LoginController extends Controller
                         $request->session()->put('passwordtobeupdated', 'true');
                         $request->session()->put('newpassword', $request->password);
 
+                        
+
                     }
 
+                  
                     return redirect()->route('dashboard')->with('success', "Welcome to Crew Member Dashboard");
                 } else {
 

@@ -9,6 +9,8 @@
             <h1>Activities - Edit an existing activity</h1>
             <p>Please amend any details below and click save changes to submit</p>
 
+            
+
         </div>
 
 
@@ -37,7 +39,12 @@
 
                     {{-- {{ dd($activity->tripcrews) }} --}}
 
-                    <form class="teck-form">
+                    <form class="teck-form" method="post" action="{{ route('all-activites-update') }}">
+                        @csrf;
+
+                        <input type="hidden" name="id" class="form-control" id=""
+                                    value="{{ $activity->id }}">
+
                         <div class="form-row">
                             <div class="form-group col-xl-4 col-lg-6">
                                 <label for="ActivityNumber">ACTIVITY NUMBER</label>
@@ -130,7 +137,7 @@
 
                         <div class="form-group col-md-12">
                             <label for="NotesCrew">NOTES FOR CREW</label>
-                            <textarea class="form-control" id="NotesCrew" rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ornare orci sit amet dui sagittis porttitor. Aliquam suscipit ligula et nisl ullamcorper lacinia. Nunc sagittis vitae lectus sit amet tincidunt. Nullam tristique, orci a consequat vehicula, arcu diam vehicula eros.</textarea>
+                            <textarea class="form-control" id="NotesCrew" rows="5" name="NotesCrew">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ornare orci sit amet dui sagittis porttitor. Aliquam suscipit ligula et nisl ullamcorper lacinia. Nunc sagittis vitae lectus sit amet tincidunt. Nullam tristique, orci a consequat vehicula, arcu diam vehicula eros.</textarea>
                         </div>
                 </div>
 

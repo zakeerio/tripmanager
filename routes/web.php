@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CrewController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\RoleController;
 use App\Http\Middleware\Authenticate;
 
 
@@ -56,6 +57,13 @@ Route::group(['middleware'=>'auth'], function () {
 
     Route::get('/all-activities-edit/{id}', [ActivityController::class, 'edit'])->name('all-activities-edit');
 
+    Route::any('/all-activities-view/{id}', [ActivityController::class, 'view'])->name('all-activities-view');
+
+    Route::any('/all-activites-update', [ActivityController::class, 'update'])->name('all-activites-update');
+
+    Route::any('/all-activites-delete/{id}', [ActivityController::class, 'delete'])->name('all-activites-delete');
+
+
     Route::get('/analytics', function () {
         $pagetitle = "Analytics";
 
@@ -76,13 +84,19 @@ Route::group(['middleware'=>'auth'], function () {
         return view('pages/crew-members-create')->with("pagetitle", $pagetitle);
     })->name('crew-members-create');
 
+
+    Route::post('/crew-member-save', [CrewController::class, 'save_crew'] )->name('savecrew');
+
+
     Route::get('/crew-members-edit/{id}', [CrewController::class, 'edit'])->name('crew-members-edit');
+
+    Route::any('/update-account', [CrewController::class, 'update_crew'] )->name('update-account');
+
+    Route::any('/delete-crew/{id}', [CrewController::class, 'delete_crew'] )->name('delete-crew');
 
 
     Route::get('/my-account', [CrewController::class, 'myaccount'] )->name('my-account');
-    Route::post('/update-account', [CrewController::class, 'update_crew'] )->name('update-account');
-
-
+   
 
 
     Route::get('/documents', function () {
@@ -97,6 +111,12 @@ Route::group(['middleware'=>'auth'], function () {
     Route::get('/settings', function () {
         return view('pages/settings');
     })->name('settings');
+
+    Route::any('/permissions', [RoleController::class, 'view_roles'] )->name('permissions');
+
+    // Route::get('/permissions', function () {
+    //     return view('pages/roles-permissions');
+    // })->name('permissions');
 
 
 });

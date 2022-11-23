@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+
 use App\Models\Role;
 use App\Models\Crew;
 
@@ -24,6 +25,7 @@ class User extends Authenticatable
         'name',
         'email',
         'username',
+        'role_id',
         'password',
         "old_password",
     ];
@@ -62,6 +64,7 @@ class User extends Authenticatable
 
    }
 
+   
    /**
     * Get the crew associated with the User
     *

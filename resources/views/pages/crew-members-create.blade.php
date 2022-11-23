@@ -28,7 +28,7 @@
 
                 <div class="col-md-12">
 
-                    <form class="teck-form" action="" method="POST">
+                    <form class="teck-form" action="{{ route("savecrew")}}" method="POST">
                         @csrf
                         <div class="form-row">
 
@@ -36,12 +36,12 @@
                                 <div class="form-row">
                                     <div class="form-group col-xl-4 col-lg-6">
                                         <label for="Name">NAME</label>
-                                        <input type="text" class="form-control" id="Name" name="fullname">
+                                        <input type="text" class="form-control" id="Name" name="name">
                                     </div>
 
                                     <div class="form-group col-xl-4 col-lg-6">
                                         <label for="EmailAddress">EMAIL ADDRESS</label>
-                                        <input type="email" class="form-control" id="EmailAddress" name="emailaddress">
+                                        <input type="email" class="form-control" id="EmailAddress" name="email">
                                     </div>
 
 
@@ -89,7 +89,7 @@
 
                                             <div class="form-group col-md-6">
                                                 <label for="AccountRole">ACCOUNT ROLE</label>
-                                                <select id="AccountRole" class="form-control">
+                                                <select id="AccountRole" name="role_id" class="form-control">
                                                     <option selected>Please Select...</option>
                                                     @php
                                                         $roles = \App\Models\Role::get();
@@ -98,7 +98,7 @@
                                                         <option value="{{ $role->id }}"
                                                             {{-- {{ isset($crew_member->user) && $crew_member->user->role['id'] == $role->id ? 'selected' : '' }}> --}}
                                                             >
-                                                            {{ $role->role_name }}</option>
+                                                            {{ $role->name }}</option>
 
                                                     @empty
                                                     @endforelse

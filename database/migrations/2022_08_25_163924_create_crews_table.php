@@ -38,6 +38,7 @@ class CreateCrewsTable extends Migration
             $table->string("memnumber",10)->nullable();
             $table->datetime("lastlogin")->nullable();
             $table->tinyInteger("suspended");
+            $table->longText('profile')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
