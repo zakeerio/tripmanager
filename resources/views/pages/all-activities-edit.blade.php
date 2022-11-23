@@ -40,7 +40,7 @@
                     {{-- {{ dd($activity) }} --}}
 
                     <form class="teck-form" method="post" action="{{ route('all-activites-update') }}">
-                        @csrf;
+                        @csrf
 
                         <input type="hidden" name="id" class="form-control" id=""
                                     value="{{ $activity->id }}">
