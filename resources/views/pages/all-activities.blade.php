@@ -91,7 +91,7 @@
                                                 <div class="table-div">
                                                     {{-- {{ $crewneeded." ___ ". $tripcrewscount }} --}}
                                                     <img src="{{ asset('assets/images/Picture-01.png') }}" class="img-fluid" alt="">
-                                                    <p> <b> Hugh Henshall</b> <br> #{{ $trip->id }} </p>
+                                                    <p> <b> {{ $trip->boatname }}</b> <br> #{{ $trip->id }} </p>
                                                 </div>
                                             </td>
                                             <td>{{ date('D d M y H:i A', strtotime($trip->duration)) }}</td>
@@ -132,13 +132,39 @@
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="BtnAction">
 
-                                                        @if(Session::get('user_type')==3)
+
+
+                                                        @if(Session::get('role')=='crewmember')
                                                         <a class="dropdown-item" href="{{ route('all-activities-view', $trip->id) }}">View</a>
+
+                                                        <?php
+
+                                                        $initials = Session::get('initials');
+
+                                                        $check = \App\Models\Tripcrew::where(['crewcode' => $initials, 'tripnumber' => $trip->id])->get();
+
+                                                        if (!empty($check)) {
+
+                                                            foreach ($check as $c) {
+                                                                if ($c->available == 'Y') {
+                                                                    $isAvailable = "I'm Available";
+                                                                    $route = route('all-activities-available-unavailable', $trip->id);
+                                                                } else {
+                                                                    $isAvailable = 'Not Available';
+                                                                    $route = route('all-activities-available-unavailable', $trip->id);
+                                                                }
+                                                            }
+                                                        }
+
+                                                        ?>
+
+                                                        <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a>
                                                         @else
-                                                        <a class="dropdown-item" href="#">Not Available</a>
-                                                        @endif
+                                                        <a class="dropdown-item" href="{{ route('all-activities-view', $trip->id) }}">View</a>
                                                         <a class="dropdown-item" href="{{ route('all-activities-edit', $trip->id) }}">Edit</a>
                                                         <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete</a>
+                                                        @endif
+
                                                     </div>
                                                 </div>
 

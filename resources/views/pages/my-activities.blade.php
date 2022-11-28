@@ -9,14 +9,15 @@
                 <p>This is a list of all the scheduled activities in the Activity Manager system..</p>
             </div>
 
+            @if(!Session::get('role')=='crewmember')
             <div class="col-xl-4 col-lg-12">
                 <div class="teck-btn justify-content-end" id="teck-btn-pag-3">
                     <a href="{{ route('all-activities-create', auth()->user()->id ) }}"><img src="{{ 'assets/images/clander icon.png' }}" class="img-fluid">Create Activity</a>
                 </div>
             </div>
+            @endif
         </div>
     </div>
-
 
     <div class="col-md-12 activies_table">
         <div class="row activity_col">
@@ -41,19 +42,22 @@
                             @forelse ($trips as $trip )
 
                             @php
+
                             $crewneeded = ($trip->crewneeded == null ) ? 0 : $trip->crewneeded;
-                            $tripcrewscount = ($trip->tripcrews->count() <= 0 ) ? '0' : $trip->tripcrews->count();
+
+                            $tripcrewscount = (isset($trip->tripcrews) && $trip->tripcrews->count() >= 0 ) ? $trip->tripcrews->count() : '0';
+
 
                                 $check_crewcount = ($crewneeded < $tripcrewscount) ? true : false; // echo $check_crewcount."<br>";
                                     @endphp
-
                                     <tr class="{{ ($check_crewcount == false) ? 'teck-danger' : "" }}">
+
 
                                         <td>
                                             <div class="table-div">
                                                 {{-- {{ $crewneeded." ___ ". $tripcrewscount }} --}}
                                                 <img src="{{ asset('assets/images/Picture-01.png') }}" class="img-fluid" alt="">
-                                                <p> <b> Hugh Henshall</b> <br> #{{ $trip->id }} </p>
+                                                <p> <b> {{ $trip->boatname }}</b> <br> #{{ $trip->id }} </p>
                                             </div>
                                         </td>
                                         <td>{{ date('D d M y H:i A', strtotime($trip->duration)) }}</td>
@@ -63,8 +67,8 @@
                                         <td width="120">
                                             @if($tripcrewscount > 0)
                                             @foreach ($trip->tripcrews as $tripcrewitem )
-                                            {{ $tripcrewitem->crewcode }},
-                                            {{-- {!! ( ($tripcrewscount % 3 == 0)) ? '<br>' : "" !!} --}}
+                                                {{ $tripcrewitem->crewcode }},
+                                                {{-- {!! ( ($tripcrewscount % 3 == 0)) ? '<br>' : "" !!} --}}
                                             @endforeach
                                             @else
                                             --

@@ -6,12 +6,10 @@
 
         <div class="col-md-12 dashboard_Sec">
 
-            <h1>Activities - Edit an existing activity</h1>
+            <h1>Activities - View an existing activity</h1>
             <p>Please amend any details below and click save changes to submit</p>
 
         </div>
-
-
 
         <div class="col-md-12 activies_table">
 
@@ -25,7 +23,7 @@
                                 system.</p>
                         </div>
                         <div class="col-lg-4 col-md-12 ready">
-                            <label>ACTIVITY STATUS</label>
+                            <lable>ACTIVITY STATUS</lable>
                             <span class="active-btn-ready"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}"
                                     class="img-fluid" alt=""> Activity Ready</span>
                         </div>
@@ -35,19 +33,24 @@
 
                 <div class="col-md-12">
 
+                    {{-- {{ dd($activity->tripcrews) }} --}}
 
+                    <form class="teck-form" method="post" action="{{ route('all-activites-update') }}">
+                        @csrf
 
-                    <form class="teck-form">
+                        <input type="hidden" name="id" class="form-control" id=""
+                                    value="{{ $activity->id }}">
+
                         <div class="form-row">
                             <div class="form-group col-xl-4 col-lg-6">
                                 <label for="ActivityNumber">ACTIVITY NUMBER</label>
                                 <input type="text" name="tripnumber" class="form-control" id="ActivityNumber"
-                                    value="{{ $activity->tripnumber }}">">
+                                    value="{{ $activity->tripnumber }}" readonly>
                             </div>
                             <div class="form-group col-xl-4 col-lg-6">
                                 <label for="ActivityItem">SELECT ACTIVITY ITEM</label>
 
-                                <select id="ActivityItem" name="boatname" class="form-control">
+                                <select id="ActivityItem" name="boatname" class="form-control" readonly>
                                     <option value="Seth Ellis">Seth Ellis</option>
                                     <option value="Python" {{ $activity->boatname == 'Python' ? 'selected' : '' }}>Python
                                     </option>
@@ -74,7 +77,7 @@
                             <div class="form-group col-xl-4 col-lg-12">
                                 <label for="ActivityDate">ACTIVITY DATE</label>
                                 <input type="date" name="departuredate" class="form-control" id="ActivityDate"
-                                    value="{{ $activity->departuredate }}">
+                                    value="{{ $activity->departuredate }}" readonly>
 
                             </div>
                         </div>
@@ -85,17 +88,17 @@
                             <div class="form-group col-xl-4 col-lg-6">
                                 <label for="ActivityTime">ACTIVITY TIME</label>
                                 <input type="time" name="departuretime" class="form-control" id="ActivityTime"
-                                    value="{{ $activity->departuretime }}">
+                                    value="{{ $activity->departuretime }}" readonly>
                             </div>
                             <div class="form-group col-xl-4 col-lg-6">
                                 <label for="ActivityDuration">ACTIVITY DURATION</label>
                                 <input type="number" name="duration" class="form-control" id="ActivityDuration"
-                                    value="{{ $activity->duration }}">
+                                    value="{{ $activity->duration }}" readonly>
                             </div>
                             <div class="form-group col-xl-4 col-lg-12">
                                 <label for="BriefDescription">BRIEF DESCRIPTION</label>
                                 <input type="text" name="destination" class="form-control" id="BriefDescription"
-                                    value="{{ $activity->destination }}">
+                                    value="{{ $activity->destination }}" readonly>
                             </div>
                         </div>
 
@@ -109,44 +112,47 @@
                             <div class="form-group col-xl-4 col-lg-12">
                                 <label for="NumberCrewNeeded">NUMBER OF CREW NEEDED</label>
                                 <input type="text" name="crewneeded" class="form-control" id="NumberCrewNeeded"
-                                    value="{{ $activity->crewneeded }}">
+                                    value="{{ $activity->crewneeded }}" readonly>
                             </div>
                             <div class="form-group col-xl-5 col-lg-13">
                                 <label for="TripCost">TRIP COST(£)</label>
                                 <input type="number" name="tripcost" class="form-control" id="TripCost"
-                                    value="{{ $activity->cost }}">
+                                    value="{{ $activity->cost }}" readonly>
                             </div>
                             <div class="form-group col-xl-6 col-lg-14">
                                 <label for="BalanceDue">BALANCE DUE(£)</label>
                                 <input type="number" name="tripbalance" class="form-control" id="BalanceDue"
-                                    value="{{ $activity->balance }}">
+                                    value="{{ $activity->balance }}" readonly>
                             </div>
                             <div class="form-group col-xl-7 col-lg-15">
                                 <label for="PassengerCout">PASSENGER COUNT</label>
                                 <input type="number" name="passengers" class="form-control" id="PassengerCout"
-                                    value="{{ $activity->passengers }}">
+                                    value="{{ $activity->passengers }}" readonly>
                             </div>
                         </div>
 
                         <div class="form-group col-md-12">
                             <label for="NotesCrew">NOTES FOR CREW</label>
-                            <textarea class="form-control" id="NotesCrew" rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ornare orci sit amet dui sagittis porttitor. Aliquam suscipit ligula et nisl ullamcorper lacinia. Nunc sagittis vitae lectus sit amet tincidunt. Nullam tristique, orci a consequat vehicula, arcu diam vehicula eros.</textarea>
+                            <textarea class="form-control" id="NotesCrew" rows="5" name="NotesCrew" readonly>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ornare orci sit amet dui sagittis porttitor. Aliquam suscipit ligula et nisl ullamcorper lacinia. Nunc sagittis vitae lectus sit amet tincidunt. Nullam tristique, orci a consequat vehicula, arcu diam vehicula eros.</textarea>
                         </div>
                 </div>
 
 
 
-                <div class="form-row">
+                <div class="form-row form-multi">
+
+
+
                     <div class="form-group col-xl-4 col-lg-12">
                         <label for="ConfirmedCrew">Confirmed Crew</label>
-                        <select multiple class="form-control" id="ConfirmedCrew">
+                        <select multiple class="form-control" id="ConfirmedCrew" readonly>
                             <option>No one to show</option>
                         </select>
                     </div>
 
                     <div class="form-group col-xl-4 col-lg-12">
                         <label for="AvailableCrew">Available Crew</label>
-                        <select multiple class="form-control" id="AvailableCrew">
+                        <select multiple class="form-control" id="AvailableCrew" readonly>
                             <option>No one to show</option>
                         </select>
                     </div>
@@ -154,8 +160,15 @@
 
                     <div class="form-group col-xl-4 col-lg-12">
                         <label for="UnavailableCrew">Unavailable Crew</label>
-                        <select multiple class="form-control" id="UnavailableCrew">
-                            <option>Andy Karen</option>
+                        <select multiple class="form-control" id="UnavailableCrew" readonly>
+                            @forelse ($activity->tripcrews as $crewmember )
+                            <option>{{ $crewmember->recordnumber }}</option>
+
+                            @empty
+                            <option>No one to show</option>
+
+                            @endforelse
+                            {{-- <option>Andy Karen</option>
                             <option>Karen Gillan</option>
                             <option>Anderson Smith</option>
                             <option>William</option>
@@ -164,14 +177,14 @@
                             <option>Jimmy M.</option>
                             <option>Francis Ann</option>
                             <option>Ali Brownes</option>
-                            <option>Karen Gillan</option>
+                            <option>Karen Gillan</option> --}}
                         </select>
                     </div>
 
                 </div>
 
                 <div class="teck-btn">
-                    <button type="submit" class="btn btn-primary"> <img src="{{ asset('assets/images/save.svg') }}"
+                    <button type="submit" class="btn btn-primary"  style="display: none;"> <img src="{{ asset('assets/images/save.svg') }}"
                             class="img-fluid"> Update Activity</button>
                 </div>
                 </form>

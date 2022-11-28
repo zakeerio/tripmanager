@@ -77,10 +77,17 @@ class LoginController extends Controller
             $request->session()->put('user_type', $request->user_type);
 
             $role = DB::table('roles')->where('id',$request->user_type)->pluck('name')->toArray();
+            $user_id = DB::table('users')->where('username',$request->username)->pluck('id')->toArray();
           
-            if(!empty($role)){
+          
+            if(!empty($role) && !empty($user_id)){
               
                $request->session()->put('role', $role[0]);
+               $request->session()->put('user_id', $user_id[0]);
+               $crew = DB::table('crews')->where('user_id',$user_id[0])->get()->toArray();
+               $request->session()->put('initials', $crew[0]->initials);
+             
+             //  dd($crew[0]->initials);
             }
 
             $user = DB::table('users')->where('username', $request->username)->where('old_password', md5($request->password))->whereNotNull('old_password')->where('role_id', $request->user_type)->where('password','!=', $request->password )->first();
@@ -88,10 +95,11 @@ class LoginController extends Controller
             if($user){
                 $updatepassword = true;
                 $authArray['password'] = '12345678';
+               
             }
 
             
-
+           
             if($request->user_type == 1)
             {
                 // config(['auth.defaults.guard' => 'admin']); // Updating default guard to administrator so auth prioritize the administrator table for auth_attempt()

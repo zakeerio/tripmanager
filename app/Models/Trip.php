@@ -9,6 +9,21 @@ class Trip extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'departuredate',
+        'departuretime',
+        'crewnotes',
+        'boatname',
+        'destination',
+        'duration',
+        'archived',
+        'crewneeded',
+        'cost',
+        'balance',
+        'sent_notice',
+        'passengers',
+       
+    ];
     public function tripcrews()
     {
         return $this->hasMany(Tripcrew::class,  'tripnumber');

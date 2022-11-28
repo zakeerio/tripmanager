@@ -55,6 +55,9 @@ Route::group(['middleware'=>'auth'], function () {
         return view('pages/all-activities-create')->with('pagetitle',$pagetitle);
     })->name('all-activities-create');
 
+
+    Route::post('/all-activites-add', [ActivityController::class, 'add'])->name('all-activites-add');
+
     Route::get('/all-activities-edit/{id}', [ActivityController::class, 'edit'])->name('all-activities-edit');
 
     Route::any('/all-activities-view/{id}', [ActivityController::class, 'view'])->name('all-activities-view');
@@ -63,6 +66,8 @@ Route::group(['middleware'=>'auth'], function () {
 
     Route::any('/all-activites-delete/{id}', [ActivityController::class, 'delete'])->name('all-activites-delete');
 
+    Route::any('/all-activities-available-unavailable/{id}', [ActivityController::class, 'available_unavailable'])->name('all-activities-available-unavailable');
+  
 
     Route::get('/analytics', function () {
         $pagetitle = "Analytics";

@@ -195,6 +195,7 @@
 
                                     </div>
 
+
                                     <div class="form-group col-xl-4 col-lg-12">
 
                                         <div class="form-group col-md-12">
@@ -343,14 +344,15 @@
 
                                     <label>PROFILE PICTURE</label>
 
-                                    <img src="{{ asset('assets/images/profile-picture.png') }}" />
+                                    <img src="{{ isset($crewmember->profile) ? asset('assets/profile-images/',$crewmember->profile) : asset('assets/images/profile-picture.png') }}" class="img-fluid"   alt="">
+
+                                    {{-- <img src="{{ (isset($crewmember->profile) ? '' : asset('assets/images/profile-picture.png')) }}" /> --}}
 
                                     <div class="teck-btn bg-white upload-btn">
 
                                         <input type="file" name="profileImage" />
 
-                                        <a href="#!"><img src="{{ asset('assets/images/camera.svg') }}"
-                                                class="btn-icon-2" alt=""> Update Image </a>
+                                        <a href="#!"><img src="{{ asset('assets/images/camera.svg') }}" class="btn-icon-2" alt=""> Update Image </a>
 
                                     </div>
 
@@ -363,8 +365,7 @@
 
                         <div class="teck-btn">
 
-                            <button type="submit" class="btn btn-primary"> <img
-                                    src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Update User </button>
+                            <button type="submit" class="btn btn-primary"> <img rc="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Update User </button>
 
                         </div>
 

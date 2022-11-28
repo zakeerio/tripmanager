@@ -8,19 +8,25 @@ use DB;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Trip;
+use Session;
 use Illuminate\Support\Facades\Hash;
 
 class ActivityController extends Controller
 {
     //
 
+    protected $check1;
+    protected $check2;
+    protected $check3;
+    protected $tripnumber;
     public function index()
     {
         $pagetitle = "All Activities";
         $trips = Trip::paginate(250);
-        // dd($trips);
+        //  dd($trips);
         return view('pages/all-activities')->with("trips", $trips)->with('tripcrews')->with('pagetitle', $pagetitle);
     }
+
 
     public function dashboard(request $request)
     {
@@ -45,11 +51,122 @@ class ActivityController extends Controller
         return view('pages/home')->with('pagetitle', $pagetitle)->with('current_month_crews', $current_month_crews)->with("trips", $trips)->with('tripcrews');
     }
 
-    public function edit($id)
+
+    public function add(Request $request)
+    {
+        // dd($request->all());
+
+
+        try {
+
+            DB::transaction(function () use ($request) {
+
+                $this->tripnumber = DB::table('trips')->insertGetId([
+
+                    'boatname'                 => $request->boatname,
+                    'departuredate'            => $request->departuredate,
+                    'departuretime'            => $request->departuretime,
+                    'duration'                 => $request->duration,
+                    'destination'              => $request->destination,
+                    'crewneeded'               => $request->crewneeded,
+                    'crewnotes'                => $request->crewnotes,
+                    'balance'                  => $request->tripbalance,
+                    'cost'                     => $request->tripcost,
+                    'passengers'               => $request->passengers,
+                    'sent_notice'              => 'Y'
+                ]);
+
+
+                if (!empty($request->unavailable)) {
+
+                    for ($i = 0; $i < count($request->unavailable); $i++) {
+
+                        // echo $request->skipper[$i];
+                        if (isset($request->unavailable[$i])) {
+                            $trim = $request->unavailable[$i];
+                            $initials = explode(':', $trim);
+                            $crewcode = $initials[0];
+
+                            $this->check1 = DB::table('tripcrews')->insert([
+                                'recordnumber'              => rand(10, 10000),
+                                'tripnumber'                => $this->tripnumber,
+                                'crewcode'                  => $crewcode,
+                                'isskipper'                 => 'Y'
+                            ]);
+                        }
+                    }
+                }
+
+                // dd($check1);
+                if (!empty($request->available)) {
+
+                    for ($i = 0; $i < count($request->available); $i++) {
+                        if (isset($request->available[$i])) {
+                            $trim = $request->available[$i];
+                            $initials = explode(':', $trim);
+                            $crewcode = $initials[0];
+                            $this->check2 =   DB::table('tripcrews')->insert([
+                                'recordnumber'              => rand(10, 10000),
+                                'tripnumber'                => $this->tripnumber,
+                                'crewcode'                  => $crewcode,
+                                'available'                 => 'Y'
+                            ]);
+                        }
+                    }
+                }
+
+
+
+                if (!empty($request->confiremd)) {
+
+                    for ($i = 0; $i < count($request->confiremd); $i++) {
+                        if (isset($request->confiremd[$i])) {
+                            $trim = $request->confiremd[$i];
+                            $initials = explode(':', $trim);
+                            $crewcode = $initials[0];
+                            $this->check3 = DB::table('tripcrews')->insert([
+                                'recordnumber'              => rand(10, 10000),
+                                'tripnumber'                =>$this->tripnumber,
+                                'crewcode'                  => $crewcode,
+                                'confirmed'                 => 'Y'
+                            ]);
+                        }
+                    }
+                }
+
+
+            });
+
+            if (isset($this->tripnumber) && $this->check1 && $this->check2 && $this->check3) {
+                //dd($request->all());
+                return redirect('/all-activities-create')->with(['status' => true, 'msg' => 'Success! Activity Created']);
+            } else {
+               dd($request->all());
+                return redirect('/all-activities-create')->with(['status' => false, 'msg' => 'Error! Activity Failed']);
+            }
+
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
+    }
+    public function view($id)
     {
         $pagetitle = "Edit Activity";
         $activity = Trip::findOrFail($id);
-        // dd($activity);
+        //  dd($id);
+        if ($activity) {
+            return view('pages/all-activities-view')->with("activity", $activity)->with('tripcrews')->with('pagetitle', $pagetitle);
+        } else {
+            abort(403);
+        }
+    }
+
+    public function edit($id)
+    {
+
+        $pagetitle = "Edit Activity";
+        $activity = Trip::findOrFail($id);
+        // sdd($activity);
         if ($activity) {
             return view('pages/all-activities-edit')->with("activity", $activity)->with('tripcrews')->with('pagetitle', $pagetitle);
         } else {
@@ -108,8 +225,50 @@ class ActivityController extends Controller
         $pagetitle = "My Activities";
 
         $trips = Trip::paginate(50);
+
+        $trips = DB::table('trips')
+            ->join('tripcrews', 'tripnumber', '=', 'trips.id')
+            ->select('tripcrews.*', 'trips.*')
+            ->where('crewcode', '=', Session::get('initials'))
+            ->where('confirmed', '=', 'Y')
+            ->paginate(50);
+
         // dd($trips);
+
         return view('pages/my-activities')->with("trips", $trips)->with('tripcrews')->with('pagetitle', $pagetitle);
+    }
+
+
+    public function available_unavailable($trip_id)
+    {
+        $user_id = Session::get('user_id');
+        $user_initials =  Session::get('initials');
+
+        //  dd($user_initials);
+        $check = DB::table('tripcrews')->where('tripnumber', $trip_id)->where('crewcode', $user_initials)->first();
+
+
+        if (!empty($check) && $check->available != 'Y') {
+
+            $added = DB::table('tripcrews')->where('tripnumber', $trip_id)->where('crewcode', $user_initials)->update(['available' => 'Y']);
+            if ($added) {
+                $flag = 'added';
+            }
+        } else {
+            $removed = DB::table('tripcrews')->where('tripnumber', $trip_id)->where('crewcode', $user_initials)->update(['available' => NULL]);
+
+            if ($removed) {
+                $flag = 'removed';
+            }
+        }
+
+        // dd($check);
+
+        if ($flag == 'removed') {
+            return redirect('all-activities')->with(['status' => true, 'msg' => 'Success ! Removed Successfully']);
+        } else if ($flag == 'added') {
+            return redirect('all-activities')->with(['status' => true, 'msg' => 'Success ! Added Successfully']);
+        }
     }
 
     public function rolespermissions()

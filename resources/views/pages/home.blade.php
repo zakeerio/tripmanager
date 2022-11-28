@@ -123,7 +123,7 @@
                                                 {{-- {{ $crewneeded." ___ ". $tripcrewscount }} --}}
                                                 <img src="{{ asset('assets/images/Picture-01.png') }}" class="img-fluid"
                                                     alt="">
-                                                <p> <b> Hugh Henshall</b> <br> #{{ $trip->id }} </p>
+                                                <p> <b> {{ $trip->boatname }}</b> <br> #{{ $trip->id }} </p>
                                             </div>
                                         </td>
                                         <td>{{ date('D d M y H:i A', strtotime($trip->duration)) }}</td>
