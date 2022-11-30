@@ -343,7 +343,7 @@
 
                                     <label>PROFILE PICTURE</label>
 
-                                    <img src="{{ isset($crewmember->profile) ? asset('assets/profile-images/',$crewmember->profile) : asset('assets/images/profile-picture.png') }}" class="img-fluid"   alt="">
+                                    <img src="{{ isset($crewmember->profile) ? asset('assets/profile-images')."/".$crewmember->profile : asset('assets/images/profile-picture.png') }}" class="img-fluid" style="width: 200px;"   alt="">
 
                                     {{-- <img src="{{ (isset($crewmember->profile) ? '' : asset('assets/images/profile-picture.png')) }}" /> --}}
 
