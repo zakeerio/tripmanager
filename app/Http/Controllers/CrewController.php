@@ -17,8 +17,20 @@ class CrewController extends Controller
 
     // }
 
+    public function Access()
+    {
+        if (Session::get('role') == 'crewmember') {
+            return true;
+        }
+    }
+
     public function index()
     {
+        if ($this->Access()) {
+
+            return redirect('/dashboard')->with(['status' => false, 'msg' => 'Access Denied !']);
+        }
+
         $pagetitle = "Crew Members";
 
         /*
@@ -69,8 +81,16 @@ class CrewController extends Controller
 
         return view('pages/crew-members')->with("crew_members", $crew_members)->with('pagetitle', $pagetitle);
     }
+
+
     public function edit($id)
     {
+
+        if ($this->Access()) {
+
+            return redirect('/dashboard')->with(['status' => false, 'msg' => 'Access Denied !']);
+        }
+
         $pagetitle = "Edit Crew member";
         // dd($id);
         $crew_member = Crew::findOrFail($id);
@@ -331,12 +351,105 @@ class CrewController extends Controller
     public function delete_crew($id)
     {
 
+        if ($this->Access()) {
+
+            return redirect('/dashboard')->with(['status' => false, 'msg' => 'Access Denied !']);
+        }
+
         $delete = Crew::whereId($id)->delete();
 
         if ($delete) {
             return redirect('/crew-members')->with(['status' => true, 'msg' => 'Success! Member Deleted']);
         } else {
             return redirect('/crew-members')->with(['status' => false, 'msg' => 'Error! Member Delete Failed']);
+        }
+    }
+
+
+
+    public function update_my_account(Request $request)
+    {
+        try {
+
+            //dd($request->all());
+
+            $emailaddress = $request->emailaddress;
+            $secondarynumber = $request->secondarynumber;
+            $boatpreference = $request->boatpreference;
+            $memnumber = $request->memnumber;
+
+            $firstaid = ($request->firstaid == "on") ? "Y" : '';
+            $keyholder = $request->keyholder;
+            $skipper = ($request->skipper == "on") ? "Y" : '';
+            $rya = ($request->rya == "on") ? "Y" : '';
+            $cba = ($request->cba == "on") ? "Y" : '';
+            $iwa = ($request->iwa == "on") ? "Y" : '';
+            $optin = ($request->optin == "on") ? "Y" : '';
+
+            $privilege = $request->privilege;
+            $keyholder = $request->keyholder;
+            $traveltime = $request->traveltime;
+
+            $fullname = $request->name;
+            $crewid = $request->id;
+            //$mobile = $request->mobile;
+            // $user_type = $request->user_type;
+            //$crew = Crew::findOrFail($id);
+            $password = $request->password;
+            // $old_password = $request->old_password;
+            // $password = $request->password;
+            $confirmpassword = $request->confirmpassword;
+            if (isset($password)) {
+                if ($password != $confirmpassword) {
+                    return redirect()->back()->withErrors(['msg' => 'Confirm Password Does Not Match']);
+                }
+                $password = Hash::make($password);
+            } else {
+                $user = Crew::WHERE('id', $crewid)->get()->toArray();
+                $password = $user[0]['pswd'];
+            }
+
+            if ($request->has('profileImage')) {
+                //path will be after choosing any directory inside public folder
+                $path =  $this->UploadSingleImage($request->file('profileImage'), 'assets/profile-images');
+            } else {
+                $user = Crew::WHERE('id', $crewid)->get()->toArray();
+                $path = $user[0]['profile'];
+            }
+
+            $crew_data = array(
+                "fullname" => $fullname,
+                'pswd' => $password,
+                "emailaddress" => $emailaddress,
+                "secondarynumber" => $secondarynumber,
+                "boatpreference" => $boatpreference,
+                "memnumber" => $memnumber,
+                "firstaid" => $firstaid,
+                "keyholder" => $keyholder,
+                "skipper" => $skipper,
+                "optin" => $optin,
+                "cba" => $cba,
+                "rya" => $rya,
+                "iwa" => $iwa,
+                'profile' => $path,
+                // "traveltime" => $traveltime,
+                "privilege" => $privilege
+            );
+
+            // dd($crew_data);
+
+            $update = Crew::WHERE('id', $crewid)->UPDATE($crew_data);
+
+            // dd($update);
+            if ($update) {
+                $messages[] =  "User Data Updated Successfully";
+
+                return redirect('/my-account')->with(['status' => true, 'msg' => 'Success ! Account Updated']);
+            } else {
+                return redirect('/my-account')->with(['status' => false, 'msg' => 'Error ! Account Update Failed']);
+            }
+        } catch (\Exception $e) {
+            return redirect('/my-account');
         }
     }
 }

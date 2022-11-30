@@ -19,7 +19,7 @@
                     <div class="alert alert-success col-12 mb-2 mt-3">
                         @foreach (Session::get('success') as $msg )
 
-                            <li >{{ $msg }}</li>
+                        <li>{{ $msg }}</li>
 
                         @endforeach
                     </div>
@@ -38,7 +38,23 @@
                         <p class="col-12-descrapction">You can freely ammend the information below to keep your records up to
                             date on our system.</p>
 
+                        @if (Session::has('status'))
+
+                        @if(Session::get('status'))
+                        <script>
+                            var msg = "{{Session::get('msg')}}";
+                            ShowToast(msg, 'success');
+                        </script>
+                        @else
+                        <script>
+                            var msg = "{{Session::get('msg')}}";
+                            ShowToast(msg, 'error');
+                        </script>
+                        @endif
+
+                        @endif
                     </div>
+
 
                 </div>
 
@@ -50,7 +66,7 @@
 
                 <div class="col-md-12">
 
-                    <form class="teck-form" action="{{ route('update-account') }}" method="post">
+                    <form class="teck-form" action="{{ route('update-my-account') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="form-row">
 
@@ -62,8 +78,7 @@
 
                                         <label for="Name">NAME</label>
 
-                                        <input type="text" class="form-control" id="Name" name="name"
-                                            value="{{ $user->name }}">
+                                        <input type="text" class="form-control" id="Name" name="name" value="{{ $user->name }}">
 
                                         <input type="hidden" name="id" value="{{ $crewmember->id }}">
 
@@ -75,8 +90,7 @@
 
                                         <label for="EmailAddress">EMAIL ADDRESS</label>
 
-                                        <input type="email" class="form-control" id="EmailAddress" name="emailaddress"
-                                            value="{{ $crewmember->emailaddress }}">
+                                        <input type="email" class="form-control" id="EmailAddress" name="emailaddress" value="{{ $crewmember->emailaddress }}">
 
                                     </div>
 
@@ -84,8 +98,7 @@
 
                                         <label for="PrimaryNumber">PRIMARY NUMBER</label>
 
-                                        <input type="text" class="form-control" id="PrimaryNumber" name=""
-                                            value="{{ $crewmember->mobile }}">
+                                        <input type="text" class="form-control" id="PrimaryNumber" name="" value="{{ $crewmember->mobile }}">
 
                                     </div>
 
@@ -93,8 +106,8 @@
 
                                         <label for="SecondaryNumber">SECONDARY NUMBER</label>
 
-                                        <input type="text" class="form-control" name="secondarynumber"
-                                            id="SecondaryNumber" value="{{ $crewmember->secondarynumber }}">
+                                        <input type="text" class="form-control" name="secondarynumber" id="SecondaryNumber" value="{{ $crewmember->secondarynumber }}">
+
 
                                     </div>
 
@@ -138,8 +151,7 @@
 
                                                 <label for="Initials">INITIALS</label>
 
-                                                <input type="text" class="form-control" id="Initials"
-                                                    value="{{ $crewmember->initials }}" disabled>
+                                                <input type="text" class="form-control" id="Initials" value="{{ $crewmember->initials }}" disabled>
 
                                             </div>
 
@@ -147,8 +159,7 @@
 
                                                 <label for="Username">USERNAME</label>
 
-                                                <input type="text" class="form-control" id="Username" name="username"
-                                                    value="{{ $user->username }}" disabled>
+                                                <input type="text" class="form-control" id="Username" name="username" value="{{ $user->username }}" disabled>
 
 
                                             </div>
@@ -164,9 +175,9 @@
                                                         $roles = \App\Models\Role::get();
                                                     @endphp
                                                     @forelse ($roles as $role)
-                                                        <option value="{{ $role->id }}"
-                                                            {{ $user->role_id == $role->id ? 'selected' : '' }}>
-                                                            {{ $role->name }}</option>
+                                                    <option value="{{ $role->id }}" {{ $user->role_id == $role->id ? 'selected' : '' }}>
+                                                        {{ $role->name }}
+                                                    </option>
 
                                                     @empty
                                                     @endforelse
@@ -181,8 +192,7 @@
 
                                                 <label for="CctMembershipNumber">CCT MEMBERSHIP NUMBER</label>
 
-                                                <input type="number" class="form-control" id="CctMembershipNumber"
-                                                    name="memnumber" value="{{ $crewmember->memnumber }}">
+                                                <input type="number" class="form-control" id="CctMembershipNumber" name="memnumber" value="{{ $crewmember->memnumber }}">
 
 
                                             </div>
@@ -195,7 +205,6 @@
 
                                     </div>
 
-
                                     <div class="form-group col-xl-4 col-lg-12">
 
                                         <div class="form-group col-md-12">
@@ -204,16 +213,16 @@
 
                                             <div class="form-check">
 
-                                                <input class="form-check-input" type="checkbox" name="firstaid"
-                                                    {{ !empty($crewmember->firstaid) ? 'checked' : '' }}>
+                                                <input class="form-check-input" type="checkbox" name="firstaid" {{ !empty($crewmember->firstaid) ? 'checked' : '' }}>
+
                                                 <label class="form-check-label" for="First Aid">First Aid</label>
 
                                             </div>
 
                                             <div class="form-check">
 
-                                                <input class="form-check-input" type="checkbox" name="cba"
-                                                    {{ !empty($crewmember->cba) ? 'checked' : '' }}>
+                                                <input class="form-check-input" type="checkbox" name="cba" {{ !empty($crewmember->cba) ? 'checked' : '' }}>
+
                                                 <label class="form-check-label" for="CBA">CBA</label>
 
                                             </div>
@@ -222,34 +231,29 @@
 
                                             <div class="form-check">
 
-                                                <input class="form-check-input" type="checkbox" name="rya"
-                                                    {{ !empty($crewmember->rya) ? 'checked' : '' }}>
+                                                <input class="form-check-input" type="checkbox" name="rya" {{ !empty($crewmember->rya) ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="RYA">RYA</label>
 
                                             </div>
 
                                             <div class="form-check">
 
-                                                <input class="form-check-input" type="checkbox" name="keyholder"
-                                                    {{ !empty($crewmember->keyholder) ? 'checked' : '' }}>
+                                                <input class="form-check-input" type="checkbox" name="keyholder" {{ !empty($crewmember->keyholder) ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="Key Holder">Key Holder</label>
 
                                             </div>
 
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="iwa"
-                                                    {{ !empty($crewmember->iwa) ? 'checked' : '' }}>
+                                                <input class="form-check-input" type="checkbox" name="iwa" {{ !empty($crewmember->iwa) ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="IWA">IWA</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="skipper"
-                                                    {{ !empty($crewmember->skipper) ? 'checked' : '' }}>
+                                                <input class="form-check-input" type="checkbox" name="skipper" {{ !empty($crewmember->skipper) ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="Skipper">Skipper</label>
                                             </div>
 
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="optin"
-                                                    {{ !empty($crewmember->optin) ? 'checked' : '' }}>
+                                                <input class="form-check-input" type="checkbox" name="optin" {{ !empty($crewmember->optin) ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="Skipper">Opted in for
                                                     Details</label>
                                             </div>
@@ -263,16 +267,14 @@
 
                                             <div class="form-group col-md-6">
                                                 <label for="privilege">Privilege</label>
-                                                <input type="number" class="form-control" name="privilege"
-                                                    id="privilege" value="{{ $crewmember->privilege }}">
+                                                <input type="number" class="form-control" name="privilege" id="privilege" value="{{ $crewmember->privilege }}">
                                             </div>
 
 
 
                                             <div class="form-group col-md-6">
                                                 <label for="faexpire">First aid expiry</label>
-                                                <input type="date" class="form-control" name="faexpire"
-                                                    id="faexpire" value="{{ $crewmember->faexpire }}">
+                                                <input type="date" class="form-control" name="faexpire" id="faexpire" value="{{ $crewmember->faexpire }}">
                                             </div>
 
 
@@ -299,8 +301,7 @@
                                             <div class="form-group col-md-6">
 
                                                 <label for="OldTypeNewPassword">TYPE OLD PASSWORD</label>
-                                                <input type="password" class="form-control" name="old_password"
-                                                    id="OldTypeNewPassword" placeholder="*********">
+                                                <input type="password" class="form-control" name="old_password" id="OldTypeNewPassword" placeholder="*********">
 
 
                                             </div>
@@ -311,8 +312,7 @@
                                             <div class="form-group col-md-6">
 
                                                 <label for="TypeNewPassword">TYPE NEW PASSWORD</label>
-                                                <input type="password" class="form-control" name="password"
-                                                    id="TypeNewPassword" placeholder="*********">
+                                                <input type="password" class="form-control" name="password" id="TypeNewPassword" placeholder="*********">
 
 
                                             </div>
@@ -323,8 +323,7 @@
 
                                                 <label for="ReTypePassword">RE TYPE PASSWORD</label>
 
-                                                <input type="password" class="form-control" name="confirmpassword"
-                                                    id="ReTypePassword" placeholder="*********">
+                                                <input type="password" class="form-control" name="confirmpassword" id="ReTypePassword" placeholder="*********">
 
                                             </div>
 
@@ -365,7 +364,7 @@
 
                         <div class="teck-btn">
 
-                            <button type="submit" class="btn btn-primary"> <img rc="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Update User </button>
+                            <button type="submit" class="btn btn-primary"> <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Update User </button>
 
                         </div>
 

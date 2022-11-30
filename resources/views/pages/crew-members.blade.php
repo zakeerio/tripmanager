@@ -102,22 +102,35 @@
                                 <td>
                                     <div class="table-div">
 
-                                    <?php
-                                    
-                                        if(isset($crewmember->profile)){
-                                                ?>
-                                                <img src="{{ asset('assets/profile-images') }}/<?php echo $crewmember->profile; ?>" class="img-fluid"   alt="">
+                                        <?php
 
-                                                <?php
-                                        }else{
-                                            ?>
+                                        if (isset($crewmember->profile)) {
+
+                                            $path =  asset('assets/profile-images') . "/" . $crewmember->profile;
+
+                                            // if(file_exists($path)){
+
+                                            //     echo 'yes';
+
+                                            // }else{
+
+                                            //     echo $path;
+
+                                            // }
+                                            // exit;
+                                        ?>
+                                            <img src="{{ asset('assets/profile-images') }}/<?php echo $crewmember->profile; ?>" class="img-fluid" alt="">
+
+                                        <?php
+                                        } else {
+                                        ?>
                                             <img src="{{ asset('assets/images/Chacha.png') }}" class="img-fluid" alt="">
 
-                                            <?php
+                                        <?php
                                         }
-                                    
-                                    ?>
-                                       
+
+                                        ?>
+
 
                                         <p> <b> {{ $crewmember->fullname }}</b> <br> ({{ $crewmember->initials }})
                                         </p>

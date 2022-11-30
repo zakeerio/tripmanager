@@ -8,6 +8,7 @@ use DB;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Trip;
+use App\Models\Crew;
 use Session;
 use Illuminate\Support\Facades\Hash;
 
@@ -19,6 +20,7 @@ class ActivityController extends Controller
     protected $check2;
     protected $check3;
     protected $tripnumber;
+
     public function index()
     {
         $pagetitle = "All Activities";
@@ -28,10 +30,35 @@ class ActivityController extends Controller
     }
 
 
+    public function Access()
+    {
+
+        if (Session::get('role') == 'crewmember') {
+
+            return true;
+        }
+    }
     public function dashboard(request $request)
     {
 
         // UPDATE old password into new laravel password
+
+        $upcoming_activites = DB::table('trips')
+            ->join('tripcrews', 'trips.id', '=', 'tripcrews.tripnumber')
+            ->where('tripcrews.crewcode', '=', SESSION::get('initials'))
+            ->where('tripcrews.confirmed', '=', 'Y')
+            ->where('trips.departuredate', '>=', date('Y-m-d'))
+            ->orderBy('departuredate')
+            ->select('trips.*')->get()->toArray();
+
+        if (!empty($upcoming_activites)) {
+            $upcoming_activites = count($upcoming_activites);
+        } else {
+            $upcoming_activites = 0;
+        }
+
+
+        // dd(count($upcoming_activites));
 
         updateuseroldpasswordtonew($request);
 
@@ -39,6 +66,29 @@ class ActivityController extends Controller
 
         $datefrom = date('Y-m-01');
         $dateto = date('Y-m-d');
+
+        $month_logins = DB::table('login_history')->whereBetween('created_at', [date('Y-m-01'), date('Y-m-31')])->where('user_id', Session::get('user_id'))->select(DB::raw('COUNT(created_at) as logins'))->get();
+
+        // dd($month_logins[0]->logins);
+
+        if (isset($month_logins[0]->logins)) {
+            $month_logins = $month_logins[0]->logins;
+        } else {
+            $month_logins = 0;
+        }
+
+        $year_logins = DB::table('login_history')->whereBetween('created_at', [date('Y-01-01'), date('Y-12-30')])->where('user_id', Session::get('user_id'))->select(DB::raw('COUNT(created_at) as logins'))->get();
+
+        //dd($year_logins);
+
+        if (isset($year_logins[0]->logins)) {
+            $year_logins = $year_logins[0]->logins;
+        } else {
+            $year_logins = 0;
+        }
+
+
+
         $current_month_crews = Trip::whereBetween('departuredate', [$datefrom, $dateto])->get();
 
         $trips = Trip::limit(3)->get();
@@ -48,7 +98,7 @@ class ActivityController extends Controller
         // $current_month_crews1 = DB::table('trips')->whereBetween('departuredate', [$datefrom, $dateto])->selectRaw('SELECT time(sum(TIMEDIFF( duration, duration )))')->get();
         // dd($current_month_crews);
 
-        return view('pages/home')->with('pagetitle', $pagetitle)->with('current_month_crews', $current_month_crews)->with("trips", $trips)->with('tripcrews');
+        return view('pages/home')->with('pagetitle', $pagetitle)->with('current_month_crews', $current_month_crews)->with("trips", $trips)->with('tripcrews')->with('month_logins', $month_logins)->with('year_logins', $year_logins)->with('upcoming_activites', $upcoming_activites);
     }
 
 
@@ -126,15 +176,13 @@ class ActivityController extends Controller
                             $crewcode = $initials[0];
                             $this->check3 = DB::table('tripcrews')->insert([
                                 'recordnumber'              => rand(10, 10000),
-                                'tripnumber'                =>$this->tripnumber,
+                                'tripnumber'                => $this->tripnumber,
                                 'crewcode'                  => $crewcode,
                                 'confirmed'                 => 'Y'
                             ]);
                         }
                     }
                 }
-
-
             });
 
             if (isset($this->tripnumber) && $this->check1 && $this->check2 && $this->check3) {
@@ -153,7 +201,7 @@ class ActivityController extends Controller
     {
         $pagetitle = "Edit Activity";
         $activity = Trip::findOrFail($id);
-        //  dd($id);
+        // dd($activity);
         if ($activity) {
             return view('pages/all-activities-view')->with("activity", $activity)->with('tripcrews')->with('pagetitle', $pagetitle);
         } else {
@@ -163,6 +211,10 @@ class ActivityController extends Controller
 
     public function edit($id)
     {
+
+        if ($this->Access()) {
+            return redirect('/dashboard')->with(['status' => false, 'msg' => 'Access Denied !']);
+        }
 
         $pagetitle = "Edit Activity";
         $activity = Trip::findOrFail($id);
@@ -178,6 +230,10 @@ class ActivityController extends Controller
     {
         // dd($request->all());
 
+        if ($this->Access()) {
+
+            return redirect('/dashboard')->with(['status' => false, 'msg' => 'Access Denied !']);
+        }
         $activityArray = [
 
             'departuredate'  => $request->departuredate,
@@ -211,6 +267,10 @@ class ActivityController extends Controller
     function delete($id)
     {
 
+        if ($this->Access()) {
+            return redirect('/dashboard')->with(['status' => false, 'msg' => 'Access Denied !']);
+        }
+
         $delete = Trip::whereId($id)->delete();
 
         if ($delete) {
@@ -224,7 +284,8 @@ class ActivityController extends Controller
     {
         $pagetitle = "My Activities";
 
-        $trips = Trip::paginate(50);
+                // $trips = Trip::paginate(50);
+
 
         $trips = DB::table('trips')
             ->join('tripcrews', 'tripnumber', '=', 'trips.id')
@@ -234,6 +295,11 @@ class ActivityController extends Controller
             ->paginate(50);
 
         // dd($trips);
+
+
+        // $res=Crew::where(['initials' => 'JY'])->first()->toArray();
+
+        // dd($res['fullname']);
 
         return view('pages/my-activities')->with("trips", $trips)->with('tripcrews')->with('pagetitle', $pagetitle);
     }

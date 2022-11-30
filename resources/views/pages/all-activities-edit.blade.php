@@ -4,6 +4,7 @@
 
 
 <style>
+
     #div1 {
         width: 350px;
         height: 370px !important;
@@ -12,7 +13,7 @@
         height: 100px;
         overflow: scroll;
         overflow-y: auto;
-        background-color: lightblue;
+        background-color: #00b894;
     }
 
     #div3 {
@@ -23,7 +24,7 @@
         height: 100px;
         overflow: scroll;
         overflow-y: auto;
-        background-color: lightgoldenrodyellow;
+        background-color: #f39c12;
     }
 
     #div2 {
@@ -34,7 +35,7 @@
         height: 100px;
         overflow: scroll;
         overflow-y: auto;
-        background-color: lightgreen;
+        background-color: #2ecc71;
     }
 
     input[type=text] {
@@ -50,8 +51,16 @@
         /* W3C standards syntax, should come least */
     }
 
-    .label{
-        color:black !important;
+    .unavailable_label {
+        color: #00b894 !important;
+    }
+
+    .available_label {
+        color: #f39c12 !important;
+    }
+
+    .confirm_label {
+        color: #2ecc71 !important;
     }
 </style>
 <div class="row dashboard_col" id="all-activities-edit">
@@ -78,7 +87,7 @@
                             system.</p>
                     </div>
                     <div class="col-lg-4 col-md-12 ready">
-                        <lable>ACTIVITY STATUS</lable>
+                        <label>ACTIVITY STATUS</label>
                         <span class="active-btn-ready"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Ready</span>
                     </div>
                 </div>
@@ -214,10 +223,7 @@
 
                                 ?>
                             </div>
-
                         </div>
-
-
                     </div>
             </div>
             <div class="teck-btn">

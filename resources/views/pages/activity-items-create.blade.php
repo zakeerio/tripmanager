@@ -35,7 +35,9 @@
 
                 <div class="col-md-12">
 
-                    <form class="teck-form">
+                    <form class="teck-form" method="POST" action="{{route('item-activity-add')}}" enctype="multipart/form-data">
+
+                        @csrf
 
                         <div class="form-row">
 
@@ -47,7 +49,8 @@
 
                                         <label for="ActivityName">ACTIVITY NAME</label>
 
-                                        <input type="text" class="form-control" id="ActivityName">
+                                                                            <input type="text" class="form-control" id="ActivityName" name="activityname">
+
 
                                     </div>
 
@@ -55,15 +58,15 @@
 
                                         <label for="ActivityType">ACTIVITY TYPE</label>
 
-                                        <select id="ActivityType" class="form-control">
+                                        <select id="ActivityType" class="form-control" name="activitytype">
 
                                             <option selected>Please Select...</option>
 
-                                            <option>...</option>
+                                            <option>Type 1</option>
 
-                                            <option>...</option>
+                                            <option>Type 2</option>
 
-                                            <option>...</option>
+                                            <option>Type 3</option>
 
                                         </select>
 
@@ -73,7 +76,8 @@
 
                                         <label for="ActivityCapacity">ACTIVITY CAPACITY</label>
 
-                                        <input type="number" class="form-control" id="ActivityCapacity">
+                                        <input type="number" class="form-control" id="activitycapacity" name="activitycapacity">
+
 
                                     </div>
 
@@ -81,7 +85,8 @@
 
                                         <label for="MinimumCrewRequired">MINIMUM CREW REQUIRED</label>
 
-                                        <input type="number" class="form-control" id="MinimumCrewRequired">
+                                        <input type="number" class="form-control" id="minimumcrew" name="minimumcrew">
+
 
                                     </div>
 
@@ -89,15 +94,15 @@
 
                                         <label for="ColourTag">COLOUR TAG</label>
 
-                                        <select id="ColourTag" class="form-control">
+                                        <select id="ColourTag" class="form-control" name="rgbcolor">
 
                                             <option selected>RGB Selector</option>
 
-                                            <option>...</option>
+                                            <option value="red">Red</option>
 
-                                            <option>...</option>
+                                            <option value="green">Green</option>
 
-                                            <option>...</option>
+                                            <option value="Blue">Blue</option>
 
                                         </select>
 
@@ -119,7 +124,7 @@
 
                                     <div class="teck-btn bg-white upload-btn">
 
-                                        <input type="file" />
+                                        <input type="file" name="activitypicture" />
 
                                         <a href="#!"><img src="{{ asset('assets/images/camera.svg') }}" class="btn-icon-2" alt=""> Update Image </a>
 

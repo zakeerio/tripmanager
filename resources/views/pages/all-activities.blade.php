@@ -91,10 +91,11 @@
                                                 <div class="table-div">
                                                     {{-- {{ $crewneeded." ___ ". $tripcrewscount }} --}}
                                                     <img src="{{ asset('assets/images/Picture-01.png') }}" class="img-fluid" alt="">
-                                                    <p> <b> {{ $trip->boatname }}</b> <br> #{{ $trip->id }} </p>
+                                                    <p> <b> {{$trip->boatname}}</b> <br> #{{ $trip->id }} </p>
+
                                                 </div>
                                             </td>
-                                            <td>{{ date('D d M y H:i A', strtotime($trip->duration)) }}</td>
+                                            <td>{{$trip->departuredate }}</td>
                                             <td width="250px">{!! ($trip->crewnotes) !!}</td>
                                             <td>{{ $trip->duration }} hours</td>
                                             <td>{{ $crewneeded }} Crew Members</td>
@@ -308,7 +309,7 @@
 
     @if ($trips->hasPages())
 
-    <div class="row btm-row">
+    <!-- <div class="row btm-row">
         {{-- {{ $trips->links() }} --}}
 
         <div class="col-md-6 teck-showin-text">Showing <b>1-50</b> of <b>46</b> available activities.</div>
@@ -338,7 +339,7 @@
 
         </div>
 
-    </div>
+    </div> -->
 
     @endif
 

@@ -8,7 +8,23 @@
 
             <h1>Dashboard</h1>
 
-            <p class="D-paragraph">Hey Rod, welcome to your dashboard.</p>
+            <p>Hey <strong>{{ (Auth::user() !== null) ? Auth::user()->name : '' }}</strong>, welcome to your dashboard.</p>
+        @if (Session::has('status'))
+
+        @if(Session::get('status'))
+        <script>
+            var msg = "{{Session::get('msg')}}";
+            ShowToast(msg, 'success');
+        </script>
+        @else
+        <script>
+            var msg = "{{Session::get('msg')}}";
+            ShowToast(msg, 'error');
+        </script>
+        @endif
+
+        @endif
+
 
         </div>
         <div class="col-lg-12 row-2">
@@ -38,8 +54,9 @@
                         <img src="{{ asset('assets/images/2.png') }}" class="img-box" alt="">
 
                         <p>
-                            <span>86</span>
-                            Hours Logged <br> This Month
+                            <span>{{ $month_logins }}</span>
+                            Logins <br> This Month
+                            <!-- Hours Logged <br> This Month -->
 
                         </p>
 
@@ -54,8 +71,9 @@
                         <img src="{{ asset('assets/images/3.png') }}" class="img-box" alt="">
 
                         <p>
-                            <span>86</span>
-                            Hours Logged <br> This Year
+                            <span>{{$year_logins}}</span>
+                            Logins <br> This Year
+                            <!-- Hours Logged <br> This Year -->
 
                         </p>
 
@@ -74,15 +92,13 @@
                 <div class="col-md-12 dashboard-heading-desc">
                     <div class="row">
                         <div class="col-lg-8 col-md-12 upcoming_activities">
-                            <h4>Your upcoming activities <span class="circle-green">3</span></h4>
+                            <h4>Your upcoming activities <span class="circle-green">{{$upcoming_activites}}</span></h4>
                             <p class="col-12-descrapction">Below is a list of the upcoming activities you are scheduled to attend within the next 30 days.</p>
                         </div>
 
                         <div class="col-lg-4 col-md-12">
                             <div class="teck-btn-view-activites justify-content-end">
-                                <a href="{{ route('my-activities') }}"><img
-                                        src="{{ asset('assets/images/All-Activities.png') }}"
-                                        class="view-activites-icon">View all my activities</a>
+                                <a href="{{ route('my-activities') }}"><img src="{{ asset('assets/images/All-Activities.png') }}" class="view-activites-icon">View all my activities</a>
                             </div>
                         </div>
                     </div>
@@ -112,8 +128,8 @@
                                     $crewneeded = ($trip->crewneeded == null ) ? 0 : $trip->crewneeded;
                                     $tripcrewscount = ($trip->tripcrews->count() <= 0 ) ? '0' : $trip->tripcrews->count();
 
-                                    $check_crewcount = ($crewneeded < $tripcrewscount) ? true : false;
-                                    // echo $check_crewcount."<br>";
+                                    $check_crewcount = ($crewneeded < $tripcrewscount) ? true : false; // echo $check_crewcount."<br>";
+
                                     @endphp
 
                                     <tr class="{{ ($check_crewcount == false) ? 'teck-danger' : "" }}">
@@ -121,9 +137,8 @@
                                         <td>
                                             <div class="table-div">
                                                 {{-- {{ $crewneeded." ___ ". $tripcrewscount }} --}}
-                                                <img src="{{ asset('assets/images/Picture-01.png') }}" class="img-fluid"
-                                                    alt="">
-                                                <p> <b> {{ $trip->boatname }}</b> <br> #{{ $trip->id }} </p>
+                                                <img src="{{ asset('assets/images/Picture-01.png') }}" class="img-fluid" alt="">
+                                                <p> <b>{{$trip->boa}}</b> <br> #{{ $trip->id }} </p>
                                             </div>
                                         </td>
                                         <td>{{ date('D d M y H:i A', strtotime($trip->duration)) }}</td>
@@ -149,8 +164,8 @@
                                             </td>
                                         @else
                                             <td data-th="Net Amount" class="crew_btn">
-                                                <span class="active-btn-2"><img src="{{ asset('assets/images/Button-Crew-Needed.png') }}"
-                                                        class="alrt-image" alt=""> Crew Needed</span>
+                                                <span class="active-btn-2"><img src="{{ asset('assets/images/Button-Crew-Needed.png') }}" class="alrt-image" alt=""> Crew Needed</span>
+
                                             </td>
 
                                         @endif
@@ -164,8 +179,38 @@
                                                     <span></span>
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="BtnAction">
+
+                                                    @if(Session::get('role')=='crewmember')
+                                                    <a class="dropdown-item" href="{{ route('all-activities-view', $trip->id) }}">View</a>
+
+                                                    <?php
+
+                                                    $initials = Session::get('initials');
+
+                                                    $check = \App\Models\Tripcrew::where(['crewcode' => $initials, 'tripnumber' => $trip->id])->get();
+
+                                                    if (!empty($check)) {
+
+                                                        foreach ($check as $c) {
+                                                            if ($c->available == 'Y') {
+                                                                $isAvailable = "I'm Available";
+                                                                $route = route('all-activities-available-unavailable', $trip->id);
+                                                            } else {
+                                                                $isAvailable = 'Not Available';
+                                                                $route = route('all-activities-available-unavailable', $trip->id);
+                                                            }
+                                                        }
+                                                    }
+
+                                                    ?>
+
+                                                    <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a>
+                                                    @else
+                                                    <a class="dropdown-item" href="{{ route('all-activities-view', $trip->id) }}">View</a>
                                                     <a class="dropdown-item" href="{{ route('all-activities-edit', $trip->id) }}">Edit</a>
-                                                    <a class="dropdown-item" href="#">Delete</a>
+                                                    <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete</a>
+                                                    @endif
+
                                                 </div>
                                             </div>
 
@@ -174,7 +219,9 @@
                                     </tr>
 
                                 @empty
-                                    <tr><td colspan="9">No items found!</td></tr>
+                                <tr>
+                                    <td colspan="9">No items found!</td>
+                                </tr>
                                 @endforelse
                                 {{-- <tr>
 
@@ -580,3 +627,47 @@
     </div>
 
 @stop
+
+<script>
+    function ShowToast(msg, type) {
+
+
+        if (type == 'error') {
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            Toast.fire({
+                icon: 'error',
+                title: msg
+            })
+
+        } else if (type == 'success') {
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: msg
+            })
+        }
+    }
+</script>
