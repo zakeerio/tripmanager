@@ -4,7 +4,6 @@
 
 
 <style>
-
     #div1 {
         width: 350px;
         height: 370px !important;
@@ -87,8 +86,24 @@
                             system.</p>
                     </div>
                     <div class="col-lg-4 col-md-12 ready">
-                        <label>ACTIVITY STATUS</label>
-                        <span class="active-btn-ready"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Ready</span>
+                        <lable>ACTIVITY STATUS</lable>
+                        <?php
+
+                        if ($status == 'Ready') {
+                        ?>
+                            <span class="active-btn-ready"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Read</span>
+                        <?php
+                        } else {
+                        ?>
+
+
+                            <span class="active-btn-2"><img src="{{ asset('assets/images/Button-Crew-Needed.png') }}" class="img-fluid" alt=""> Crew Needed</span>
+
+
+                        <?php
+                        }
+
+                        ?>
                     </div>
                 </div>
             </div>
@@ -99,36 +114,43 @@
                 {{-- {{ dd($activity->tripcrews) }} --}}
 
                 <form class="teck-form" method="post" action="{{ route('all-activites-update') }}">
-                    @csrf;
+                    @csrf
 
                     <input type="hidden" name="id" class="form-control" id="" value="{{ $activity->id }}">
 
                     <div class="form-row">
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityNumber">ACTIVITY NUMBER</label>
-                            <input type="text" name="tripnumber" class="form-control" id="ActivityNumber" value="{{ $activity->tripnumber }}">
+                            <input type="text" name="tripnumber" class="form-control" id="ActivityNumber" value="{{ $activity->id }}" disabled>
                         </div>
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityItem">SELECT ACTIVITY ITEM</label>
 
-                            <select id="ActivityItem" name="boatname" class="form-control">
-                                <option value="Seth Ellis">Seth Ellis</option>
-                                <option value="Python" {{ $activity->boatname == 'Python' ? 'selected' : '' }}>Python
-                                </option>
-                                <option value="John Varley" {{ $activity->boatname == 'John Varley' ? 'selected' : '' }}>John Varley</option>
-                                <option value="Hugh Henshall" {{ $activity->boatname == 'Hugh Henshall' ? 'selected' : '' }}>Hugh Henshall
-                                </option>
-                                <option value="Canal talks" {{ $activity->boatname == 'Canal talks' ? 'selected' : '' }}>Canal talks</option>
-                                <option value="Dawn Rose" {{ $activity->boatname == 'Dawn Rose' ? 'selected' : '' }}>
-                                    Dawn Rose</option>
-                                <option value="Madeline" {{ $activity->boatname == 'Madeline' ? 'selected' : '' }}>
-                                    Madeline</option>
-                                <option value="James Brindley" {{ $activity->boatname == 'James Brindley' ? 'selected' : '' }}>James Brindley
-                                </option>
-                                <option value="Shop" {{ $activity->boatname == 'Shop' ? 'selected' : '' }}>Shop
-                                </option>
-                            </select>
 
+
+                            <select id="ActivityItem" name="boatname" class="form-control">
+                                <option value="">__SELECT__</option>
+                                <?php
+
+
+                                $boats = \App\Models\ActivityItem::all();
+
+                                if (!empty($boats)) {
+
+                                    foreach ($boats as $b) {
+                                ?>
+                                        <option value="{{$b->activityname}}" {{ $b->activityname == $activity->boatname  ? 'selected' : '' }}>{{$b->activityname}}</option>
+                                    <?php
+                                    }
+                                } else {
+                                    ?>
+                                    <option value="">No Activity Found</option>
+                                <?php
+                                }
+
+                                ?>
+
+                            </select>
 
                         </div>
                         <div class="form-group col-xl-4 col-lg-12">
@@ -147,7 +169,7 @@
                         </div>
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityDuration">ACTIVITY DURATION</label>
-                            <input type="number" name="duration" class="form-control" id="ActivityDuration" value="{{ $activity->duration }}">
+                            <input type="time" name="duration" class="form-control" id="ActivityDuration" value="{{ $activity->duration }}">
                         </div>
                         <div class="form-group col-xl-4 col-lg-12">
                             <label for="BriefDescription">BRIEF DESCRIPTION</label>
@@ -182,24 +204,94 @@
 
                     <div class="row col-md-12">
                         <label for="NotesCrew">NOTES FOR CREW</label>
-                        <textarea class="form-control" id="NotesCrew" rows="5" name="NotesCrew">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ornare orci sit amet dui sagittis porttitor. Aliquam suscipit ligula et nisl ullamcorper lacinia. Nunc sagittis vitae lectus sit amet tincidunt. Nullam tristique, orci a consequat vehicula, arcu diam vehicula eros.</textarea>
+                        <textarea class="form-control" id="NotesCrew" rows="5" name="NotesCrew">{{ $activity->crewnotes}}</textarea>
                     </div>
 
 
                     <br>
                     <div class="row">
 
+
+
+                        <?php
+
+
+                        // echo "<pre>";
+                        // print_r($activity->tripcrews);
+                        // exit;
+
+                        $unavailable = array();
+                        $confirmed = array();
+                        $avaiable = array();
+
+
+                        foreach ($activity->tripcrews as $key => $crewmember) {
+
+                            $crew_name = \App\Models\Crew::where(['initials' => $crewmember->crewcode])->first();
+
+                            // if (isset($crew_name['fullname'])) {
+                            //     echo "<pre>";
+                            //     print_r($crew_name['fullname']);
+                            // }
+
+                            // echo "<pre>";
+                            // print_r($crew_name['fullname']);
+
+                            if (!empty($crew_name) && isset($crew_name['fullname'])) {
+                                //  echo $crew_name[0] . "<br>";
+
+                                $fullname = $crew_name["fullname"];
+                                if ($crewmember->confirmed == 'Y') {
+                                    $confirmed[] = "<input type='text' class='form-control' id=drag" . $crewmember->id . " draggable='true' ondragstart='drag(event)' name='' value='" . $crewmember->crewcode . " : " . $fullname . "' disabled>";
+                                }
+
+                                if ($crewmember->available == 'Y') {
+                                    $available[] = "<input type='text' class='form-control' id=drag" . $crewmember->id . " draggable='true' ondragstart='drag(event)' name='' value='" . $crewmember->crewcode . " : " . $fullname . "' disabled>";
+                                }
+
+                                if ($crewmember->isskipper == 'Y') {
+                                    $unavailable[] = "<input type='text' class='form-control' id=drag" . $crewmember->id . " draggable='true' ondragstart='drag(event)' name=''value='" . $crewmember->crewcode . " : " . $fullname . "' disabled>";
+                                }
+                        ?>
+
+                        <?php
+                            }
+                        }
+
+                        ?>
+
                         <div class="col-sm-4">
-                            <label for="NotesCrew"  class="label">Confirmed Crew</label>
+                            <label for="NotesCrew" class="label">Confirmed Crew</label>
                             <div id="div2" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="confiremd[]">
+                                <?php
+
+                                if (!empty($confirmed)) {
+                                    foreach ($confirmed as $c) {
+                                        echo $c;
+                                    }
+                                } else {
+                                    echo "No Confirmed Found";
+                                }
+
+                                ?>
 
                             </div>
                         </div>
 
                         <div class="col-sm-4">
-                            <label for="NotesCrew"  class="label">Available Crew</label>
+                            <label for="NotesCrew" class="label">Available Crew</label>
                             <div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="available[]">
+                                <?php
 
+                                if (!empty($available)) {
+                                    foreach ($available as $a) {
+                                        echo $a;
+                                    }
+                                } else {
+                                    echo "No Available Found";
+                                }
+
+                                ?>
                             </div>
                         </div>
 
@@ -207,20 +299,16 @@
                         <div class="col-sm-4">
                             <label for="NotesCrew" class="label">Un Available Crew</label>
 
-                            <div id="div1"  ondrop="drop(event,this)" ondragover="allowDrop(event)" content="unavailable[]">
+                            <div id="div1" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="unavailable[]">
                                 <?php
 
-                                foreach ($activity->tripcrews as $crewmember) {
-                                    $crew_name = \App\Models\Crew::where(['initials' => $crewmember->crewcode])->pluck('fullname');
-
-                                    if (!empty($crew_name) && isset($crew_name[0])) {
-                                        //  echo $crew_name[0] . "<br>";
-                                ?>
-                                        <input type="text" class="form-control" id="drag<?php echo $crewmember->id ?>" draggable="true" ondragstart="drag(event)" name="unavailable[]" value="<?php echo $crewmember->crewcode.": ".$crew_name[0] ?>" read_only>
-                                <?php
+                                if (!empty($unavailable)) {
+                                    foreach ($unavailable as $ua) {
+                                        echo $ua;
                                     }
+                                } else {
+                                    echo "No UnAvailable Found";
                                 }
-
                                 ?>
                             </div>
                         </div>

@@ -90,8 +90,28 @@
                                             <td>
                                                 <div class="table-div">
                                                     {{-- {{ $crewneeded." ___ ". $tripcrewscount }} --}}
-                                                    <img src="{{ asset('assets/images/Picture-01.png') }}" class="img-fluid" alt="">
-                                                    <p> <b> {{$trip->boatname}}</b> <br> #{{ $trip->id }} </p>
+                                                    <?php
+                                                    $boat = \App\Models\ActivityItem::where(['activityname' => $trip->boatname])->first();
+
+                                                    // print_r($boat->activitypicture);
+                                                    // exit;
+                                                    if (!empty($boat) && isset($boat->activityname) && file_exists(public_path() . '/assets/activity-images' . '/' . $boat->activitypicture)) {
+                                                    ?>
+
+                                                        <img src="{{asset('assets/activity-images').'/'.$boat->activitypicture}}" class="img-fluid" alt="">
+                                                    <?php
+                                                    } else {
+                                                    ?>
+
+                                                        <img src="./assets/images/Picture-01.png" class="img-fluid" alt="">
+
+                                                    <?php
+                                                    }
+
+                                                    ?>
+                                                    <p> <b>{{$trip->boatname}}</b> <br>
+                                                        #{{$trip->id}}
+                                                    </p>
 
                                                 </div>
                                             </td>
@@ -102,7 +122,12 @@
                                             <td width="120">
                                                 @if($tripcrewscount > 0)
                                                 @foreach ($trip->tripcrews as $tripcrewitem )
+
+
+                                                @if($tripcrewitem->available=='Y')
                                                 {{ $tripcrewitem->crewcode }},
+
+                                                @endif
                                                 {{-- {!! ( ($tripcrewscount % 3 == 0)) ? '<br>' : "" !!} --}}
                                                 @endforeach
                                                 @else
@@ -110,13 +135,24 @@
                                                 @endif
                                             </td>
 
+                                            <?php
+
+                                            $isReady = NULL;
+
+                                            ?>
                                             @if(($check_crewcount == true) ? 'teck-danger' : "" )
 
                                             <td data-th="Net Amount">
                                                 <span class="active-btn">
                                                     <img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Ready</span>
                                             </td>
+                                            <?php
+                                            $isReady = 'Ready';
+                                            ?>
                                             @else
+                                            <?php
+                                            $isReady = 'Needed';
+                                            ?>
                                             <td data-th="Net Amount" class="crew_btn">
                                                 <span class="active-btn-2"><img src="{{ asset('assets/images/Button-Crew-Needed.png') }}" class="alrt-image" alt=""> Crew Needed</span>
                                             </td>
@@ -132,37 +168,34 @@
                                                         <span></span>
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="BtnAction">
-
-
-
+                                                        <a class="dropdown-item" href="{{ route('all-activities-view', [$trip->id,$isReady]) }}">View</a>
                                                         @if(Session::get('role')=='crewmember')
-                                                        <a class="dropdown-item" href="{{ route('all-activities-view', $trip->id) }}">View</a>
+
 
                                                         <?php
 
                                                         $initials = Session::get('initials');
 
-                                                        $check = \App\Models\Tripcrew::where(['crewcode' => $initials, 'tripnumber' => $trip->id])->get();
+                                                        $check = \App\Models\Tripcrew::where(['crewcode' => $initials, 'tripnumber' => $trip->id])->first();
 
                                                         if (!empty($check)) {
 
-                                                            foreach ($check as $c) {
-                                                                if ($c->available == 'Y') {
-                                                                    $isAvailable = "I'm Available";
-                                                                    $route = route('all-activities-available-unavailable', $trip->id);
-                                                                } else {
-                                                                    $isAvailable = 'Not Available';
-                                                                    $route = route('all-activities-available-unavailable', $trip->id);
-                                                                }
+                                                            if ($check->available == 'Y') {
+                                                                $isAvailable = "I'm Available";
+                                                                $route = route('all-activities-available-unavailable', $trip->id);
+                                                            } else {
+                                                                $isAvailable = 'Not Available';
+                                                                $route = route('all-activities-available-unavailable', $trip->id);
                                                             }
                                                         }
+
 
                                                         ?>
 
                                                         <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a>
                                                         @else
-                                                        <a class="dropdown-item" href="{{ route('all-activities-view', $trip->id) }}">View</a>
-                                                        <a class="dropdown-item" href="{{ route('all-activities-edit', $trip->id) }}">Edit</a>
+
+                                                        <a class="dropdown-item" href="{{ route('all-activities-edit',[$trip->id,$isReady]) }}">Edit</a>
                                                         <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete</a>
                                                         @endif
 
@@ -302,47 +335,8 @@
                 </tbody>
                 </table>
             </div>
-
         </div>
     </div>
-
-
-    @if ($trips->hasPages())
-
-    <!-- <div class="row btm-row">
-        {{-- {{ $trips->links() }} --}}
-
-        <div class="col-md-6 teck-showin-text">Showing <b>1-50</b> of <b>46</b> available activities.</div>
-
-        <div class="col-md-6">
-
-            <div class="pagination-row">
-
-                <button class="btn-prev teck-arrow">
-                    << /button>
-
-                        <ul class="pagination">
-
-                            <li class="active"> 1 </li>
-
-                            <li> 2 </li>
-
-                            <li> 3 </li>
-
-                            <li> 4 </li>
-
-                        </ul>
-
-                        <button class="btn-next teck-arrow">></button>
-
-            </div>
-
-        </div>
-
-    </div> -->
-
-    @endif
-
 </div>
 
 </div>

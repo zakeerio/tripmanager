@@ -72,7 +72,23 @@
                     </div>
                     <div class="col-lg-4 col-md-12 ready">
                         <lable>ACTIVITY STATUS</lable>
-                        <span class="active-btn-ready"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Ready</span>
+                        <?php
+
+                        if ($status == 'Ready') {
+                        ?>
+                            <span class="active-btn-ready"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Read</span>
+                        <?php
+                        } else {
+                        ?>
+                           
+                            
+                               <span class="active-btn-2"><img src="{{ asset('assets/images/Button-Crew-Needed.png') }}" class="img-fluid" alt=""> Crew Needed</span>
+                              
+                            
+                        <?php
+                        }
+
+                        ?>
                     </div>
                 </div>
             </div>
@@ -90,34 +106,24 @@
                     <div class="form-row">
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityNumber">ACTIVITY NUMBER</label>
-                            <input type="text" name="tripnumber" class="form-control" id="ActivityNumber" value="{{ $activity->tripnumber }}" readonly>
+                            <strong>
+                                <h5>{{ $activity->id }}</h5>
+                            </strong>
                         </div>
+
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityItem">SELECT ACTIVITY ITEM</label>
 
-                            <select id="ActivityItem" name="boatname" class="form-control" readonly>
-                                <option value="Seth Ellis">Seth Ellis</option>
-                                <option value="Python" {{ $activity->boatname == 'Python' ? 'selected' : '' }}>Python
-                                </option>
-                                <option value="John Varley" {{ $activity->boatname == 'John Varley' ? 'selected' : '' }}>John Varley</option>
-                                <option value="Hugh Henshall" {{ $activity->boatname == 'Hugh Henshall' ? 'selected' : '' }}>Hugh Henshall
-                                </option>
-                                <option value="Canal talks" {{ $activity->boatname == 'Canal talks' ? 'selected' : '' }}>Canal talks</option>
-                                <option value="Dawn Rose" {{ $activity->boatname == 'Dawn Rose' ? 'selected' : '' }}>
-                                    Dawn Rose</option>
-                                <option value="Madeline" {{ $activity->boatname == 'Madeline' ? 'selected' : '' }}>
-                                    Madeline</option>
-                                <option value="James Brindley" {{ $activity->boatname == 'James Brindley' ? 'selected' : '' }}>James Brindley
-                                </option>
-                                <option value="Shop" {{ $activity->boatname == 'Shop' ? 'selected' : '' }}>Shop
-                                </option>
-                            </select>
-
+                            <strong>
+                                <h5>{{$activity->boatname}}</h5>
+                            </strong>
 
                         </div>
                         <div class="form-group col-xl-4 col-lg-12">
                             <label for="ActivityDate">ACTIVITY DATE</label>
-                            <input type="date" name="departuredate" class="form-control" id="ActivityDate" value="{{ $activity->departuredate }}" readonly>
+                            <strong>
+                                <h5>{{ $activity->departuredate }}</h5>
+                            </strong>
 
                         </div>
                     </div>
@@ -127,15 +133,22 @@
                     <div class="form-row">
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityTime">ACTIVITY TIME</label>
-                            <input type="time" name="departuretime" class="form-control" id="ActivityTime" value="{{ $activity->departuretime }}" readonly>
+
+                            <strong>
+                                <h5>{{$activity->departuretime }}</h5>
+                            </strong>
                         </div>
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityDuration">ACTIVITY DURATION</label>
-                            <input type="number" name="duration" class="form-control" id="ActivityDuration" value="{{ $activity->duration }}" readonly>
+                            <strong>
+                                <h5>{{ $activity->duration }}</h5>
+                            </strong>
                         </div>
                         <div class="form-group col-xl-4 col-lg-12">
                             <label for="BriefDescription">BRIEF DESCRIPTION</label>
-                            <input type="text" name="destination" class="form-control" id="BriefDescription" value="{{ $activity->destination }}" readonly>
+                            <strong>
+                                <h5>{{ $activity->destination }}</h5>
+                            </strong>
                         </div>
                     </div>
 
@@ -148,29 +161,38 @@
                         </div>
                         <div class="form-group col-xl-4 col-lg-12">
                             <label for="NumberCrewNeeded">NUMBER OF CREW NEEDED</label>
-                            <input type="text" name="crewneeded" class="form-control" id="NumberCrewNeeded" value="{{ $activity->crewneeded }}" readonly>
+                            <strong>
+                                <h5>{{ $activity->crewneeded }}</h5>
+                            </strong>
                         </div>
                         <div class="form-group col-xl-5 col-lg-13">
                             <label for="TripCost">TRIP COST(£)</label>
-                            <input type="number" name="tripcost" class="form-control" id="TripCost" value="{{ $activity->cost }}" readonly>
+                            <strong>
+                                <h5>{{ $activity->cost }}</h5>
+                            </strong>
                         </div>
                         <div class="form-group col-xl-6 col-lg-14">
                             <label for="BalanceDue">BALANCE DUE(£)</label>
-                            <input type="number" name="tripbalance" class="form-control" id="BalanceDue" value="{{ $activity->balance }}" readonly>
+
+                            <strong>
+                                <h5>{{ $activity->balance }}</h5>
+                            </strong>
                         </div>
                         <div class="form-group col-xl-7 col-lg-15">
                             <label for="PassengerCout">PASSENGER COUNT</label>
-                            <input type="number" name="passengers" class="form-control" id="PassengerCout" value="{{ $activity->passengers }}" readonly>
+                            <strong>
+                                <h5>{{ $activity->passengers }}</h5>
+                            </strong>
                         </div>
                     </div>
 
-                    <div class="form-group col-md-12">
+                    <div class="form-group col-xl-6 col-lg-14">
                         <label for="NotesCrew">NOTES FOR CREW</label>
-                        <textarea class="form-control" id="NotesCrew" rows="5" name="NotesCrew" readonly>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ornare orci sit amet dui sagittis porttitor. Aliquam suscipit ligula et nisl ullamcorper lacinia. Nunc sagittis vitae lectus sit amet tincidunt. Nullam tristique, orci a consequat vehicula, arcu diam vehicula eros.</textarea>
+                        <p><strong>{{ $activity->crewnotes }}</strong></p>
                     </div>
             </div>
             <br>
-            <div class="row">
+            <div class="row col-md-12">
 
 
                 <?php
@@ -200,17 +222,17 @@
                     if (!empty($crew_name) && isset($crew_name['fullname'])) {
                         //  echo $crew_name[0] . "<br>";
 
-                        $fullname =$crew_name["fullname"];
+                        $fullname = $crew_name["fullname"];
                         if ($crewmember->confirmed == 'Y') {
-                            $confirmed[] = "<input type='text' class='form-control' id=drag" . $crewmember->id . " draggable='true' ondragstart='drag(event)' name='' value='". $crewmember->crewcode ." : ". $fullname ."' disabled>";
+                            $confirmed[] = "<input type='text' class='form-control' id=drag" . $crewmember->id . " draggable='true' ondragstart='drag(event)' name='' value='" . $crewmember->crewcode . " : " . $fullname . "' disabled>";
                         }
 
                         if ($crewmember->available == 'Y') {
-                            $available[] = "<input type='text' class='form-control' id=drag" . $crewmember->id . " draggable='true' ondragstart='drag(event)' name='' value='". $crewmember->crewcode ." : ". $fullname ."' disabled>";
+                            $available[] = "<input type='text' class='form-control' id=drag" . $crewmember->id . " draggable='true' ondragstart='drag(event)' name='' value='" . $crewmember->crewcode . " : " . $fullname . "' disabled>";
                         }
 
-                        if ($crewmember->skipper == 'Y') {
-                            $available[] = "<input type='text' class='form-control' id=drag" . $crewmember->id . " draggable='true' ondragstart='drag(event)' name=''value='". $crewmember->crewcode ." : ". $fullname ."' disabled>";
+                        if ($crewmember->isskipper == 'Y') {
+                            $unavailable[] = "<input type='text' class='form-control' id=drag" . $crewmember->id . " draggable='true' ondragstart='drag(event)' name=''value='" . $crewmember->crewcode . " : " . $fullname . "' disabled>";
                         }
                 ?>
 
@@ -221,7 +243,7 @@
                 ?>
 
                 <div class="col-sm-4">
-                    <label for="NotesCrew" class="label">Confirmed Crew</label>
+                    <label for="NotesCrew" class="confirm_label">Confirmed Crew</label>
                     <div id="div2" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="confiremd[]">
                         <?php
 
@@ -238,7 +260,7 @@
                 </div>
 
                 <div class="col-sm-4">
-                    <label for="NotesCrew" class="label">Available Crew</label>
+                    <label for="NotesCrew" class="available_label">Available Crew</label>
                     <div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="available[]">
                         <?php
 
@@ -256,7 +278,7 @@
 
 
                 <div class="col-sm-4">
-                    <label for="NotesCrew" class="label">Un Available Crew</label>
+                    <label for="NotesCrew" class="unavailable_label">Un Available Crew</label>
 
                     <div id="div1" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="unavailable[]">
                         <?php

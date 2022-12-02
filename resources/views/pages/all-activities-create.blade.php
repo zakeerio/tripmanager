@@ -116,16 +116,28 @@
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityItem">SELECT ACTIVITY ITEM</label>
                             <select id="ActivityItem" name="boatname" class="form-control">
-                                <option value="Seth Ellis">Seth Ellis</option>
-                                <option value="Python">Python</option>
-                                <option value="John Varley">John Varley</option>
-                                <option value="Hugh Henshall">Hugh Henshall</option>
-                                <option value="Canal talks">Canal talks</option>
-                                <option value="Dawn Rose">Dawn Rose</option>
-                                <option value="Madeline">Madeline</option>
-                                <option value="James Brindley">James Brindley</option>
-                                <option value="Shop">Shop</option>
+                                <option value="">__SELECT__</option>
+                                <?php
+
+                              
+                                $boats = \App\Models\ActivityItem::all();
+
+                                if (!empty($boats)) {
+
+                                    foreach ($boats as $b) {
+                                ?>
+                                        <option value="{{$b->activityname}}">{{$b->activityname}}</option>
+                                    <?php
+                                    }
+                                } else {
+                                    ?>
+                                    <option value="">No Activity Found</option>
+                                <?php
+                                }
+
+                                ?>
                             </select>
+
                         </div>
                         <div class="form-group col-xl-4 col-lg-12">
                             <label for="ActivityDate">ACTIVITY DATE</label>
@@ -142,7 +154,7 @@
                         </div>
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityDuration">ACTIVITY DURATION</label>
-                            <input type="number" name="duration" class="form-control" id="ActivityDuration">
+                            <input type="time" name="duration" class="form-control" id="ActivityDuration">
                         </div>
                         <div class="form-group col-xl-4 col-lg-12">
                             <label for="BriefDescription">BRIEF DESCRIPTION</label>

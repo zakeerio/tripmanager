@@ -1,234 +1,193 @@
 @extends('layouts.default')
 
 @section('content')
-<div class="row dashboard_col" id="activity-items">
 
+<div class="row dashboard_col" id="activity-items-edit">
     <div class="col-md-12 dashboard_Sec">
 
-        <div class="row">
+        <h1>Activity Items - Edit existing activity item</h1>
 
-            <div class="col-xl-8 col-lg-12">
-
-                <h1>Activity Items</h1>
-
-                <p class="sub-pages-text">This is a list of all the scheduled activities in the Activity Manager system..
-                </p>
-
-
-                @if (Session::has('status'))
-
-                @if(Session::get('status'))
-                <script>
-                    var msg = "{{Session::get('msg')}}";
-                    ShowToast(msg, 'success');
-                </script>
-                @else
-                <script>
-                    var msg = "{{Session::get('msg')}}";
-                    ShowToast(msg, 'error');
-                </script>
-                @endif
-
-                @endif
-
-            </div>
-
-            <div class="col-xl-4 col-lg-12">
-
-                <div class="teck-btn justify-content-end">
-
-                    <a href="{{ route('activity-items-create') }}"><img src="./assets/images/Activity-Items.png" class="img-fluid">Create new item</a>
-
-                </div>
-
-            </div>
-
-        </div>
+        <p class="sub-pages-text">Please amend any details below and click save changes to submit the updated
+            infromation.</p>
 
     </div>
-
-
 
     <div class="col-md-12 activies_table">
 
         <div class="row activity_col">
 
-            <div class="col-lg-8 col-md-12 upcoming_activities">
+            <div class="col-md-12 dashboard-heading-desc">
 
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 upcoming_activities">
+                        <h4>Activity Information</h4>
+                        <p class="col-12-descrapction">These details are used within the Activity Manager.</p>
+                    </div>
+                </div>
 
             </div>
-
 
             <div class="col-md-12">
-                <div class="teck-table">
 
-                    <table class="rwd-table">
+                <form class="teck-form" method="POST" action="{{route('item-activity-update')}}" enctype="multipart/form-data">
 
-                        <tbody>
+                    @csrf
 
-                            <tr>
+                    <input type="hidden" value="{{$items->id}}" name="update_id">
+                    <div class="form-row">
 
-                                <th class="th-heading">Activity Name</th>
+                        <div class="form-group col-xl-8 col-lg-12">
 
-                                <th class="th-heading">Type</th>
+                            <div class="form-row">
 
-                                <th class="th-heading-brief">Capacity</th>
+                                <div class="form-group col-xl-4 col-lg-6">
 
-                                <th class="th-heading">Min Crew</th>
+                                    <label for="ActivityName">ACTIVITY NAME</label>
+                                    @if($errors->any())
+                                    <p style="color:red ;">{{$errors->first('activityname') }}</p>
 
-                                <th class="th-heading">Color</th>
+                                    @endif
+                                    <input type="text" class="form-control" id="ActivityName" name="activityname" value="{{$items->activityname}}">
 
-                                <th class="th-heading">Action</th>
+                                </div>
 
+                                <div class="form-group col-xl-4 col-lg-6">
 
-                            </tr>
+                                    <label for="ActivityType">ACTIVITY TYPE</label>
 
-                            @forelse($items as $i)
+                                    @if($errors->any())
+                                    <p style="color:red ;">{{$errors->first('activitytype') }}</p>
+                                    @endif
 
-                            <tr>
+                                    <select id="ActivityType" class="form-control" name="activitytype">
 
-                                <td>
-
-                                    <div class="table-div">
-
+                                        <option disabled>Please Select...</option>
                                         <?php
 
-                                            if(isset($i['activitypicture'])){
-                                                    ?>
-                                                     <img src="./assets/activity-images/<?php echo $i['activitypicture'] ?>" class="img-fluid" alt="">
-                                                    <?php
-                                            }else{
-                                                ?>
-                                                  <img src="./assets/images/Picture-01.png" class="img-fluid" alt="">
-                                                <?php
+
+                                        $boats = \App\Models\ActivityItem::all();
+                                        if (!empty($boats)) {
+
+                                            foreach ($boats as $b) {
+                                        ?>
+                                                <option value="{{$b->activityname}}" {{$b->activityname == $items->activityname ? 'selected':'' }}>{{$b->activityname}}</option>
+                                            <?php
                                             }
+                                        } else {
+                                            ?>
+                                            <option value="">No Activity Found</option>
+                                        <?php
+                                        }
+
                                         ?>
 
-                                        <p> <b>{{$i['activityname']}}</b> </p>
+                                    </select>
 
-                                    </div>
+                                </div>
 
-                                </td>
+                                <div class="form-group col-xl-4 col-lg-6">
+
+                                    <label for="ActivityCapacity">ACTIVITY CAPACITY</label>
+
+                                    @if($errors->any())
+                                    <p style="color:red ;">{{$errors->first('activitycapacity') }}</p>
+                                    @endif
+
+                                    <input type="number" class="form-control" name="activitycapacity" value="{{$items->activitycapacity}}">
+
+                                </div>
+
+                                <div class="form-group col-xl-4 col-lg-6">
+
+                                    <label for="MinimumCrewRequired">MINIMUM CREW REQUIRED</label>
+
+                                    @if($errors->any())
+                                    <p style="color:red ;">{{$errors->first('minimumcrew') }}</p>
+                                    @endif
+                                    <input type="number" class="form-control" id="minimumcrew" name="minimumcrew" value="{{$items->minimumcrew}}">
+
+                                </div>
+
+                                <div class="form-group col-xl-4 col-lg-12">
+
+                                    <label for="ColourTag">COLOUR TAG</label>
+                                    @if($errors->any())
+                                    <p style="color:red ;">{{$errors->first('rgbcolor') }}</p>
+                                    @endif
+                                    <select id="ColourTag" class="form-control" name="rgbcolor">
+
+                                        <option disabled>__RGB Selector__</option>
+
+                                        <option value="red" {{"red" == $items->rgbcolor ? 'selected':'' }}>Red</option>
+
+                                        <option value="green" {{"green" == $items->rgbcolor ? 'selected':'' }}>Green</option>
+
+                                        <option value="blue" {{"blue" == $items->rgbcolor ? 'selected':'' }}>Blue</option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                        </div>
 
 
 
-                                <td> {{$i['activitytype']}}</td>
+                        <div class="form-group col-xl-4 col-lg-12">
 
-                                <td>{{$i['activitycapacity']}} </td>
+                            <div class="profile-picture">
 
-                                <td> {{$i['minimumcrew']}}</td>
+                                <label>ACTIVITY PICTURE</label>
 
-                                <td> {{$i['rgbcolor']}}</td>
+                                @if($errors->any)
+                                <p style="color:red"> {{ $errors->first('image') }}</p>
+                                @endif
+
+                                <?php
+                                if (isset($items->activitypicture) && file_exists(public_path() . '/assets/activity-images' . '/' . $items->activitypicture)) {
+                                ?>
+                                    <img src="{{asset('assets/activity-images').'/'.$items->activitypicture}}" class="img-fluid" alt="">
+                                <?php
+                                } else {
+                                ?>
+
+                                    <img src="{{ asset('assets/images/profile-picture.svg') }}" />
+
+                                <?php
+                                }
+                                ?>
 
 
-                                <td class="action">
-                                    <div class="dropdown">
-                                        <button class="btn" type="button" id="BtnAction" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="BtnAction">
-                                            <a class="dropdown-item" href="{{ route('activity-items-edit') }}">Edit</a>
-                                            <a class="dropdown-item" href="#">Delete</a>
-                                        </div>
-                                    </div>
-                                </td>
+                                <div class="teck-btn bg-white upload-btn">
 
-                            </tr>
-                            @empty
-                            <p>No posts found</p>
-                            @endforelse
-                        </tbody>
+                                    <input type="file" name="activitypicture"  accept="image/*" />
 
-                    </table>
-                </div>
+                                    <a href="#!"><img src="{{ asset('assets/images/camera.svg') }}" class="btn-icon-2" alt=""> Update Image </a>
 
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="teck-btn">
+
+                        <button type="submit" class="btn btn-primary"> <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Update Item </button>
+
+                    </div>
+
+                </form>
             </div>
 
         </div>
-
-
-
-        <div class="row btm-row">
-
-            <div class="col-md-6 teck-showin-text">Showing <b>1-50</b> of <b>46</b> available activities.</div>
-
-            <div class="col-md-6">
-
-                <div class="pagination-row">
-
-                    <button class="btn-prev teck-arrow">
-                        < </button>
-
-                            <ul class="pagination">
-
-                                <li class="active"> 1 </li>
-
-                                <li> 2 </li>
-
-                                <li> 3 </li>
-
-                                <li> 4 </li>
-
-                            </ul>
-
-                            <button class="btn-next teck-arrow">></button>
-
-                </div>
-
-            </div>
-
-        </div>
-
 
     </div>
 
 </div>
+
 @stop
-
-
-
-<script>
-    function ShowToast(msg, type) {
-
-
-        if (type == 'error') {
-
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            })
-            Toast.fire({
-                icon: 'error',
-                title: msg
-            })
-
-        } else if (type == 'success') {
-
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            })
-
-            Toast.fire({
-                icon: 'success',
-                title: msg
-            })
-        }
-    }
-</script>

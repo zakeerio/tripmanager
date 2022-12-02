@@ -16,7 +16,6 @@ class CrewController extends Controller
     // __constructor(){
 
     // }
-
     public function Access()
     {
         if (Session::get('role') == 'crewmember') {
@@ -76,8 +75,8 @@ class CrewController extends Controller
 
         $crew_members = Crew::with('user')->get();
         // dd($crew_members);
-      //  $crew_members = Crew::whereId('30')->get()->toArray();
-      //  dd($crew_members);
+        //  $crew_members = Crew::whereId('30')->get()->toArray();
+        //  dd($crew_members);
 
         return view('pages/crew-members')->with("crew_members", $crew_members)->with('pagetitle', $pagetitle);
     }
@@ -108,7 +107,6 @@ class CrewController extends Controller
         if (!$crew_member) {
             abort(403);
         }
-
 
         return view('pages/my-account')->with("user", $user)->with('crew_member', $crew_member)->with('pagetitle', $pagetitle);
     }
@@ -155,7 +153,7 @@ class CrewController extends Controller
                 'password' => 'required|confirmed'
             ]);
 
-            dd($request->all());
+            //  dd($request->all());
 
 
             $user = User::create(request(['name', 'email', 'password']));
@@ -178,7 +176,7 @@ class CrewController extends Controller
                     "privilege" => $privilege
                 );
 
-                dd($crew_data);
+                // dd($crew_data);
                 $update = $crew->create($crew_data);
 
                 if ($update) {
@@ -211,13 +209,12 @@ class CrewController extends Controller
 
 
     public function UploadSingleImage($img, $path)
-
     {
         // return  $img;
         if (isset($img)) {
             $name  = uniqid() . $img->getClientOriginalName();
             $extension  = $img->getClientOriginalExtension();
-            $arr = array('jpg', 'png', 'jpeg', 'TIFF');
+            $arr = array('jpg', 'png', 'jpeg', 'PNG', 'JPEG', 'JPG', 'TIFF');
             if (in_array($extension, $arr)) {
 
                 $save_path       = public_path($path);
@@ -231,25 +228,43 @@ class CrewController extends Controller
         }
     }
 
+    // '/assets/profile-images/'
+    public function RemoveFile($file_name, $path)
+    {
+        try {
+            if (file_exists(public_path() . $path . '/' . $file_name)) {
+                $res = unlink(public_path() . $path . '/' . $file_name);
+                return $res;
+            } else {
+                return '404';
+            }
+        } catch (\Exception $e) {
+            return  $e->getMessage();
+        }
+    }
+
     public function update_crew(Request $request)
     {
 
-        //dd($request->all());
+        // dd($request->all());
 
 
         try {
-
 
             $emailaddress = $request->emailaddress;
             $secondarynumber = $request->secondarynumber;
             $boatpreference = $request->boatpreference;
             $memnumber = $request->memnumber;
+
             $firstaid = ($request->firstaid == "on") ? "Y" : '';
-            $keyholder = $request->keyholder;
             $skipper = ($request->skipper == "on") ? "Y" : '';
             $rya = ($request->rya == "on") ? "Y" : '';
             // echo $request->optin;
             $optin = ($request->optin == "on") ? "Y" : '';
+            $cba = ($request->cba == "on") ? "Y" : '';
+            $iwa = ($request->iwa == "on") ? "Y" : '';
+
+            //  dd($request->rya == "on");
             $privilege = $request->privilege;
             $keyholder = $request->keyholder;
             $traveltime = $request->traveltime;
@@ -263,6 +278,7 @@ class CrewController extends Controller
             // $old_password = $request->old_password;
             // $password = $request->password;
             $confirmpassword = $request->confirmpassword;
+
             if (isset($password)) {
                 if ($password != $confirmpassword) {
                     return redirect()->back()->withErrors(['msg' => 'Confirm Password Does Not Match']);
@@ -270,16 +286,35 @@ class CrewController extends Controller
                 $password = Hash::make($password);
             } else {
                 $user = Crew::WHERE('id', $crewid)->get()->toArray();
-                $password = $user[0]['pswd'];
+                if (!empty($user) && isset($user[0]['pswd'])) {
+                    $password = $user[0]['pswd'];
+                } else {
+                    $password = Hash::make($request->password);
+                }
             }
+
 
             if ($request->has('profileImage')) {
                 //path will be after choosing any directory inside public folder
                 $path =  $this->UploadSingleImage($request->file('profileImage'), 'assets/profile-images');
+
+
+                if ($path == 'File Extension Error' || $path == 'Image Found Empty') {
+                    return redirect()->back()->withErrors(['image' => 'Please Select a Suitable Image']);
+                } else {
+                    $user = Crew::WHERE('id', $crewid)->get()->toArray();
+                    if (!empty($user) && isset($path)) {
+                        $image = $user[0]['profile'];
+                        $result = $this->RemoveFile($image, '/assets/profile-images/');
+
+                        //  dd($result);
+                    }
+                }
             } else {
                 $user = Crew::WHERE('id', $crewid)->get()->toArray();
                 $path = $user[0]['profile'];
             }
+
 
             $crew_data = array(
                 "fullname" => $fullname,
@@ -293,6 +328,9 @@ class CrewController extends Controller
                 "keyholder" => $keyholder,
                 "skipper" => $skipper,
                 "optin" => $optin,
+                "rya" => $rya,
+                "cba" => $cba,
+                "iwa" => $iwa,
                 'profile' => $path,
                 // "traveltime" => $traveltime,
                 "privilege" => $privilege
@@ -302,15 +340,19 @@ class CrewController extends Controller
 
             $update = Crew::WHERE('id', $crewid)->UPDATE($crew_data);
 
+            //dd($update);
+
             if ($update) {
                 $messages[] =  "User Data Updated Successfully";
-
                 return redirect('/crew-members')->with(['status' => true, 'msg' => 'Success ! Member Updated']);
             } else {
                 return redirect('/crew-members')->with(['status' => false, 'msg' => 'Error ! Member Update Failed']);
             }
         } catch (\Exception $e) {
-            return redirect('/crew-members');
+
+            dd($e->getMessage());
+
+            return redirect('/crew-members')->with(['status' => false, 'msg' => $e->getMessage()]);
         }
 
 
@@ -366,7 +408,6 @@ class CrewController extends Controller
     }
 
 
-
     public function update_my_account(Request $request)
     {
         try {
@@ -396,14 +437,28 @@ class CrewController extends Controller
             // $user_type = $request->user_type;
             //$crew = Crew::findOrFail($id);
             $password = $request->password;
-            // $old_password = $request->old_password;
+            $old_password = $request->old_password;
             // $password = $request->password;
             $confirmpassword = $request->confirmpassword;
+
+
             if (isset($password)) {
                 if ($password != $confirmpassword) {
                     return redirect()->back()->withErrors(['msg' => 'Confirm Password Does Not Match']);
                 }
-                $password = Hash::make($password);
+
+                if (isset($old_password)) {
+                    $user = User::WHERE('id', $crewid)->get();
+                    if (!empty($user)) {
+                        if (Hash::check($old_password, $user[0]->password)) {
+                            $password = Hash::make($password);
+                        } else {
+                            return redirect()->back()->withErrors(['msg' => 'Old Password Does not Match']);
+                        }
+                    }
+                } else {
+                    return redirect()->back()->withErrors(['msg' => 'Enter Old password']);
+                }
             } else {
                 $user = Crew::WHERE('id', $crewid)->get()->toArray();
                 $password = $user[0]['pswd'];
@@ -412,6 +467,18 @@ class CrewController extends Controller
             if ($request->has('profileImage')) {
                 //path will be after choosing any directory inside public folder
                 $path =  $this->UploadSingleImage($request->file('profileImage'), 'assets/profile-images');
+                if ($path == 'File Extension Error' || $path == 'Image Found Empty') {
+
+                    return redirect()->back()->withErrors(['image' => 'Please Select a Suitable Image']);
+                } else {
+                    $user = Crew::WHERE('id', $crewid)->get()->toArray();
+                    if (!empty($user) && isset($path)) {
+                        $image = $user[0]['profile'];
+                        $result = $this->RemoveFile($image, '/assets/profile-images/');
+                      
+                        //  dd($result);
+                    }
+                }
             } else {
                 $user = Crew::WHERE('id', $crewid)->get()->toArray();
                 $path = $user[0]['profile'];

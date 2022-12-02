@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ActivityItem;
 use Illuminate\Http\Request;
 use Session;
+
 class ActivityItemController extends Controller
 {
     /**
@@ -27,7 +28,7 @@ class ActivityItemController extends Controller
         if (isset($img)) {
             $name  = uniqid() . $img->getClientOriginalName();
             $extension  = $img->getClientOriginalExtension();
-            $arr = array('jpg', 'png', 'jpeg', 'TIFF');
+            $arr = array('jpg', 'png', 'jpeg', 'PNG', 'JPEG', 'JPG', 'TIFF');
             if (in_array($extension, $arr)) {
 
                 $save_path       = public_path($path);
@@ -72,17 +73,17 @@ class ActivityItemController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
+        //dd($request->all());
 
 
-        // $this->validate(request(), [
-        //     'activityname' => 'required',
-        //     'activitytype' => 'required',
-        //     'minimumcrew' => 'required',
-        //     'role_id' => 'required',
-        //     'rgbcolor' => 'required',
-        //     'activitypicture' => 'required'
-        // ]);
+        $this->validate(request(), [
+            'activityname' => 'required',
+            'activitytype' => 'required',
+            'activitycapacity' => 'required',
+            'minimumcrew' => 'required',
+            'rgbcolor' => 'required',
+            'activitypicture' => 'required'
+        ]);
 
         if ($request->has('activitypicture')) {
             //path will be after choosing any directory inside public folder
@@ -130,9 +131,12 @@ class ActivityItemController extends Controller
      * @param  \App\Models\ActivityItem  $activityItem
      * @return \Illuminate\Http\Response
      */
-    public function edit(ActivityItem $activityItem)
+    public function edit($id)
     {
-        //
+        $items = ActivityItem::findorFail($id);
+        if (!empty($items)) {
+            return view('pages/activity-items-edit')->with('items', $items);
+        }
     }
 
     /**
@@ -144,7 +148,50 @@ class ActivityItemController extends Controller
      */
     public function update(Request $request, ActivityItem $activityItem)
     {
-        //
+        // dd($request->all());
+
+        $this->validate(request(), [
+            'activityname' => 'required',
+            'activitytype' => 'required',
+            'activitycapacity' => 'required',
+            'minimumcrew' => 'required',
+            'rgbcolor' => 'required',
+        ]);
+
+        if ($request->has('activitypicture')) {
+            //path will be after choosing any directory inside public folder
+            $path =  $this->UploadSingleImage($request->file('activitypicture'), 'assets/activity-images');
+            if ($path == 'File Extension Error' || $path == 'Image Found Empty') {
+                return redirect()->back()->withErrors(['image' => 'Please Select a Suitable Image']);
+            }
+        } else {
+
+            $image = $activityItem->Where('id', $request->update_id)->get();
+            // dd($image[0]->activitypicture);
+
+            if (!empty($image) && isset($image[0]->activitypicture)) {
+                $path = $image[0]->activitypicture;
+            } else {
+                $path = NULL;
+            }
+        }
+
+        $data = array(
+            "activityname" => $request->activityname,
+            "activitytype" => $request->activitytype,
+            "activitycapacity" => $request->activitycapacity,
+            "minimumcrew" => $request->minimumcrew,
+            "rgbcolor" => $request->rgbcolor,
+            "activitypicture" => $path
+        );
+
+        $result = $activityItem->Where('id', $request->update_id)->update($data);
+
+        if ($result) {
+            return redirect('/activity-items')->with(['status' => true, 'msg' => 'Success ! Activity Updded']);
+        } else {
+            return redirect('/activity-items')->with(['status' => false, 'msg' => 'Erorr ! Activity Update Failed']);
+        }
     }
 
     /**

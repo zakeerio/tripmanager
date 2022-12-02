@@ -23,9 +23,11 @@ class ActivityController extends Controller
 
     public function index()
     {
+
         $pagetitle = "All Activities";
         $trips = Trip::paginate(250);
-        //  dd($trips);
+
+       // dd($trips);
         return view('pages/all-activities')->with("trips", $trips)->with('tripcrews')->with('pagetitle', $pagetitle);
     }
 
@@ -49,15 +51,16 @@ class ActivityController extends Controller
             ->where('tripcrews.confirmed', '=', 'Y')
             ->where('trips.departuredate', '>=', date('Y-m-d'))
             ->orderBy('departuredate')
-            ->select('trips.*')->get()->toArray();
+            ->select('trips.*')->get();
 
+            
         if (!empty($upcoming_activites)) {
-            $upcoming_activites = count($upcoming_activites);
+            $upcoming_activites = $upcoming_activites;
         } else {
-            $upcoming_activites = 0;
+            $upcoming_activites = [];
         }
 
-
+       
         // dd(count($upcoming_activites));
 
         updateuseroldpasswordtonew($request);
@@ -65,7 +68,7 @@ class ActivityController extends Controller
         $pagetitle = "Dashboard";
 
         $datefrom = date('Y-m-01');
-        $dateto = date('Y-m-d');
+        $dateto = date('Y-m-31');
 
         $month_logins = DB::table('login_history')->whereBetween('created_at', [date('Y-m-01'), date('Y-m-31')])->where('user_id', Session::get('user_id'))->select(DB::raw('COUNT(created_at) as logins'))->get();
 
@@ -86,8 +89,6 @@ class ActivityController extends Controller
         } else {
             $year_logins = 0;
         }
-
-
 
         $current_month_crews = Trip::whereBetween('departuredate', [$datefrom, $dateto])->get();
 
@@ -189,27 +190,27 @@ class ActivityController extends Controller
                 //dd($request->all());
                 return redirect('/all-activities-create')->with(['status' => true, 'msg' => 'Success! Activity Created']);
             } else {
-               dd($request->all());
+                dd($request->all());
                 return redirect('/all-activities-create')->with(['status' => false, 'msg' => 'Error! Activity Failed']);
             }
-
         } catch (\Exception $e) {
             dd($e->getMessage());
         }
     }
-    public function view($id)
+    public function view($id,$status)
     {
+      
         $pagetitle = "Edit Activity";
         $activity = Trip::findOrFail($id);
         // dd($activity);
         if ($activity) {
-            return view('pages/all-activities-view')->with("activity", $activity)->with('tripcrews')->with('pagetitle', $pagetitle);
+            return view('pages/all-activities-view')->with("activity", $activity)->with('tripcrews')->with('pagetitle', $pagetitle)->with('status',$status);
         } else {
             abort(403);
         }
     }
 
-    public function edit($id)
+    public function edit($id,$status)
     {
 
         if ($this->Access()) {
@@ -220,7 +221,7 @@ class ActivityController extends Controller
         $activity = Trip::findOrFail($id);
         // sdd($activity);
         if ($activity) {
-            return view('pages/all-activities-edit')->with("activity", $activity)->with('tripcrews')->with('pagetitle', $pagetitle);
+            return view('pages/all-activities-edit')->with("activity", $activity)->with('tripcrews')->with('pagetitle', $pagetitle)->with('status',$status);
         } else {
             abort(403);
         }
@@ -229,7 +230,7 @@ class ActivityController extends Controller
     public function update(Request $request)
     {
         // dd($request->all());
-
+        
         if ($this->Access()) {
 
             return redirect('/dashboard')->with(['status' => false, 'msg' => 'Access Denied !']);
@@ -282,16 +283,17 @@ class ActivityController extends Controller
 
     public function myactivities()
     {
+
+        //dd(Session::get('initials'));
         $pagetitle = "My Activities";
 
-                // $trips = Trip::paginate(50);
-
+        // $trips = Trip::paginate(50);
 
         $trips = DB::table('trips')
             ->join('tripcrews', 'tripnumber', '=', 'trips.id')
             ->select('tripcrews.*', 'trips.*')
             ->where('crewcode', '=', Session::get('initials'))
-            ->where('confirmed', '=', 'Y')
+            ->where('available', '=', 'Y')
             ->paginate(50);
 
         // dd($trips);
