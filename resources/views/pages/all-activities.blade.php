@@ -115,9 +115,22 @@
 
                                                 </div>
                                             </td>
-                                            <td>{{$trip->departuredate }}</td>
+                                            <td>{{ date('D d M Y H:i A', strtotime($trip->departuredate)) }}</td>
+
                                             <td width="250px">{!! ($trip->crewnotes) !!}</td>
-                                            <td>{{ $trip->duration }} hours</td>
+                                            <td>
+                                                @php
+                                                    $durationhours = 0;
+                                                    if($trip->duration){
+                                                        $durationex = explode(':',$trip->duration);
+                                                        $minutes = ($durationex[1] > '00' ) ? $durationex[1]/60  : 0;
+                                                        $hours = $minutes+$durationex[0];
+
+                                                        $durationhours = number_format((float)$hours, 2, '.', '');
+                                                    }
+                                                @endphp
+
+                                                {{ $durationhours }} hours</td>
                                             <td>{{ $crewneeded }} Crew Members</td>
                                             <td width="120">
                                                 @if($tripcrewscount > 0)
@@ -195,7 +208,7 @@
                                                         <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a>
                                                         @else
 
-                                                        <a class="dropdown-item" href="{{ route('all-activities-edit',[$trip->id,$isReady]) }}">Edit</a>
+                                                        <a class="dropdown-item" href="{{ route('all-activities-edit',[$trip->id]) }}">Edit</a>
                                                         <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete</a>
                                                         @endif
 

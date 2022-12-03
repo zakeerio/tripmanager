@@ -53,14 +53,14 @@ class ActivityController extends Controller
             ->orderBy('departuredate')
             ->select('trips.*')->get();
 
-            
+
         if (!empty($upcoming_activites)) {
             $upcoming_activites = $upcoming_activites;
         } else {
             $upcoming_activites = [];
         }
 
-       
+
         // dd(count($upcoming_activites));
 
         updateuseroldpasswordtonew($request);
@@ -70,6 +70,7 @@ class ActivityController extends Controller
         $datefrom = date('Y-m-01');
         $dateto = date('Y-m-31');
 
+        // $month_logins = DB::table('login_history')->whereBetween('created_at', [date('Y-m-01'), date('Y-m-31')])->where('user_id', Session::get('user_id'))->select(DB::raw('COUNT(created_at) as logins'))->get();
         $month_logins = DB::table('login_history')->whereBetween('created_at', [date('Y-m-01'), date('Y-m-31')])->where('user_id', Session::get('user_id'))->select(DB::raw('COUNT(created_at) as logins'))->get();
 
         // dd($month_logins[0]->logins);
@@ -80,6 +81,7 @@ class ActivityController extends Controller
             $month_logins = 0;
         }
 
+        // $year_logins = DB::table('login_history')->whereBetween('created_at', [date('Y-01-01'), date('Y-12-30')])->where('user_id', Session::get('user_id'))->select(DB::raw('COUNT(created_at) as logins'))->get();
         $year_logins = DB::table('login_history')->whereBetween('created_at', [date('Y-01-01'), date('Y-12-30')])->where('user_id', Session::get('user_id'))->select(DB::raw('COUNT(created_at) as logins'))->get();
 
         //dd($year_logins);
@@ -197,20 +199,20 @@ class ActivityController extends Controller
             dd($e->getMessage());
         }
     }
-    public function view($id,$status)
+    public function view($id)
     {
-      
+
         $pagetitle = "Edit Activity";
         $activity = Trip::findOrFail($id);
         // dd($activity);
         if ($activity) {
-            return view('pages/all-activities-view')->with("activity", $activity)->with('tripcrews')->with('pagetitle', $pagetitle)->with('status',$status);
+            return view('pages/all-activities-view')->with("activity", $activity)->with('tripcrews')->with('pagetitle', $pagetitle);
         } else {
             abort(403);
         }
     }
 
-    public function edit($id,$status)
+    public function edit($id)
     {
 
         if ($this->Access()) {
@@ -221,7 +223,7 @@ class ActivityController extends Controller
         $activity = Trip::findOrFail($id);
         // sdd($activity);
         if ($activity) {
-            return view('pages/all-activities-edit')->with("activity", $activity)->with('tripcrews')->with('pagetitle', $pagetitle)->with('status',$status);
+            return view('pages/all-activities-edit')->with("activity", $activity)->with('tripcrews')->with('pagetitle', $pagetitle);
         } else {
             abort(403);
         }
@@ -230,7 +232,7 @@ class ActivityController extends Controller
     public function update(Request $request)
     {
         // dd($request->all());
-        
+
         if ($this->Access()) {
 
             return redirect('/dashboard')->with(['status' => false, 'msg' => 'Access Denied !']);

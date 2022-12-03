@@ -62,8 +62,12 @@
                                     <select id="ActivityType" class="form-control" name="activitytype">
 
                                         <option disabled>Please Select...</option>
-                                        <?php
+                                        <option value="type-1">Type-1</option>
+                                        <option value="type-2">Type-2</option>
+                                        <option value="type-3">Type-3</option>
 
+                                         <?php
+                                         /*
 
                                         $boats = \App\Models\ActivityItem::all();
                                         if (!empty($boats)) {
@@ -78,6 +82,7 @@
                                             <option value="">No Activity Found</option>
                                         <?php
                                         }
+                                        */
 
                                         ?>
 

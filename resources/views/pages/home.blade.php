@@ -55,8 +55,8 @@
 
                         <p>
                             <span>{{ $month_logins }}</span>
-                            Logins <br> This Month
-                            <!-- Hours Logged <br> This Month -->
+                            {{-- Logins <br> This Month --}}
+                            Hours Logged <br> This Month
 
                         </p>
 
@@ -72,8 +72,8 @@
 
                         <p>
                             <span>{{$year_logins}}</span>
-                            Logins <br> This Year
-                            <!-- Hours Logged <br> This Year -->
+                            {{-- Logins <br> This Year --}}
+                            Hours Logged <br> This Year
 
                         </p>
 
@@ -92,7 +92,7 @@
                 <div class="col-md-12 dashboard-heading-desc">
                     <div class="row">
                         <div class="col-lg-8 col-md-12 upcoming_activities">
-                            <h4>Your upcoming activities <span class="circle-green">{{$upcoming_activites}}</span></h4>
+                            <h4>Your upcoming activities <span class="circle-green">{{$upcoming_activites->count()}}</span></h4>
                             <p class="col-12-descrapction">Below is a list of the upcoming activities you are scheduled to attend within the next 30 days.</p>
                         </div>
 
@@ -138,12 +138,24 @@
                                             <div class="table-div">
                                                 {{-- {{ $crewneeded." ___ ". $tripcrewscount }} --}}
                                                 <img src="{{ asset('assets/images/Picture-01.png') }}" class="img-fluid" alt="">
-                                                <p> <b>{{$trip->boa}}</b> <br> #{{ $trip->id }} </p>
+                                                <p> <b>{{$trip->boatname}}</b> <br> #{{ $trip->id }} </p>
                                             </div>
                                         </td>
-                                        <td>{{ date('D d M y H:i A', strtotime($trip->duration)) }}</td>
+                                        <td>{{ date('D d M Y H:i A', strtotime($trip->departuredate)) }}</td>
                                         <td width="250px">{!! ($trip->crewnotes) !!}</td>
-                                        <td>{{ $trip->duration }} hours</td>
+                                        <td>
+                                            @php
+                                                $durationhours = 0;
+                                                if($trip->duration){
+                                                    $durationex = explode(':',$trip->duration);
+                                                    $minutes = ($durationex[1] > '00' ) ? $durationex[1]/60  : 0;
+                                                    $hours = $minutes+$durationex[0];
+
+                                                    $durationhours = number_format((float)$hours, 2, '.', '');
+                                                }
+                                            @endphp
+
+                                            {{ $durationhours }} hours</td>
                                         <td>{{ $crewneeded }} Crew Members</td>
                                         <td width="120">
                                             @if($tripcrewscount > 0)

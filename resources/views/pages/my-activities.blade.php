@@ -44,23 +44,36 @@
 
                             <tr class="">
 
-                                <td>
+                                <td width="180px">
 
                                     <div class="table-div">
 
 
                                         <img src="./assets/images/Picture-01.png" class="img-fluid" alt="">
 
-                                        <p> <b>{{$trip->boatname}}</b> </p>
+                                        <p> <b>{{$trip->boatname}}</b><br> #{{$trip->id}} </p>
 
                                     </div>
 
-                                <td>{{$trip->departuredate}}</td>
-                                <td width="250px">{{$trip->crewnotes }}</td>
-                                <td>{{ $trip->duration }} hours</td>
+                                <td>{{ date('D d M Y H:i A', strtotime($trip->departuredate)) }}</td>
+
+                                <td width="170px">{{$trip->crewnotes }}</td>
+                                <td>
+                                    @php
+                                        $durationhours = 0;
+                                        if($trip->duration){
+                                            $durationex = explode(':',$trip->duration);
+                                            $minutes = ($durationex[1] > '00' ) ? $durationex[1]/60  : 0;
+                                            $hours = $minutes+$durationex[0];
+
+                                            $durationhours = number_format((float)$hours, 2, '.', '');
+                                        }
+                                    @endphp
+
+                                    {{ $durationhours }} hours</td>
                                 <td>{{ $trip->crewneeded }} {{$trip->id}}</td>
 
-                                <td>
+                                <td width="150px">
                                     <?php
 
                                     $i = 0;
@@ -82,7 +95,7 @@
                                 </td>
 
 
-                                <td width="250px">
+                                <td width="160px">
 
 
                                     <?php

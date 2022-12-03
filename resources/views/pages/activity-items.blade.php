@@ -129,7 +129,7 @@
                                             <span></span>
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="BtnAction">
-                                            <a class="dropdown-item" href="{{ route('activity-items-edit') }}">Edit</a>
+                                            <a class="dropdown-item" href="{{ route('activity-items-edit', $i['id']) }}">Edit</a>
                                             <a class="dropdown-item" href="#">Delete</a>
                                         </div>
                                     </div>

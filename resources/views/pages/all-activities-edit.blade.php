@@ -87,9 +87,15 @@
                     </div>
                     <div class="col-lg-4 col-md-12 ready">
                         <lable>ACTIVITY STATUS</lable>
+                        @php
+                            $crewneeded = ($activity->crewneeded == null ) ? 0 : $activity->crewneeded;
+                            $activitycrewscount = ($activity->tripcrews->count() <= 0 ) ? '0' : $activity->tripcrews->count();
+
+                            $check_crewcount = ($crewneeded < $activitycrewscount) ? true : false; // echo $check_crewcount."<br>";
+                        @endphp
                         <?php
 
-                        if ($status == 'Ready') {
+                        if ($check_crewcount == true) {
                         ?>
                             <span class="active-btn-ready"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Read</span>
                         <?php

@@ -34,7 +34,7 @@ Route::group(['middleware' => 'auth'], function () {
     //     return view('pages/home');
     // })->name('dashboard');
 
-  
+
 
     Route::get('/all-activities', [ActivityController::class, 'index'])->name('all-activities');
 
@@ -48,9 +48,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/all-activites-add', [ActivityController::class, 'add'])->name('all-activites-add');
 
-    Route::get('/all-activities-edit/{id}/{status}', [ActivityController::class, 'edit'])->name('all-activities-edit');
+    Route::get('/all-activities-edit/{id}', [ActivityController::class, 'edit'])->name('all-activities-edit');
 
-    Route::any('/all-activities-view/{id}/{status}', [ActivityController::class, 'view'])->name('all-activities-view');
+    Route::any('/all-activities-view/{id}', [ActivityController::class, 'view'])->name('all-activities-view');
 
     Route::any('/all-activites-update', [ActivityController::class, 'update'])->name('all-activites-update');
 
@@ -113,7 +113,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
-  
+
     Route::get('/activity-items-create', function () {
         $pagetitle = "Activity Item Create";
 
@@ -122,7 +122,7 @@ Route::group(['middleware' => 'auth'], function () {
         }
 
         return view('pages/activity-items-create')->with('pagetitle', $pagetitle);
-        
+
     })->name('activity-items-create');
 
     Route::get('/activity-items-edit', function () {
@@ -130,7 +130,7 @@ Route::group(['middleware' => 'auth'], function () {
     })->name('activity-items-edit');
 
 
-    
+
     Route::any('/item-activity-update', [ActivityItemController::class, 'update'])->name('item-activity-update');
     Route::any('/activity-items-edit/{id}', [ActivityItemController::class, 'edit'])->name('activity-items-edit');
     Route::any('/activity-items', [ActivityItemController::class, 'index'])->name('activity-items');
