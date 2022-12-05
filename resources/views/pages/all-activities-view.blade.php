@@ -72,19 +72,36 @@
                     </div>
                     <div class="col-lg-4 col-md-12 ready">
                         <lable>ACTIVITY STATUS</lable>
+                        @php
+                            $crewneeded = ($activity->crewneeded == null ) ? 0 : $activity->crewneeded;
+                            // $tripcrewscount = ($trip->tripcrews->count() <= 0 ) ? '0' : $trip->tripcrews->count();
+                            $tripcrewscount_arr = DB::table('trips')
+                            ->join('tripcrews', 'trips.id', '=', 'tripcrews.tripnumber')
+                            ->where('tripcrews.confirmed', '=', 'Y')
+                            ->where('trips.departuredate', '>=', date('Y-m-d'))
+                            ->where('trips.id', '=', $activity->id)
+                            ->distinct()
+                            ->select('tripcrews.*')->get();
+
+                            // dd($upcoming_activitescount->count());
+                            $tripcrewscount = $tripcrewscount_arr->count();
+
+                            $check_crewcount = ($crewneeded < $tripcrewscount) ? true : false; // echo $check_crewcount."<br>";
+
+                            @endphp
                         <?php
 
-                        if ($status == 'Ready') {
+                        if ($check_crewcount == true) {
                         ?>
                             <span class="active-btn-ready"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Read</span>
                         <?php
                         } else {
                         ?>
-                           
-                            
+
+
                                <span class="active-btn-2"><img src="{{ asset('assets/images/Button-Crew-Needed.png') }}" class="img-fluid" alt=""> Crew Needed</span>
-                              
-                            
+
+
                         <?php
                         }
 

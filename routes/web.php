@@ -5,6 +5,8 @@ use App\Http\Controllers\CrewController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ActivityItemController;
+use App\Http\Controllers\DocumentCategoryController;
+use App\Http\Controllers\DocumentsController;
 use App\Http\Middleware\Authenticate;
 
 
@@ -34,7 +36,7 @@ Route::group(['middleware' => 'auth'], function () {
     //     return view('pages/home');
     // })->name('dashboard');
 
-  
+
 
     Route::get('/all-activities', [ActivityController::class, 'index'])->name('all-activities');
 
@@ -48,9 +50,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/all-activites-add', [ActivityController::class, 'add'])->name('all-activites-add');
 
-    Route::get('/all-activities-edit/{id}/{status}', [ActivityController::class, 'edit'])->name('all-activities-edit');
+    Route::get('/all-activities-edit/{id}', [ActivityController::class, 'edit'])->name('all-activities-edit');
 
-    Route::any('/all-activities-view/{id}/{status}', [ActivityController::class, 'view'])->name('all-activities-view');
+    Route::any('/all-activities-view/{id}', [ActivityController::class, 'view'])->name('all-activities-view');
 
     Route::any('/all-activites-update', [ActivityController::class, 'update'])->name('all-activites-update');
 
@@ -59,11 +61,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::any('/all-activities-available-unavailable/{id}', [ActivityController::class, 'available_unavailable'])->name('all-activities-available-unavailable');
 
 
-    Route::get('/analytics', function () {
-        $pagetitle = "Analytics";
+    Route::any('/analytics', [ActivityController::class, 'analytics_view'])->name('analytics');
 
-        return view('pages/analytics')->with('pagetitle', $pagetitle);
-    })->name('analytics');
+    Route::any('/analytics-view', [ActivityController::class, 'delete'])->name('analytics-view');
 
     Route::get('/contact', function () {
         $pagetitle = "Contact";
@@ -85,7 +85,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/crew-members-edit/{id}', [CrewController::class, 'edit'])->name('crew-members-edit');
 
-    Route::any('/update-account', [CrewController::class, 'update_crew'])->name('update-account');
+    Route::any('/update-crew-account', [CrewController::class, 'update_crew'])->name('update-crew-account');
 
     Route::any('/delete-crew/{id}', [CrewController::class, 'delete_crew'])->name('delete-crew');
 
@@ -95,13 +95,6 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
-    Route::get('/documents', function () {
-        return view('pages/documents');
-    })->name('documents');
-
-    Route::get('/upload-document', function () {
-        return view('pages/upload-document');
-    })->name('upload-document');
 
 
     Route::get('/settings', function () {
@@ -113,7 +106,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
-  
+
     Route::get('/activity-items-create', function () {
         $pagetitle = "Activity Item Create";
 
@@ -122,7 +115,6 @@ Route::group(['middleware' => 'auth'], function () {
         }
 
         return view('pages/activity-items-create')->with('pagetitle', $pagetitle);
-        
     })->name('activity-items-create');
 
     Route::get('/activity-items-edit', function () {
@@ -130,11 +122,27 @@ Route::group(['middleware' => 'auth'], function () {
     })->name('activity-items-edit');
 
 
-    
+
     Route::any('/item-activity-update', [ActivityItemController::class, 'update'])->name('item-activity-update');
     Route::any('/activity-items-edit/{id}', [ActivityItemController::class, 'edit'])->name('activity-items-edit');
     Route::any('/activity-items', [ActivityItemController::class, 'index'])->name('activity-items');
     Route::any('/item-activity-add', [ActivityItemController::class, 'store'])->name('item-activity-add');
+
+
+
+
+
+
+    Route::any('/create-document-category', [DocumentCategoryController::class, 'index'])->name('create-document-category');
+    Route::any('/create-document-add', [DocumentCategoryController::class, 'store'])->name('create-document-add');
+
+
+    Route::get('/documents', [DocumentsController::class, 'index'])->name('documents');
+    Route::any('/documents-save/{id}', [DocumentsController::class, 'store'])->name('documents-save');
+    Route::any('/documents-download/{name}', [DocumentsController::class, 'download'])->name('documents-download');
+    Route::any('/documents-delete/{id}', [DocumentsController::class, 'destroy'])->name('documents-delete');
+
+
 
     // Route::get('/permissions', function () {
     //     return view('pages/roles-permissions');

@@ -54,9 +54,8 @@
                         <img src="{{ asset('assets/images/2.png') }}" class="img-box" alt="">
 
                         <p>
-                            <span>{{ $month_logins }}</span>
-                            Logins <br> This Month
-                            <!-- Hours Logged <br> This Month -->
+                            <span>{{ $month_hours }}</span>
+                            Hours Logged <br> This Month
 
                         </p>
 
@@ -71,9 +70,9 @@
                         <img src="{{ asset('assets/images/3.png') }}" class="img-box" alt="">
 
                         <p>
-                            <span>{{$year_logins}}</span>
-                            Logins <br> This Year
-                            <!-- Hours Logged <br> This Year -->
+                            <span>{{$year_hours}}</span>
+
+                            Hours Logged <br> This Year
 
                         </p>
 
@@ -92,7 +91,7 @@
                 <div class="col-md-12 dashboard-heading-desc">
                     <div class="row">
                         <div class="col-lg-8 col-md-12 upcoming_activities">
-                            <h4>Your upcoming activities <span class="circle-green">{{$upcoming_activites}}</span></h4>
+                            <h4>Your upcoming activities <span class="circle-green">{{$upcoming_activites->count()}}</span></h4>
                             <p class="col-12-descrapction">Below is a list of the upcoming activities you are scheduled to attend within the next 30 days.</p>
                         </div>
 
@@ -106,7 +105,7 @@
                 <div class="col-md-12">
                     <div class="teck-table">
 
-                        <table class="rwd-table" id="datatables1">
+                        <table class="rwd-table table" id="datatables1">
                             <thead>
                                 <tr>
                                     <th class="th-heading">Activity</th>
@@ -122,11 +121,22 @@
 
                             <tbody>
 
-                                @forelse ($trips as $trip )
+                                @forelse ($upcoming_activites as $trip )
 
                                     @php
                                     $crewneeded = ($trip->crewneeded == null ) ? 0 : $trip->crewneeded;
-                                    $tripcrewscount = ($trip->tripcrews->count() <= 0 ) ? '0' : $trip->tripcrews->count();
+                                    // $tripcrewscount = ($trip->tripcrews->count() <= 0 ) ? '0' : $trip->tripcrews->count();
+                                    $tripcrewscount_arr = DB::table('trips')
+                                    ->join('tripcrews', 'trips.id', '=', 'tripcrews.tripnumber')
+                                    ->where('tripcrews.crewcode', '=', SESSION::get('initials'))
+                                    ->where('tripcrews.confirmed', '=', 'Y')
+                                    ->where('trips.departuredate', '>=', date('Y-m-d'))
+                                    ->where('trips.id', '=', $trip->id)
+                                    ->distinct()
+                                    ->select('tripcrews.*')->get();
+
+                                    // dd($upcoming_activitescount->count());
+                                    $tripcrewscount = $tripcrewscount_arr->count();
 
                                     $check_crewcount = ($crewneeded < $tripcrewscount) ? true : false; // echo $check_crewcount."<br>";
 
@@ -138,16 +148,30 @@
                                             <div class="table-div">
                                                 {{-- {{ $crewneeded." ___ ". $tripcrewscount }} --}}
                                                 <img src="{{ asset('assets/images/Picture-01.png') }}" class="img-fluid" alt="">
-                                                <p> <b>{{$trip->boa}}</b> <br> #{{ $trip->id }} </p>
+                                                <p> <b>{{$trip->boatname}}</b> <br> #{{ $trip->id }} </p>
                                             </div>
                                         </td>
-                                        <td>{{ date('D d M y H:i A', strtotime($trip->duration)) }}</td>
+                                        <td>{{ date('D d M y H:i A', strtotime($trip->departuredate)) }}</td>
                                         <td width="250px">{!! ($trip->crewnotes) !!}</td>
-                                        <td>{{ $trip->duration }} hours</td>
+                                        <td>
+                                            <?php
+                                            $durationhours = 0;
+                                            ?>
+                                            @php
+                                                if($trip->duration){
+                                                    $durationex = explode(':',$trip->duration);
+                                                    $minutes = ($durationex[1] > '00' ) ? $durationex[1]/60  : 0;
+                                                    $hours = $minutes+$durationex[0];
+
+                                                    $durationhours = number_format((float)$hours, 2, '.', '');
+                                                }
+                                            @endphp
+
+                                            {{ $durationhours }} hours</td>
                                         <td>{{ $crewneeded }} Crew Members</td>
                                         <td width="120">
                                             @if($tripcrewscount > 0)
-                                                @foreach ($trip->tripcrews as $tripcrewitem )
+                                                @foreach ($tripcrewscount_arr as $tripcrewitem )
                                                     {{ $tripcrewitem->crewcode }},
                                                     {{-- {!! ( ($tripcrewscount % 3 == 0)) ? '<br>' : "" !!} --}}
                                                 @endforeach
@@ -181,7 +205,7 @@
                                                 <div class="dropdown-menu" aria-labelledby="BtnAction">
 
                                                     @if(Session::get('role')=='crewmember')
-                                                    <a class="dropdown-item" href="{{ route('all-activities-view', $trip->id) }}">View</a>
+                                                    <a class="dropdown-item" href="{{ route('all-activities-view', $trip->id) }}">View Activity</a>
 
                                                     <?php
 
@@ -206,9 +230,9 @@
 
                                                     <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a>
                                                     @else
-                                                    <a class="dropdown-item" href="{{ route('all-activities-view', $trip->id) }}">View</a>
-                                                    <a class="dropdown-item" href="{{ route('all-activities-edit', $trip->id) }}">Edit</a>
-                                                    <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete</a>
+                                                    <a class="dropdown-item" href="{{ route('all-activities-view', $trip->id) }}">View Activity</a>
+                                                    <a class="dropdown-item" href="{{ route('all-activities-edit', $trip->id) }}">Edit Activity</a>
+                                                    <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete Activity</a>
                                                     @endif
 
                                                 </div>
