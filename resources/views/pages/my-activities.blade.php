@@ -51,27 +51,26 @@
 
                                         <img src="./assets/images/Picture-01.png" class="img-fluid" alt="">
 
-                                        <p> <b>{{$trip->boatname}}</b><br> #{{$trip->id}} </p>
+                                        <p> <b>{{$trip->boatname}}</b> <br> #{{ $trip->id }} </p>
 
                                     </div>
 
-                                <td>{{ date('D d M Y H:i A', strtotime($trip->departuredate)) }}</td>
-
-                                <td width="170px">{{$trip->crewnotes }}</td>
+                                <td>{{$trip->departuredate}}</td>
+                                <td width="250px">{{$trip->crewnotes }}</td>
                                 <td>
-                                    @php
-                                        $durationhours = 0;
-                                        if($trip->duration){
-                                            $durationex = explode(':',$trip->duration);
-                                            $minutes = ($durationex[1] > '00' ) ? $durationex[1]/60  : 0;
-                                            $hours = $minutes+$durationex[0];
+                                            @php
+                                                $durationhours = 0;
+                                                if($trip->duration){
+                                                    $durationex = explode(':',$trip->duration);
+                                                    $minutes = ($durationex[1] > '00' ) ? $durationex[1]/60  : 0;
+                                                    $hours = $minutes+$durationex[0];
 
-                                            $durationhours = number_format((float)$hours, 2, '.', '');
-                                        }
-                                    @endphp
+                                                    $durationhours = number_format((float)$hours, 2, '.', '');
+                                                }
+                                            @endphp
 
-                                    {{ $durationhours }} hours</td>
-                                <td>{{ $trip->crewneeded }} {{$trip->id}}</td>
+                                            {{ $durationhours }} hours</td>
+                                <td>{{ ($trip->crewneeded > 0 ) ? $trip->crewneeded : 0  }} </td>
 
                                 <td width="150px">
                                     <?php
@@ -79,7 +78,7 @@
                                     $i = 0;
                                     $initials = Session::get('initials');
 
-                                    $members = \App\Models\Tripcrew::where(['tripnumber' => $trip->id])->get();
+                                    $members = \App\Models\Tripcrew::where(['tripnumber' => $trip->id])->where('crewcode', $initials)->get();
 
                                     if (!empty($members)) {
 
@@ -128,11 +127,11 @@
                                                  <a class="dropdown-item" href="#">Delete</a> -->
 
                                             @if(Session::get('role') !='crewmember')
-                                            <a class="dropdown-item" href="{{ route('all-activities-view', $trip->id) }}">View</a>
-                                            <a class="dropdown-item" href="{{ route('all-activities-edit', $trip->id) }}">Edit</a>
-                                            <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete</a>
+                                            <a class="dropdown-item" href="{{ route('all-activities-view', $trip->id) }}">View Activity</a>
+                                            <a class="dropdown-item" href="{{ route('all-activities-edit', $trip->id) }}">Edit Activity</a>
+                                            <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete Activity</a>
                                             @else
-                                            <a class="dropdown-item" href="{{ route('all-activities-view', $trip->id) }}">View</a>
+                                            <a class="dropdown-item" href="{{ route('all-activities-view', $trip->id) }}">View Activity</a>
                                             <a class="dropdown-item" href="#">Not Available</a>
                                             @endif
 
@@ -278,7 +277,7 @@
         </div>
     </div>
 
-    @if ($trips->hasPages())
+    {{-- @if ($trips->hasPages() == true) --}}
 
     <div class="row btm-row">
         {{-- {{ $trips->links() }} --}}
@@ -311,7 +310,7 @@
 
     </div>
 
-    @endif
+    {{-- @endif --}}
 
 </div>
 </div>

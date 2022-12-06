@@ -74,10 +74,21 @@
                         <lable>ACTIVITY STATUS</lable>
                         @php
                             $crewneeded = ($activity->crewneeded == null ) ? 0 : $activity->crewneeded;
-                            $activitycrewscount = ($activity->tripcrews->count() <= 0 ) ? '0' : $activity->tripcrews->count();
+                            // $tripcrewscount = ($trip->tripcrews->count() <= 0 ) ? '0' : $trip->tripcrews->count();
+                            $tripcrewscount_arr = DB::table('trips')
+                            ->join('tripcrews', 'trips.id', '=', 'tripcrews.tripnumber')
+                            ->where('tripcrews.confirmed', '=', 'Y')
+                            ->where('trips.departuredate', '>=', date('Y-m-d'))
+                            ->where('trips.id', '=', $activity->id)
+                            ->distinct()
+                            ->select('tripcrews.*')->get();
 
-                            $check_crewcount = ($crewneeded < $activitycrewscount) ? true : false; // echo $check_crewcount."<br>";
-                        @endphp
+                            // dd($upcoming_activitescount->count());
+                            $tripcrewscount = $tripcrewscount_arr->count();
+
+                            $check_crewcount = ($crewneeded < $tripcrewscount) ? true : false; // echo $check_crewcount."<br>";
+
+                            @endphp
                         <?php
 
                         if ($check_crewcount == true) {
