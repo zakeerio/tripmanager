@@ -260,7 +260,7 @@ class ActivityController extends Controller
                 }
             });
 
-            dd($this->tripnumber);
+            // dd($this->tripnumber);
 
             if (isset($this->tripnumber) && $this->check1 && $this->check2 && $this->check3) {
 
@@ -270,7 +270,8 @@ class ActivityController extends Controller
                 return redirect('/all-activities-create')->with(['status' => false, 'msg' => 'Error! Activity Failed']);
             }
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            return redirect('/all-activities-create')->with(['status' => false, 'msg' => $e->getMessage()]);
+            // dd($e->getMessage());
         }
     }
     public function view($id)
