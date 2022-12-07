@@ -6,6 +6,8 @@ use App\Models\Documents;
 use App\Models\DocumentCategory;
 use Illuminate\Http\Request;
 use DB;
+use League\CommonMark\Node\Block\Document;
+use Response;
 
 class DocumentsController extends Controller
 {
@@ -40,6 +42,20 @@ class DocumentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function download($file)
+    {
+
+        //echo $file;
+        $path = public_path() . "/assets/documents/" . $file;
+        if (file_exists($path)) {
+            return Response::download($path);
+        } else {
+            return redirect()->back()->with(['status' => false, 'msg' => 'File Does Not Exist']);
+        }
+        //  dd($path);
+
+    }
     public function create()
     {
         //
@@ -136,10 +152,9 @@ class DocumentsController extends Controller
             } else {
                 return redirect('/documents')->with(['status' => false, 'msg' => 'Failed ! File Upload Failed']);
             }
-            
         } catch (\Exception $e) {
-           // dd($e->getMessage());
-           return redirect('/documents')->with(['status' => false, 'msg' => 'Contact Your Developer']);
+            // dd($e->getMessage());
+            return redirect('/documents')->with(['status' => false, 'msg' => 'Contact Your Developer']);
         }
 
         // dd($move);
@@ -185,8 +200,31 @@ class DocumentsController extends Controller
      * @param  \App\Models\Documents  $documents
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Documents $documents)
+    public function destroy(Documents $documents, $id)
     {
         //
+        try {
+            $file = Documents::findOrFail($id);
+
+            if (!empty($file)) {
+                if (isset($file->file_name)) {
+                    $path = public_path() . "/assets/documents/" . $file->file_name;
+                    if (file_exists($path)) {
+                        unlink($path);
+                    }
+
+                    $d = Documents::whereId($id)->delete();
+                    //  dd($d);
+                    return redirect()->back()->with(['status' => true, 'msg' => 'Success ! File Deleted']);
+                } else {
+                    return redirect()->back()->with(['status' => true, 'msg' => 'Success ! File Deleted']);
+                }
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with(['status' => true, 'msg' => 'Success ! File Deleted']);
+
+            //  dd($e->getMessage());
+
+        }
     }
 }

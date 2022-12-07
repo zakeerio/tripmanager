@@ -25,7 +25,7 @@ a {text-decoration:none !important  ;}
 /**col1**/
 .menu-item { padding-top: 20px;}
 .menu-item a:active { color: green; }
-.menu-item span { font-size: 18px; font-family: poppins; padding-left: 10px; color: #a5a5a5; }
+.menu-item span { font-size: 18px; font-family: poppins; padding-left: 10px; color: #a5a5a5; width: 100%; }
 .heading-menu { font-family: poppins; font-size: 16px; color: #c7c7c7; text-align: left; font-weight: 600; padding-left: 45px; }
 
 

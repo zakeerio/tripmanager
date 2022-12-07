@@ -13,6 +13,7 @@
 
                 <p class="sub-pages-text">This is a list of all the scheduled activities in the Activity Manager system..
                 </p>
+                <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
 
 
                 @if (Session::has('status'))
@@ -129,7 +130,7 @@
                                             <span></span>
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="BtnAction">
-                                            <a class="dropdown-item" href="{{ route('activity-items-edit', $i['id']) }}">Edit</a>
+                                            <a class="dropdown-item" href="{{ route('activity-items-edit',$i['id']) }}">Edit</a>
                                             <a class="dropdown-item" href="#">Delete</a>
                                         </div>
                                     </div>
@@ -150,7 +151,7 @@
 
 
 
-        <div class="row btm-row">
+        {{-- <div class="row btm-row">
 
             <div class="col-md-6 teck-showin-text">Showing <b>1-50</b> of <b>46</b> available activities.</div>
 
@@ -179,7 +180,7 @@
 
             </div>
 
-        </div>
+        </div> --}}
 
 
     </div>

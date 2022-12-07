@@ -56,6 +56,7 @@
 
         <h1>Activities - View an existing activity</h1>
         <p>Please amend any details below and click save changes to submit</p>
+        <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
 
     </div>
 
@@ -72,26 +73,9 @@
                     </div>
                     <div class="col-lg-4 col-md-12 ready">
                         <lable>ACTIVITY STATUS</lable>
-                        @php
-                            $crewneeded = ($activity->crewneeded == null ) ? 0 : $activity->crewneeded;
-                            // $tripcrewscount = ($trip->tripcrews->count() <= 0 ) ? '0' : $trip->tripcrews->count();
-                            $tripcrewscount_arr = DB::table('trips')
-                            ->join('tripcrews', 'trips.id', '=', 'tripcrews.tripnumber')
-                            ->where('tripcrews.confirmed', '=', 'Y')
-                            ->where('trips.departuredate', '>=', date('Y-m-d'))
-                            ->where('trips.id', '=', $activity->id)
-                            ->distinct()
-                            ->select('tripcrews.*')->get();
-
-                            // dd($upcoming_activitescount->count());
-                            $tripcrewscount = $tripcrewscount_arr->count();
-
-                            $check_crewcount = ($crewneeded < $tripcrewscount) ? true : false; // echo $check_crewcount."<br>";
-
-                            @endphp
                         <?php
 
-                        if ($check_crewcount == true) {
+                        if ($status == 'Ready') {
                         ?>
                             <span class="active-btn-ready"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Read</span>
                         <?php
@@ -99,7 +83,7 @@
                         ?>
 
 
-                               <span class="active-btn-2"><img src="{{ asset('assets/images/Button-Crew-Needed.png') }}" class="img-fluid" alt=""> Crew Needed</span>
+                            <span class="active-btn-2"><img src="{{ asset('assets/images/Button-Crew-Needed.png') }}" class="img-fluid" alt=""> Crew Needed</span>
 
 
                         <?php
@@ -221,8 +205,7 @@
 
                 $unavailable = array();
                 $confirmed = array();
-                $avaiable = array();
-
+                $available_member = array();
 
                 foreach ($activity->tripcrews as $key => $crewmember) {
 
@@ -239,18 +222,23 @@
                     if (!empty($crew_name) && isset($crew_name['fullname'])) {
                         //  echo $crew_name[0] . "<br>";
 
+                        $randome_no_1 = uniqid();
+                        $randome_no_2 = uniqid();
+
                         $fullname = $crew_name["fullname"];
                         if ($crewmember->confirmed == 'Y') {
-                            $confirmed[] = "<input type='text' class='form-control' id=drag" . $crewmember->id . " draggable='true' ondragstart='drag(event)' name='' value='" . $crewmember->crewcode . " : " . $fullname . "' disabled>";
+                            $confirmed[] = "<input type='text' class='form-control' id=drag" . $randome_no_1 . " draggable='true' ondragstart='drag(event)' name='confirmed[]' value='" . $crewmember->crewcode . " : " . $fullname . "' disabled>";
                         }
 
                         if ($crewmember->available == 'Y') {
-                            $available[] = "<input type='text' class='form-control' id=drag" . $crewmember->id . " draggable='true' ondragstart='drag(event)' name='' value='" . $crewmember->crewcode . " : " . $fullname . "' disabled>";
+                            $available[] = "<input type='text' class='form-control' id=drag" .  $randome_no_2 . " draggable='true' ondragstart='drag(event)' name='available[]' value='" . $crewmember->crewcode . " : " . $fullname . "' disabled>";
+                            $available_member[] = $crew_name['initials'];
                         }
 
-                        if ($crewmember->isskipper == 'Y') {
-                            $unavailable[] = "<input type='text' class='form-control' id=drag" . $crewmember->id . " draggable='true' ondragstart='drag(event)' name=''value='" . $crewmember->crewcode . " : " . $fullname . "' disabled>";
-                        }
+
+                        // if ($crewmember->isskipper == 'Y') {
+                        //     $unavailable[] = "<input type='text' class='form-control' id=drag" . $crewmember->id . " draggable='true' ondragstart='drag(event)' name=''value='" . $crewmember->crewcode . " : " . $fullname . "' disabled>";
+                        // }
                 ?>
 
                 <?php
@@ -299,10 +287,13 @@
 
                     <div id="div1" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="unavailable[]">
                         <?php
-
+                        $unavailable = DB::table('crews')->whereNotIn('initials', array_unique($available_member))->get();
+                        // echo "<pre>";
+                        // print_r($unavailable);
                         if (!empty($unavailable)) {
                             foreach ($unavailable as $ua) {
-                                echo $ua;
+                                $randome_no_3 = uniqid();
+                                echo  "<input type='text' class='form-control' id=drag" . $randome_no_3 . " draggable='true' ondragstart='drag(event)' name='unavailable[]' value='" . $ua->initials . " : " . $ua->fullname . "' disabled>";
                             }
                         } else {
                             echo "No UnAvailable Found";

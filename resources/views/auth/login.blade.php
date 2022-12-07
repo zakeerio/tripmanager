@@ -106,7 +106,7 @@
                                     @csrf
 
                                     <div class="form-row">
-                                      <div class="form-group col-xl-6 col-lg-12">
+                                      <div class="form-group col-xl-12 col-lg-12">
                                         <label for="user-name"> USER NAME</label>
                                         <input id="user-name" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
 
@@ -117,7 +117,7 @@
                                             @enderror
                                       </div>
 
-                                      {{-- <div class="form-group col-xl-6 col-lg-12">
+                                      {{-- <div class="form-group col-xl-12 col-lg-12">
                                         <label for="ActivityItem">Email Address</label>
                                         <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
@@ -130,7 +130,7 @@
                                       </div> --}}
 
 
-                                      <div class="form-group col-xl-6 col-lg-12">
+                                      <!-- <div class="form-group col-xl-6 col-lg-12">
                                           <label for="usertype">Login As</label>
                                             <select name="user_type" class="form-control @error('user_type') is-invalid @enderror " id="usertype">
                                                 <option value="">Select Role</option>
@@ -155,7 +155,7 @@
                                                 </span>
                                             @enderror
 
-                                      </div>
+                                      </div> -->
 
                                       <div class="form-group col-xl-12 col-lg-12">
                                           <label for="ActivityTime">PASSWORD</label>

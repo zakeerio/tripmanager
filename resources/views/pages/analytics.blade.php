@@ -16,6 +16,7 @@
             <div class="col-lg-8 col-md-12">
                 <h1>Analysis</h1>
                 <p class="sub-pages-text">This is a list all analysis results.</p>
+                <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
             </div>
 
             <div class="col-lg-4 col-md-6">
@@ -56,8 +57,6 @@
                                 <th class="th-heading">Crew</th>
                                 <th></th>
 
-
-
                             </tr>
                         </thead>
 
@@ -66,22 +65,10 @@
                             @forelse ($trips as $trip )
 
                             @php
-                                    $crewneeded = ($trip->crewneeded == null ) ? 0 : $trip->crewneeded;
-                                    // $tripcrewscount = ($trip->tripcrews->count() <= 0 ) ? '0' : $trip->tripcrews->count();
-                                    $tripcrewscount_arr = DB::table('trips')
-                                    ->join('tripcrews', 'trips.id', '=', 'tripcrews.tripnumber')
-                                    ->where('tripcrews.crewcode', '=', SESSION::get('initials'))
-                                    ->where('tripcrews.confirmed', '=', 'Y')
-                                    ->where('trips.departuredate', '>=', date('Y-m-d'))
-                                    ->where('trips.id', '=', $trip->id)
-                                    ->distinct()
-                                    ->select('tripcrews.*')->get();
+                            $crewneeded = ($trip->crewneeded == null ) ? 0 : $trip->crewneeded;
+                            $tripcrewscount = ($trip->tripcrews->count() <= 0 ) ? '0' : $trip->tripcrews->count();
 
-                                    // dd($upcoming_activitescount->count());
-                                    $tripcrewscount = $tripcrewscount_arr->count();
-
-                                    $check_crewcount = ($crewneeded < $tripcrewscount) ? true : false; // echo $check_crewcount."<br>";
-
+                                $check_crewcount = ($crewneeded < $tripcrewscount) ? true : false; // echo $check_crewcount."<br>";
                                     @endphp
 
                                     <tr class="{{ ($check_crewcount == false) ? 'teck-danger' : "" }}">
@@ -145,13 +132,13 @@
                                         }
 
                                         ?>
-                                        <td width="250px">{!! ($trip->crewnotes) !!}</td>
+                                        <td width="250">{!! ($trip->crewnotes) !!}</td>
 
                                         <td>{{ $total_month_hours}} hours</td>
                                         <td>{{ $crewneeded }} Crew Members</td>
                                         <td width="120">
                                             @if($tripcrewscount > 0)
-                                            @foreach ($tripcrewscount_arr as $tripcrewitem )
+                                            @foreach ($trip->tripcrews as $tripcrewitem )
 
 
                                             @if($tripcrewitem->available=='Y')

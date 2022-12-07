@@ -25,7 +25,7 @@
                                 system.</p>
                         </div>
                         <div class="col-lg-4 col-md-12 ready">
-                            <label>ACTIVITY STATUS</label>
+                            <lable>ACTIVITY STATUS</lable>
                             <span class="active-btn-ready"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}"
                                     class="img-fluid" alt=""> Activity Ready</span>
                         </div>

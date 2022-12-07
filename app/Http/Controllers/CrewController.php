@@ -108,6 +108,7 @@ class CrewController extends Controller
             abort(403);
         }
 
+       // dd($crew_member);
         return view('pages/my-account')->with("user", $user)->with('crew_member', $crew_member)->with('pagetitle', $pagetitle);
     }
 
@@ -333,7 +334,8 @@ class CrewController extends Controller
                 "iwa" => $iwa,
                 'profile' => $path,
                 // "traveltime" => $traveltime,
-                "privilege" => $privilege
+                "privilege" => $privilege,
+                "faexpire" => $request->faexpiry
             );
 
             // dd($crew_data);
@@ -412,16 +414,23 @@ class CrewController extends Controller
     {
         try {
 
-            //dd($request->all());
+            // dd($request->all());
+
+            $newpasswordupdated = false;
 
             $emailaddress = $request->emailaddress;
             $secondarynumber = $request->secondarynumber;
             $boatpreference = $request->boatpreference;
             $memnumber = $request->memnumber;
+            $primary_no = $request->primary_no;
+            $faexpire = $request->faexpire;
+            // dd($request->faexpire);
 
             $firstaid = ($request->firstaid == "on") ? "Y" : '';
             $keyholder = $request->keyholder;
             $skipper = ($request->skipper == "on") ? "Y" : '';
+
+            // dd($skipper);
             $rya = ($request->rya == "on") ? "Y" : '';
             $cba = ($request->cba == "on") ? "Y" : '';
             $iwa = ($request->iwa == "on") ? "Y" : '';
@@ -430,9 +439,11 @@ class CrewController extends Controller
             $privilege = $request->privilege;
             $keyholder = $request->keyholder;
             $traveltime = $request->traveltime;
-
             $fullname = $request->name;
+
+            // dd($fullname);
             $crewid = $request->id;
+            $user_id = $request->user_id;
             //$mobile = $request->mobile;
             // $user_type = $request->user_type;
             //$crew = Crew::findOrFail($id);
@@ -448,10 +459,20 @@ class CrewController extends Controller
                 }
 
                 if (isset($old_password)) {
-                    $user = User::WHERE('id', $crewid)->get();
+                    $user = User::WHERE('id', $user_id)->get();
                     if (!empty($user)) {
                         if (Hash::check($old_password, $user[0]->password)) {
                             $password = Hash::make($password);
+
+                            $user->password = $password;
+
+                            // dd($user);
+                            $user->save();
+
+                            // dd($usersave);
+
+                            $newpasswordupdated = true;
+
                         } else {
                             return redirect()->back()->withErrors(['msg' => 'Old Password Does not Match']);
                         }
@@ -475,7 +496,7 @@ class CrewController extends Controller
                     if (!empty($user) && isset($path)) {
                         $image = $user[0]['profile'];
                         $result = $this->RemoveFile($image, '/assets/profile-images/');
-                      
+
                         //  dd($result);
                     }
                 }
@@ -488,6 +509,7 @@ class CrewController extends Controller
                 "fullname" => $fullname,
                 'pswd' => $password,
                 "emailaddress" => $emailaddress,
+                "mobile" => $primary_no,
                 "secondarynumber" => $secondarynumber,
                 "boatpreference" => $boatpreference,
                 "memnumber" => $memnumber,
@@ -500,26 +522,34 @@ class CrewController extends Controller
                 "iwa" => $iwa,
                 'profile' => $path,
                 // "traveltime" => $traveltime,
-                "privilege" => $privilege
+                "privilege" => $privilege,
+                'faexpire' => $faexpire,
             );
 
             // dd($crew_data);
 
             $update = Crew::WHERE('id', $crewid)->UPDATE($crew_data);
 
-            // dd($update);
-            if ($update) {
-                $messages[] =  "User Data Updated Successfully";
+            $user = Crew::WHERE('id', $crewid)->get();
 
+            if(!empty($user) && isset($user[0]->profile)){
+                $path = $user[0]->profile;
+                $request->session()->put('profile', $path);
+            }
+            // dd($update, $newpasswordupdated);
+
+            if ($update || $newpasswordupdated == true) {
+                $messages[] =  "User Data Updated Successfully";
                 return redirect('/my-account')->with(['status' => true, 'msg' => 'Success ! Account Updated']);
             } else {
                 return redirect('/my-account')->with(['status' => false, 'msg' => 'Error ! Account Update Failed']);
             }
         } catch (\Exception $e) {
-            return redirect('/my-account');
+
+            return redirect('/my-account')->with(['status' => false, 'msg' => 'Error ! Account Update Failed']);
+            //dd($e->getMessage());
+
+            //return redirect('/my-account');
         }
     }
 }
-
-
-// 125,135,254,46,89,142,179,228,234,235,245,247,252,26,196,180,159,193,144,117,108,104,

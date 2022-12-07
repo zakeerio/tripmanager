@@ -21,8 +21,9 @@
                                 system.</p>
                         </div>
                         <div class="col-lg-4 col-md-12 ready">
-                            <label>ACTIVITY STATUS</label>
-                            <span class="active-btn-ready"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Ready</span>
+                            <lable>ACTIVITY STATUS</lable>
+                            <span class="active-btn-ready"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}"
+                                    class="img-fluid" alt=""> Activity Ready</span>
                         </div>
                     </div>
                 </div>
@@ -34,27 +35,39 @@
                         <div class="form-row">
                             <div class="form-group col-xl-4 col-lg-6">
                                 <label for="ActivityNumber">ACTIVITY NUMBER</label>
-                                <input type="text" name="tripnumber" class="form-control" id="ActivityNumber" value="{{ $activity->tripnumber }}">">
+                                <input type="text" name="tripnumber" class="form-control" id="ActivityNumber"
+                                    value="{{ $activity->tripnumber }}">">
                             </div>
                             <div class="form-group col-xl-4 col-lg-6">
                                 <label for="ActivityItem">SELECT ACTIVITY ITEM</label>
 
                                 <select id="ActivityItem" name="boatname" class="form-control">
                                     <option value="Seth Ellis">Seth Ellis</option>
-                                    <option value="Python" {{ $activity->boatname == 'Python' ? 'selected' : '' }}>Python</option>
-                                    <option value="John Varley" {{ $activity->boatname == 'John Varley' ? 'selected' : '' }}>John Varley</option>
-                                    <option value="Hugh Henshall" {{ $activity->boatname == 'Hugh Henshall' ? 'selected' : '' }}>Hugh Henshall</option>
-                                    <option value="Canal talks" {{ $activity->boatname == 'Canal talks' ? 'selected' : '' }}>Canal talks</option>
-                                    <option value="Dawn Rose" {{ $activity->boatname == 'Dawn Rose' ? 'selected' : '' }}>Dawn Rose</option>
-                                    <option value="Madeline" {{ $activity->boatname == 'Madeline' ? 'selected' : '' }}>Madeline</option>
-                                    <option value="James Brindley" {{ $activity->boatname == 'James Brindley' ? 'selected' : '' }}>James Brindley</option>
-                                    <option value="Shop" {{ $activity->boatname == 'Shop' ? 'selected' : '' }}>Shop</option>
+                                    <option value="Python" {{ $activity->boatname == 'Python' ? 'selected' : '' }}>Python
+                                    </option>
+                                    <option value="John Varley"
+                                        {{ $activity->boatname == 'John Varley' ? 'selected' : '' }}>John Varley</option>
+                                    <option value="Hugh Henshall"
+                                        {{ $activity->boatname == 'Hugh Henshall' ? 'selected' : '' }}>Hugh Henshall
+                                    </option>
+                                    <option value="Canal talks"
+                                        {{ $activity->boatname == 'Canal talks' ? 'selected' : '' }}>Canal talks</option>
+                                    <option value="Dawn Rose" {{ $activity->boatname == 'Dawn Rose' ? 'selected' : '' }}>
+                                        Dawn Rose</option>
+                                    <option value="Madeline" {{ $activity->boatname == 'Madeline' ? 'selected' : '' }}>
+                                        Madeline</option>
+                                    <option value="James Brindley"
+                                        {{ $activity->boatname == 'James Brindley' ? 'selected' : '' }}>James Brindley
+                                    </option>
+                                    <option value="Shop" {{ $activity->boatname == 'Shop' ? 'selected' : '' }}>Shop
+                                    </option>
                                 </select>
 
                             </div>
                             <div class="form-group col-xl-4 col-lg-12">
                                 <label for="ActivityDate">ACTIVITY DATE</label>
-                                <input type="date" name="departuredate" class="form-control" id="ActivityDate" value="{{ $activity->departuredate }}">
+                                <input type="date" name="departuredate" class="form-control" id="ActivityDate"
+                                    value="{{ $activity->departuredate }}">
 
                             </div>
                         </div>
@@ -63,15 +76,18 @@
                         <div class="form-row">
                             <div class="form-group col-xl-4 col-lg-6">
                                 <label for="ActivityTime">ACTIVITY TIME</label>
-                                <<input type="time" name="departuretime" class="form-control" id="ActivityTime" value="{{ $activity->departuretime }}">
+                                <<input type="time" name="departuretime" class="form-control" id="ActivityTime"
+                                    value="{{ $activity->departuretime }}">
                             </div>
                             <div class="form-group col-xl-4 col-lg-6">
                                 <label for="ActivityDuration">ACTIVITY DURATION</label>
-                                <input type="number" name="duration" class="form-control" id="ActivityDuration" value="{{ $activity->duration }}">
+                                <input type="number" name="duration" class="form-control" id="ActivityDuration"
+                                    value="{{ $activity->duration }}">
                             </div>
                             <div class="form-group col-xl-4 col-lg-12">
                                 <label for="BriefDescription">BRIEF DESCRIPTION</label>
-                                <input type="text" name="destination" class="form-control" id="BriefDescription" value="{{ $activity->destination }}">
+                                <input type="text" name="destination" class="form-control" id="BriefDescription"
+                                    value="{{ $activity->destination }}">
                             </div>
                         </div>
 
@@ -83,19 +99,23 @@
                             </div>
                             <div class="form-group col-xl-4 col-lg-12">
                                 <label for="NumberCrewNeeded">NUMBER OF CREW NEEDED</label>
-                                <input type="text" name="crewneeded" class="form-control" id="NumberCrewNeeded" value="{{ $activity->crewneeded }}">
+                                <input type="text" name="crewneeded" class="form-control" id="NumberCrewNeeded"
+                                    value="{{ $activity->crewneeded }}">
                             </div>
                             <div class="form-group col-xl-5 col-lg-13">
                                 <label for="TripCost">TRIP COST(£)</label>
-                                <input type="number" name="tripcost" class="form-control" id="TripCost" value="{{ $activity->cost }}">
+                                <input type="number" name="tripcost" class="form-control" id="TripCost"
+                                    value="{{ $activity->cost }}">
                             </div>
                             <div class="form-group col-xl-6 col-lg-14">
                                 <label for="BalanceDue">BALANCE DUE(£)</label>
-                                <input type="number" name="tripbalance" class="form-control" id="BalanceDue" value="{{ $activity->balance }}">
+                                <input type="number" name="tripbalance" class="form-control" id="BalanceDue"
+                                    value="{{ $activity->balance }}">
                             </div>
                             <div class="form-group col-xl-7 col-lg-15">
                                 <label for="PassengerCout">PASSENGER COUNT</label>
-                                <input type="number" name="passengers" class="form-control" id="PassengerCout" value="{{ $activity->passengers }}">
+                                <input type="number" name="passengers" class="form-control" id="PassengerCout"
+                                    value="{{ $activity->passengers }}">
                             </div>
                         </div>
 
@@ -140,7 +160,8 @@
                 </div>
 
                 <div class="teck-btn">
-                    <button type="submit" class="btn btn-primary"> <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Update Activity</button>
+                    <button type="submit" class="btn btn-primary"> <img src="{{ asset('assets/images/save.svg') }}"
+                            class="img-fluid"> Update Activity</button>
                 </div>
                 </form>
 

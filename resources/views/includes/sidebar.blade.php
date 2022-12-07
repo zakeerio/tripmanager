@@ -30,14 +30,15 @@
         </a>
     </li>
 
-    <li class="menu-item {{ (Request::path() == 'documents') ?  'active' : '' }}">
-        <a href="{{ route('documents') }}">
+    <li class="menu-item {{ (Request::path() == 'documents') || (Request::path() == "create-document-category") ?  'active' : '' }}">
+        <a href="{{ route('/documents') }}">
             <img src="{{ asset('assets/images/Documents.png') }}" class="img-fluid" alt="">
             <span>Documents</span>
         </a>
     </li>
 
-    @if (Session::get('role')!='crewmember')
+
+    @if (Session::get('role') !='crewmember')
     <li class="menu-item {{ (Request::path() == 'crew-members') ?  'active' : '' }}">
         <a href="{{ route('crew-members') }}">
             <img src="{{ asset('assets/images/Crew.png') }}" class="img-fluid" alt="">
@@ -45,17 +46,13 @@
         </a>
     </li>
 
-    @endif
 
-    @if (Session::get('role')!='crewmember')
-
-    <li class="menu-item {{ (Request::path() == 'activity-items') ?  'active' : '' }}">
+    <li class="menu-item {{ (Request::path() == 'activity-items') || (Request::path() == 'activity-items-create')  ?  'active' : '' }}">
         <a href="{{ route('activity-items') }}">
             <img src="{{ asset('assets/images/Activity-Items.png') }}" class="img-fluid" alt="">
             <span>Activity Items</span>
         </a>
     </li>
-
 
     <li class="menu-item {{ (Request::path() == 'analytics') ?  'active' : '' }}">
         <a href="{{ route('analytics') }}">
@@ -76,19 +73,19 @@
 
     @if (Session::get('role')!='crewmember')
 
-    {{-- <li class="menu-item {{ (Request::path() == 'settings') ?  'active' : '' }}">
+    <!-- <li class="menu-item {{ (Request::path() == 'settings') ?  'active' : '' }}">
         <a href="{{ route('settings') }}">
             <img src="{{ asset('assets/images/Setting.png') }}" class="img-fluid" alt="">
             <span>Settings</span>
         </a>
-    </li> --}}
+    </li> -->
 
-    <li class="menu-item {{ (Request::path() == 'permission') ?  'active' : '' }}">
+    <!-- <li class="menu-item {{ (Request::path() == 'permission') ?  'active' : '' }}">
         <a href="{{ route('permissions') }}">
             <img src="{{ asset('assets/images/Setting.png') }}" class="img-fluid" alt="">
             <span>Permissions</span>
         </a>
-    </li>
+    </li> -->
 
     @endif
 

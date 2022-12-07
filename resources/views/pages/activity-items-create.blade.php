@@ -8,7 +8,7 @@
         <h1>Activity Items - Create a new activity item</h1>
 
         <p class="sub-pages-text">These details will be added to all lcreation pages where an activity is selected.</p>
-
+        <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
 
     </div>
 

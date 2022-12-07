@@ -20,12 +20,12 @@
 
             <ul>
 
-                <li class="notification">
+                <!-- <li class="notification">
                     <span>12</span>
 
                     <a href="#!"><img src="{{ asset('/assets/images/notify.svg'); }}" class="alrt-img" alt=""></a>
 
-                </li>
+                </li> -->
 
                 <li>
 
@@ -39,7 +39,7 @@
 
                         if (file_exists(public_path() . '/assets/profile-images' . '/' . Session::get('profile'))) {
                         ?>
-                            <img src="{{ asset('/assets/profile-images').'/'.Session::get('profile') }}" class="img-fluid" alt="" width="100" height="100">
+                            <img src="{{ asset('/assets/profile-images').'/'.Session::get('profile') }}" class="img-fluid" alt="" width="50" height="50">
                         <?php
                         } else {
                         ?>

@@ -10,20 +10,21 @@
                 <h1>Crew Members</h1>
                 <p class="sub-pages-text">This is a list of all the scheduled activities in the
                     Activity Manager system..</p>
+                    <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
 
                 @if (Session::has('status'))
 
-                    @if(Session::get('status'))
-                    <script>
-                        var msg = "{{Session::get('msg')}}";
-                        ShowToast(msg, 'success');
-                    </script>
-                    @else
-                    <script>
-                        var msg = "{{Session::get('msg')}}";
-                        ShowToast(msg, 'error');
-                    </script>
-                    @endif
+                @if(Session::get('status'))
+                <script>
+                    var msg = "{{Session::get('msg')}}";
+                    ShowToast(msg, 'success');
+                </script>
+                @else
+                <script>
+                    var msg = "{{Session::get('msg')}}";
+                    ShowToast(msg, 'error');
+                </script>
+                @endif
 
                 @endif
 

@@ -14,37 +14,18 @@ class RoleController extends Controller
 
     public function view_roles(Request $request)
     {
-        // dd(Role::all());
-
-
-        $user =      User::WHERE('id', 3)->get();
-
-        //           dd($user[0]['id']);
-        // $permission= Permission::create(['name'=>'view post']);
-
-        $role = Role::Where('name', 'reader')->get();
-
-
-        //     $t = $user->assignRole(['writer']);
-
-
-        //     dd($t);
-
-        //     $superAdmin = User::create([
-        //         'name'=>'SuperAmdin',
-        //         'email'=>'superadmin@gmail.com',
-        //         'username'=>'super@gmail.com',
-        //         'role_id'=>1,
-        //         'password'=>bcrypt('12345'),
-        //     ]);
-
-        //     $role = Role::create(['name' => 'superadmin']);
-        //     $permission = Permission::create(['name' => 'write-artical']);
-        //     $permission->assignRole($role);
-
-        //   $d=  $superAdmin->assignRole($role);
-
-        $permission = Permission::all()->toArray();
+       
         return view('pages/roles-permissions');
+    }
+
+    public function add_role(Request $request){
+       
+        if(isset($request->add_role)){
+
+           $added= Role::CREATE(['name'=>$request->add_role]);
+           if(isset($added->id)){
+                echo json_encode(['status'=>true,'msg'=>'Success ! Role Added']);
+           }
+        }
     }
 }

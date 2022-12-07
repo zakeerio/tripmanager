@@ -9,7 +9,7 @@
                 <h1>All Activities</h1>
                 <p>This is a list of all the scheduled activities in the Activity Manager system..</p>
 
-
+                <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
                 @if (Session::has('status'))
 
                 @if(Session::get('status'))
@@ -40,7 +40,7 @@
                     </div>
 
 
-                    @if(Session::get('user_type')==3)
+                    @if(Session::get('role') != 'crewmember')
                     <div class="teck-btn justify-content-end">
                         <a href="{{ route('all-activities-create') }}"><img src="{{ asset('assets/images/clander icon.png') }}" class="img-fluid">Create
                             Activity</a>
@@ -79,23 +79,11 @@
                                 @forelse ($trips as $trip )
 
                                 @php
-                                    $crewneeded = ($trip->crewneeded == null ) ? 0 : $trip->crewneeded;
-                                    // $tripcrewscount = ($trip->tripcrews->count() <= 0 ) ? '0' : $trip->tripcrews->count();
-                                    $tripcrewscount_arr = DB::table('trips')
-                                    ->join('tripcrews', 'trips.id', '=', 'tripcrews.tripnumber')
-                                    ->where('tripcrews.crewcode', '=', SESSION::get('initials'))
-                                    ->where('tripcrews.confirmed', '=', 'Y')
-                                    ->where('trips.departuredate', '>=', date('Y-m-d'))
-                                    ->where('trips.id', '=', $trip->id)
-                                    ->distinct()
-                                    ->select('tripcrews.*')->get();
-
-                                    // dd($upcoming_activitescount->count());
-                                    $tripcrewscount = $tripcrewscount_arr->count();
+                                $crewneeded = ($trip->crewneeded == null ) ? 0 : $trip->crewneeded;
+                                $tripcrewscount = ($trip->tripcrews->count() <= 0 ) ? '0' : $trip->tripcrews->count();
 
                                     $check_crewcount = ($crewneeded < $tripcrewscount) ? true : false; // echo $check_crewcount."<br>";
-
-                                    @endphp
+                                        @endphp
 
                                         <tr class="{{ ($check_crewcount == false) ? 'teck-danger' : "" }}">
 
@@ -127,28 +115,13 @@
 
                                                 </div>
                                             </td>
-                                            <td>{{ date('D d M Y H:i A', strtotime($trip->departuredate)) }}</td>
-
-                                            <td width="250px">{!! ($trip->crewnotes) !!}</td>
-                                            <td>
-
-                                            @php
-                                                $durationhours = 0;
-                                                if($trip->duration){
-                                                    $durationex = explode(':',$trip->duration);
-                                                    $minutes = ($durationex[1] > '00' ) ? $durationex[1]/60  : 0;
-                                                    $hours = $minutes+$durationex[0];
-
-                                                    $durationhours = number_format((float)$hours, 2, '.', '');
-                                                }
-                                            @endphp
-
-                                            {{ $durationhours }} hours</td>
-
+                                            <td>{{$trip->departuredate }}</td>
+                                            <td width="250">{!! ($trip->crewnotes) !!}</td>
+                                            <td>{{ $trip->duration }} hours</td>
                                             <td>{{ $crewneeded }} Crew Members</td>
                                             <td width="120">
                                                 @if($tripcrewscount > 0)
-                                                @foreach ($tripcrewscount_arr as $tripcrewitem )
+                                                @foreach ($trip->tripcrews as $tripcrewitem )
 
 
                                                 @if($tripcrewitem->available=='Y')
@@ -195,7 +168,7 @@
                                                         <span></span>
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="BtnAction">
-                                                        <a class="dropdown-item" href="{{ route('all-activities-view', [$trip->id]) }}">View Activity</a>
+                                                        <a class="dropdown-item" href="{{ route('all-activities-view', [$trip->id,$isReady]) }}">View</a>
                                                         @if(Session::get('role')=='crewmember')
 
 
@@ -214,6 +187,9 @@
                                                                 $isAvailable = 'Not Available';
                                                                 $route = route('all-activities-available-unavailable', $trip->id);
                                                             }
+                                                        }else{
+                                                            $route='#!';
+                                                            $isAvailable='';
                                                         }
 
 
@@ -222,7 +198,7 @@
                                                         <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a>
                                                         @else
 
-                                                        <a class="dropdown-item" href="{{ route('all-activities-edit',[$trip->id]) }}">Edit</a>
+                                                        <a class="dropdown-item" href="{{ route('all-activities-edit',[$trip->id,$isReady]) }}">Edit</a>
                                                         <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete</a>
                                                         @endif
 

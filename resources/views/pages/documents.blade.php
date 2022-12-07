@@ -9,6 +9,7 @@
     <div class="col-md-7 document_Sec">
         <h1>Documents</h1>
         <p>Here you will find all the relevant CCT Activity documents..</p>
+        <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
         @if (Session::has('status'))
 
         @if(Session::get('status'))
@@ -29,7 +30,7 @@
     @if(Session::get('role')!='crewmember')
     <div class="col-md-5 documents_Sec">
         <div class="teck-btn justify-content-end" id="teck-btn-pag-4">
-            <a href="{{ route('create-document-category') }}"><img src="{{ asset('assets/images/folder.png') }}" class="img-fluid">Create Category</a>
+            <a href="{{ route('/create-document-category') }}"><img src="{{ asset('assets/images/folder.png') }}" class="img-fluid">Create Category</a>
         </div>
     </div>
     @endif
@@ -93,25 +94,29 @@
             ?>
 
                     <div class="col-md-3 box-1" style="height:auto !important;">
-                        <form method="POST" action="{{route('documents-save',$category->id)}}" enctype="multipart/form-data">
+                        <form method="POST" action="{{route('/documents-save',$category->id)}}" enctype="multipart/form-data">
 
                             @csrf
-                            <div class="border-line"><span><?php echo $category->name ?></span>
+                            @if(Session::get('role')!='crewmember')
+                            <div class="row">
+                                <!-- <span><?php echo $category->name ?></span> -->
+                                <!-- <img src="{{ asset('assets/images/document.png') }}" class="document-icon-2"> -->
 
-                                @if(Session::get('role')!='crewmember')
 
-                                <a href="#!">
-                                    <img src="{{ asset('assets/images/document.png') }}" class="document-icon-2">
-                                    <input type="file" class="input-document-file" name="files[]" multiple>
-                                </a>
+                                <div class="col-sm-6 col-xl-6">
+                                    <input type="file" name="files[]" multiple >
+                                </div>
 
-                                <button class="btn btn-danger" type="submit" id="BtnAction">
-                                    Save File
-                                </button>
-                                @endif
+
+                                <div class="col-sm-6 col-xl-6">
+                                    <button class="btn btn-danger" type="submit" id="BtnAction" style="float:right">
+                                        Upload
+                                    </button>
+                                </div>
+
                             </div>
 
-
+                            @endif
                             <?php
 
                             if (!empty($category->GetFiles)) {
@@ -138,9 +143,9 @@
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="BtnAction">
                                                     @if(Session::get('role')!='crewmember')
-                                                    <a class="dropdown-item" href="{{route('documents-delete',$items->id)}}">Delete</a>
+                                                    <a class="dropdown-item" href="{{route('/documents-delete',$items->id)}}">Delete</a>
                                                     @endif
-                                                    <a class="dropdown-item" href="{{route('documents-download',$items->file_name)}}">Download</a>
+                                                    <a class="dropdown-item" href="{{route('/documents-download',$items->file_name)}}">Download</a>
                                                 </div>
                                             </div>
 

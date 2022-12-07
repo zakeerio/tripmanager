@@ -36,7 +36,33 @@
         background-color: #2ecc71;
     }
 
-    input[type=text] {
+    #div1 input[type=text] {
+        cursor: move;
+        /* fallback: no `url()` support or images disabled */
+        cursor: url(images/grab.cur);
+        /* fallback: Internet Explorer */
+        cursor: -webkit-grab;
+        /* Chrome 1-21, Safari 4+ */
+        cursor: -moz-grab;
+        /* Firefox 1.5-26 */
+        cursor: grab;
+        /* W3C standards syntax, should come least */
+    }
+
+    #div3 input[type=text] {
+        cursor: move;
+        /* fallback: no `url()` support or images disabled */
+        cursor: url(images/grab.cur);
+        /* fallback: Internet Explorer */
+        cursor: -webkit-grab;
+        /* Chrome 1-21, Safari 4+ */
+        cursor: -moz-grab;
+        /* Firefox 1.5-26 */
+        cursor: grab;
+        /* W3C standards syntax, should come least */
+    }
+
+    #div3 input[type=text] {
         cursor: move;
         /* fallback: no `url()` support or images disabled */
         cursor: url(images/grab.cur);
@@ -68,7 +94,7 @@
 
         <h1>All Activities - Create</h1>
         <p class="sub-pages-text">Please fill out the information below to create a activity.</p>
-
+        <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
         @if (Session::has('status'))
 
         @if(Session::get('status'))
@@ -97,7 +123,13 @@
                         <h4>Activity Information</h4>
                         <p class="col-12-descrapction">These details will be visible throughout the Activity Manager
                             system.</p>
+
+                            @if($errors->any())
+                            <b style="color:Red">{{$errors->first('duration')}} ! Enter duration in decimal hours (2.5) rather than 2:30</b>
+                            @endif
+
                     </div>
+
                 </div>
             </div>
 
@@ -119,7 +151,7 @@
                                 <option value="">__SELECT__</option>
                                 <?php
 
-                              
+
                                 $boats = \App\Models\ActivityItem::all();
 
                                 if (!empty($boats)) {
@@ -154,7 +186,8 @@
                         </div>
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityDuration">ACTIVITY DURATION</label>
-                            <input type="time" name="duration" class="form-control" id="ActivityDuration">
+
+                            <input type="text" name="duration" class="form-control" id="ActivityDuration" placeholder="Enter duration in decimal hours (2.5) rather than 2:30">
                         </div>
                         <div class="form-group col-xl-4 col-lg-12">
                             <label for="BriefDescription">BRIEF DESCRIPTION</label>

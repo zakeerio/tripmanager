@@ -3,329 +3,332 @@
 @section('content')
 
 
-
-    <div class="row dashboard_col" id="my-account">
-
+<div class="row dashboard_col" id="my-account">
 
 
-        <div class="col-md-12 dashboard_Sec">
 
-            <h1>My Account</h1>
+    <div class="col-md-12 dashboard_Sec">
 
-            <p class="sub-pages-text">This is your user account area, please make sure your information is up to date.</p>
-        </div>
+        <h1>My Account</h1>
 
-        @if (Session::has('success'))
-                    <div class="alert alert-success col-12 mb-2 mt-3">
-                        @foreach (Session::get('success') as $msg )
+        <p class="sub-pages-text">This is your user account area, please make sure your information is up to date.</p>
+        <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
+    </div>
 
-                        <li>{{ $msg }}</li>
+    @if (Session::has('success'))
+    <div class="alert alert-success col-12 mb-2 mt-3">
+        @foreach (Session::get('success') as $msg )
 
-                        @endforeach
-                    </div>
+        <li>{{ $msg }}</li>
 
-                @endif
+        @endforeach
+    </div>
 
-        <div class="col-md-12 activies_table">
+    @endif
 
-            <div class="row activity_col">
+    <div class="col-md-12 activies_table">
 
-                <div class="col-md-12 dashboard-heading-desc">
-                    <div class="col-lg-12 col-md-12 upcoming_activities">
+        <div class="row activity_col">
 
-                        <h4>Your Information</h4>
+            <div class="col-md-12 dashboard-heading-desc">
+                <div class="col-lg-12 col-md-12 upcoming_activities">
 
-                        <p class="col-12-descrapction">You can freely ammend the information below to keep your records up to
-                            date on our system.</p>
+                    <h4>Your Information</h4>
 
-                        @if (Session::has('status'))
+                    <p class="col-12-descrapction">You can freely ammend the information below to keep your records up to
+                        date on our system.</p>
 
-                        @if(Session::get('status'))
-                        <script>
-                            var msg = "{{Session::get('msg')}}";
-                            ShowToast(msg, 'success');
-                        </script>
-                        @else
-                        <script>
-                            var msg = "{{Session::get('msg')}}";
-                            ShowToast(msg, 'error');
-                        </script>
-                        @endif
+                    @if (Session::has('status'))
 
-                        @endif
-                    </div>
+                    @if(Session::get('status'))
+                    <script>
+                        var msg = "{{Session::get('msg')}}";
+                        ShowToast(msg, 'success');
+                    </script>
+                    @else
+                    <script>
+                        var msg = "{{Session::get('msg')}}";
+                        ShowToast(msg, 'error');
+                    </script>
+                    @endif
 
-
+                    @endif
                 </div>
 
 
-                @php
-                    $crewmember = $crew_member;
+            </div>
 
-                @endphp
 
-                <div class="col-md-12">
+            @php
+            $crewmember = $crew_member;
 
-                    <form class="teck-form" action="{{ route('update-my-account') }}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        <div class="form-row">
+            @endphp
 
-                            <div class="form-group col-md-8">
 
-                                <div class="form-row">
+            <div class="col-md-12">
 
-                                    <div class="form-group col-xl-4 col-lg-6">
+                <form class="teck-form" action="{{ route('update-my-account') }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-row">
 
-                                        <label for="Name">NAME</label>
+                        <div class="form-group col-md-8">
 
-                                        <input type="text" class="form-control" id="Name" name="name" value="{{ $user->name }}">
+                            <div class="form-row">
 
-                                        <input type="hidden" name="id" value="{{ $crewmember->id }}">
+                                <div class="form-group col-xl-4 col-lg-6">
 
-                                    </div>
+                                    <label for="Name">NAME</label>
 
+                                    <input type="text" class="form-control" id="Name" name="name" value="{{ $crewmember->fullname }}">
 
+                                    <input type="hidden" name="id" value="{{ $crewmember->id }}">
+                                    <input type="hidden" name="user_id" value="{{ $user->id }}">
 
-                                    <div class="form-group col-xl-4 col-lg-6">
 
-                                        <label for="EmailAddress">EMAIL ADDRESS</label>
+                                </div>
 
-                                        <input type="email" class="form-control" id="EmailAddress" name="emailaddress" value="{{ $crewmember->emailaddress }}">
 
-                                    </div>
 
-                                    <div class="form-group col-xl-4 col-lg-6">
+                                <div class="form-group col-xl-4 col-lg-6">
 
-                                        <label for="PrimaryNumber">PRIMARY NUMBER</label>
+                                    <label for="EmailAddress">EMAIL ADDRESS</label>
 
-                                        <input type="text" class="form-control" id="PrimaryNumber" name="" value="{{ $crewmember->mobile }}">
+                                    <input type="email" class="form-control" id="EmailAddress" name="emailaddress" value="{{ $crewmember->emailaddress }}">
 
-                                    </div>
+                                </div>
 
-                                    <div class="form-group col-xl-4 col-lg-6">
+                                <div class="form-group col-xl-4 col-lg-6">
 
-                                        <label for="SecondaryNumber">SECONDARY NUMBER</label>
+                                    <label for="PrimaryNumber">PRIMARY NUMBER</label>
 
-                                        <input type="text" class="form-control" name="secondarynumber" id="SecondaryNumber" value="{{ $crewmember->secondarynumber }}">
+                                    <input type="text" class="form-control" id="PrimaryNumber" name="primary_no" value="{{ $crewmember->mobile }}">
 
+                                </div>
 
-                                    </div>
+                                <div class="form-group col-xl-4 col-lg-6">
 
+                                    <label for="SecondaryNumber">SECONDARY NUMBER</label>
 
+                                    <input type="text" class="form-control" name="secondarynumber" id="SecondaryNumber" value="{{ $crewmember->secondarynumber }}">
 
-                                    <div class="form-group col-xl-4 col-lg-12">
+                                </div>
 
-                                        <label for="ActivityPreference">ACTIVITY PREFERENCE</label>
 
-                                        <select id="ActivityPreference" name="boatpreference" class="form-control">
 
-                                            <option>Please Select...</option>
+                                <div class="form-group col-xl-4 col-lg-12">
 
-                                            <option selected>Seth Ellis</option>
+                                    <label for="ActivityPreference">ACTIVITY PREFERENCE</label>
 
-                                            <option>...</option>
+                                    <select id="ActivityPreference" name="boatpreference" class="form-control">
+                                        <option>Please Select...</option>
+                                        <?php
 
-                                            <option>...</option>
+                                        $initials = Session::get('initials');
 
-                                        </select>
 
-                                    </div>
+                                        $boats = \App\Models\ActivityItem::all();
 
 
+                                        if (!empty($boats)) {
 
-                                    <div class="col-lg-12 col-md-12 upcoming_activities">
+                                            foreach ($boats as $b) {
+                                        ?>
+                                                <option value="{{$b->activityname}}" {{$b->activityname==$crewmember->boatpreference?'Selected':''}}>{{$b->activityname}}</option>
+                                            <?php
+                                            }
+                                        } else {
+                                            ?>
+                                            <option value="">No Activity Found</option>
+                                        <?php
+                                        }
 
-                                        <h4>System Information</h4>
+                                        ?>
 
-                                        <p class="col-12-descrapction">This information is not editable by the crew member
-                                            and they will not be able to update it themselves.</p>
+                                    </select>
 
-                                    </div>
+                                </div>
 
-                                    <div class="form-group col-xl-8 col-lg-12">
 
-                                        <div class="form-row">
 
+                                <div class="col-lg-12 col-md-12 upcoming_activities">
 
-                                            <div class="form-group col-md-6">
+                                    <h4>System Information</h4>
 
-                                                <label for="Initials">INITIALS</label>
+                                    <p class="col-12-descrapction">This information is not editable by the crew member
+                                        and they will not be able to update it themselves.</p>
 
-                                                <input type="text" class="form-control" id="Initials" value="{{ $crewmember->initials }}" disabled>
+                                </div>
 
-                                            </div>
+                                <div class="form-group col-xl-8 col-lg-12">
 
-                                            <div class="form-group col-md-6">
+                                    <div class="form-row">
 
-                                                <label for="Username">USERNAME</label>
 
-                                                <input type="text" class="form-control" id="Username" name="username" value="{{ $user->username }}" disabled>
+                                        <div class="form-group col-md-6">
 
+                                            <label for="Initials">INITIALS</label>
 
-                                            </div>
+                                            <input type="text" class="form-control" id="Initials" value="{{ $crewmember->initials }}" disabled>
 
+                                        </div>
 
-                                            <div class="form-group col-md-6">
+                                        <div class="form-group col-md-6">
 
-                                                <label for="AccountRole">ACCOUNT ROLE</label>
+                                            <label for="Username">USERNAME</label>
 
-                                                <select id="AccountRole" class="form-control">
-
-                                                    @php
-                                                        $roles = \App\Models\Role::get();
-                                                    @endphp
-                                                    @forelse ($roles as $role)
-                                                    <option value="{{ $role->id }}" {{ $user->role_id == $role->id ? 'selected' : '' }}>
-                                                        {{ $role->name }}
-                                                    </option>
-
-                                                    @empty
-                                                    @endforelse
-
-                                                </select>
-
-                                            </div>
-
-
-
-                                            <div class="form-group col-md-6">
-
-                                                <label for="CctMembershipNumber">CCT MEMBERSHIP NUMBER</label>
-
-                                                <input type="number" class="form-control" id="CctMembershipNumber" name="memnumber" value="{{ $crewmember->memnumber }}">
-
-
-                                            </div>
-
-
-
+                                            <input type="text" class="form-control" id="Username" name="username" value="{{ $user->username }}" disabled>
 
 
                                         </div>
 
+
+                                        <div class="form-group col-md-6">
+
+                                            <label for="AccountRole">ACCOUNT ROLE</label>
+
+
+                                            <input type="text" class="form-control" value="{{Session::get('role') }}" readonly>
+
+                                        </div>
+
+
+
+                                        <div class="form-group col-md-6">
+
+                                            <label for="CctMembershipNumber">CCT MEMBERSHIP NUMBER</label>
+
+                                            <input type="number" class="form-control" id="CctMembershipNumber" name="memnumber" value="{{ $crewmember->memnumber }}">
+
+
+                                        </div>
+
+
+
+
+
                                     </div>
 
-                                    <div class="form-group col-xl-4 col-lg-12">
+                                </div>
 
-                                        <div class="form-group col-md-12">
+                                <div class="form-group col-xl-4 col-lg-12">
 
-                                            <div><label>ADDITIONAL</label></div>
+                                    <div class="form-group col-md-12">
 
-                                            <div class="form-check">
+                                        <div><label>ADDITIONAL</label></div>
 
-                                                <input class="form-check-input" type="checkbox" name="firstaid" {{ !empty($crewmember->firstaid) ? 'checked' : '' }}>
+                                        <div class="form-check">
 
-                                                <label class="form-check-label" for="First Aid">First Aid</label>
+                                            <input class="form-check-input" type="checkbox" id="firstaid" name="firstaid" {{ !empty($crewmember->firstaid) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="firstaid">First Aid</label>
 
-                                            </div>
+                                        </div>
 
-                                            <div class="form-check">
+                                        <div class="form-check">
 
-                                                <input class="form-check-input" type="checkbox" name="cba" {{ !empty($crewmember->cba) ? 'checked' : '' }}>
+                                            <input class="form-check-input" type="checkbox" id="cba" name="cba" {{ !empty($crewmember->cba) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="cba">CBA</label>
 
-                                                <label class="form-check-label" for="CBA">CBA</label>
-
-                                            </div>
-
+                                        </div>
 
 
-                                            <div class="form-check">
 
-                                                <input class="form-check-input" type="checkbox" name="rya" {{ !empty($crewmember->rya) ? 'checked' : '' }}>
-                                                <label class="form-check-label" for="RYA">RYA</label>
+                                        <div class="form-check">
 
-                                            </div>
+                                            <input class="form-check-input" type="checkbox" id="rya" name="rya" {{ !empty($crewmember->rya) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="rya">RYA</label>
 
-                                            <div class="form-check">
+                                        </div>
 
-                                                <input class="form-check-input" type="checkbox" name="keyholder" {{ !empty($crewmember->keyholder) ? 'checked' : '' }}>
-                                                <label class="form-check-label" for="Key Holder">Key Holder</label>
+                                        <div class="form-check">
 
-                                            </div>
+                                            <input class="form-check-input" id="keyholder" type="checkbox" name="keyholder" {{ !empty($crewmember->keyholder) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="keyholder">Key Holder</label>
 
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="iwa" {{ !empty($crewmember->iwa) ? 'checked' : '' }}>
-                                                <label class="form-check-label" for="IWA">IWA</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="skipper" {{ !empty($crewmember->skipper) ? 'checked' : '' }}>
-                                                <label class="form-check-label" for="Skipper">Skipper</label>
-                                            </div>
+                                        </div>
 
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="optin" {{ !empty($crewmember->optin) ? 'checked' : '' }}>
-                                                <label class="form-check-label" for="Skipper">Opted in for
-                                                    Details</label>
-                                            </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="iwa" name="iwa" {{ !empty($crewmember->iwa) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="iwa">IWA</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="skipper" name="skipper" {{ !empty($crewmember->skipper) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="skipper">Skipper</label>
+                                        </div>
+
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="optin" name="optin" {{ !empty($crewmember->optin) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="optin">Opted in for
+                                                Details</label>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xl-8 col-lg-12">
+                                    <div class="form-row">
+
+                                        <div class="form-group col-md-6">
+                                            <label for="privilege">Privilege</label>
+                                            <input type="number" class="form-control" name="privilege" id="privilege" value="{{ $crewmember->privilege }}">
+                                        </div>
+
+
+
+                                        <div class="form-group col-md-6">
+                                            <label for="faexpire">First aid expiry</label>
+                                            <input type="date" class="form-control" name="faexpire" id="faexpire" value="{{ $crewmember->faexpire }}">
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-lg-12 col-md-12 upcoming_activities">
+
+                                    <h4>Account Password</h4>
+
+                                    <p class="col-12-descrapction">Please set a temporary password for the crew member.
+                                        They can update this once logged in.</p>
+
+                                    @if($errors->any)
+                                    <p style="color:red"> {{ $errors->first('msg') }}</p>
+                                    @endif
+
+                                </div>
+
+
+
+                                <div class="form-group col-xl-8 col-lg-12">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+
+                                            <label for="OldTypeNewPassword">TYPE OLD PASSWORD</label>
+
+                                            <input type="password" class="form-control" name="old_password" id="OldTypeNewPassword" placeholder="*********">
 
 
                                         </div>
                                     </div>
-
-                                    <div class="form-group col-xl-8 col-lg-12">
-                                        <div class="form-row">
-
-                                            <div class="form-group col-md-6">
-                                                <label for="privilege">Privilege</label>
-                                                <input type="number" class="form-control" name="privilege" id="privilege" value="{{ $crewmember->privilege }}">
-                                            </div>
+                                    <div class="form-row">
 
 
+                                        <div class="form-group col-md-6">
 
-                                            <div class="form-group col-md-6">
-                                                <label for="faexpire">First aid expiry</label>
-                                                <input type="date" class="form-control" name="faexpire" id="faexpire" value="{{ $crewmember->faexpire }}">
-                                            </div>
-
-
+                                            <label for="TypeNewPassword">TYPE NEW PASSWORD</label>
+                                            <input type="password" class="form-control" name="password" id="TypeNewPassword" placeholder="*********">
 
 
                                         </div>
-                                    </div>
 
 
 
-                                    <div class="col-lg-12 col-md-12 upcoming_activities">
+                                        <div class="form-group col-md-6">
 
-                                        <h4>Account Password</h4>
+                                            <label for="ReTypePassword">RE TYPE PASSWORD </label>
 
-                                        <p class="col-12-descrapction">Please set a temporary password for the crew member.
-                                            They can update this once logged in.</p>
-
-                                    </div>
-
-
-
-                                    <div class="form-group col-xl-8 col-lg-12">
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6">
-
-                                                <label for="OldTypeNewPassword">TYPE OLD PASSWORD</label>
-                                                <input type="password" class="form-control" name="old_password" id="OldTypeNewPassword" placeholder="*********">
-
-
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
-
-
-                                            <div class="form-group col-md-6">
-
-                                                <label for="TypeNewPassword">TYPE NEW PASSWORD</label>
-                                                <input type="password" class="form-control" name="password" id="TypeNewPassword" placeholder="*********">
-
-
-                                            </div>
-
-
-
-                                            <div class="form-group col-md-6">
-
-                                                <label for="ReTypePassword">RE TYPE PASSWORD</label>
-
-                                                <input type="password" class="form-control" name="confirmpassword" id="ReTypePassword" placeholder="*********">
-
-                                            </div>
+                                            <input type="password" class="form-control" name="confirmpassword" id="ReTypePassword" placeholder="*********">
 
                                         </div>
 
@@ -335,46 +338,58 @@
 
                             </div>
 
+                        </div>
 
 
-                            <div class="form-group col-md-4">
 
-                                <div class="profile-picture">
+                        <div class="form-group col-md-4">
 
-                                    <label>PROFILE PICTURE</label>
+                            <div class="profile-picture">
+                                @if($errors->any)
+                                <p style="color:red"> {{ $errors->first('image') }}</p>
+                                @endif
+                                <label>PROFILE PICTURE</label>
 
-                                    <img src="{{ isset($crewmember->profile) ? asset('assets/profile-images')."/".$crewmember->profile : asset('assets/images/profile-picture.png') }}" class="img-fluid" style="width: 200px;"   alt="">
 
-                                    {{-- <img src="{{ (isset($crewmember->profile) ? '' : asset('assets/images/profile-picture.png')) }}" /> --}}
+                                <?php
 
-                                    <div class="teck-btn bg-white upload-btn">
+                                if (isset($crewmember->profile) && file_exists(public_path() . '/assets/profile-images' . '/' . $crewmember->profile)) {
+                                ?>
+                                    <img src="{{ asset('assets/profile-images').'/'.$crewmember->profile}}" class="img-fluid preview" />
+                                <?php
 
-                                        <input type="file" name="profileImage" />
+                                } else {
+                                ?>
+                                    <img src="{{ asset('assets/images/profile-picture.png') }}" class="img-fluid preview" />
+                                <?php
+                                }
 
-                                        <a href="#!"><img src="{{ asset('assets/images/camera.svg') }}" class="btn-icon-2" alt=""> Update Image </a>
+                                ?>
 
-                                    </div>
+                                <div class="teck-btn bg-white upload-btn">
+
+                                    <input type="file" name="profileImage" accept="image/*" onchange="previewFile(this)" />
+
+                                    <a href="#!"><img src="{{ asset('assets/images/camera.svg') }}" class="btn-icon-2" alt=""> Update Image </a>
 
                                 </div>
 
                             </div>
 
-
                         </div>
 
-                        <div class="teck-btn">
 
-                            <button type="submit" class="btn btn-primary"> <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Update User </button>
+                    </div>
 
-                        </div>
+                    <div class="teck-btn">
 
-                    </form>
+                        <button type="submit" class="btn btn-primary"> <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Update User </button>
+
+                    </div>
+
+                </form>
 
 
-
-
-
-                </div>
 
 
 
@@ -389,4 +404,70 @@
     </div>
 
 
+
+</div>
+
+
 @stop
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+    function ShowToast(msg, type) {
+
+
+        if (type == 'error') {
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            Toast.fire({
+                icon: 'error',
+                title: msg
+            })
+
+        } else if (type == 'success') {
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: msg
+            })
+        }
+    }
+
+
+    // mehthod 1    onclick="previewFile(this);"
+
+    function previewFile(input) {
+        var file = $("input[type=file]").get(0).files[0];
+
+        if (file) {
+            var reader = new FileReader();
+
+            reader.onload = function() {
+                $(".preview").attr("src", reader.result);
+            }
+
+            reader.readAsDataURL(file);
+        }
+    }
+</script>

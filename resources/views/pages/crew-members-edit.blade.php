@@ -2,6 +2,7 @@
 
 @section('content')
 
+
 <div class="row dashboard_col" id="crew-members-edit">
 
     <div class="col-md-12 dashboard_Sec">
@@ -9,6 +10,7 @@
         <h1>Crew Members - Update an existing member</h1>
         <p class="sub-pages-text">Please amend any details below and click save changes to submit the updated
             information.</p>
+        <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
 
     </div>
 
@@ -54,7 +56,7 @@
                 </pre> --}}
             <div class="col-md-12">
 
-                <form class="teck-form" method="POST" action="{{ route('update-account') }}" enctype="multipart/form-data">
+                <form class="teck-form" method="POST" action="{{ route('update-crew-account') }}" enctype="multipart/form-data">
 
                     @csrf
 
@@ -89,9 +91,29 @@
                                     <label for="ActivityPreference">ACTIVITY PREFERENCE</label>
                                     <select id="ActivityPreference" name="boatpreference" class="form-control">
                                         <option>Please Select...</option>
-                                        <option selected>Seth Ellis</option>
-                                        <option>...</option>
-                                        <option>...</option>
+                                        <?php
+
+                                        $initials = Session::get('initials');
+
+
+                                        $boats = \App\Models\ActivityItem::all();
+
+
+                                        if (!empty($boats)) {
+
+                                            foreach ($boats as $b) {
+                                        ?>
+                                                <option value="{{$b->activityname}}" {{$b->activityname==$crew_member->boatpreference?'Selected':''}}>{{$b->activityname}}</option>
+                                            <?php
+                                            }
+                                        } else {
+                                            ?>
+                                            <option value="">No Activity Found</option>
+                                        <?php
+                                        }
+
+                                        ?>
+
                                     </select>
                                 </div>
 
@@ -119,21 +141,7 @@
                                         <div class="form-group col-md-6">
                                             <label for="AccountRole">ACCOUNT ROLE</label>
 
-                                            <select id="AccountRole" name="user_type" class="form-control">
-                                                <option>Select Role</option>
-
-                                                @php
-                                                $roles = \App\Models\Role::get();
-                                                @endphp
-                                                @forelse ($roles as $role)
-                                                <option value="{{ $role->id }}" {{-- {{ isset($crew_member->user) && $crew_member->user->role['id'] == $role->id ? 'selected' : '' }}> --}}
-                                                    >
-                                                    {{ $role->name }}
-                                                </option>
-
-                                                @empty
-                                                @endforelse
-                                            </select>
+                                            <input type="text" class="form-control" value="{{Session::get('role') }}" readonly>
                                         </div>
 
 
@@ -149,27 +157,27 @@
                                     <div class="form-group col-md-12">
                                         <div><label>ADDITIONAL</label></div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="firstaid" {{ !empty($crew_member->firstaid) ? 'checked' : '' }} value="{{ $crew_member->firstaid }}">
-                                            <label class="form-check-label" for="First Aid">First Aid</label>
+                                            <input class="form-check-input" type="checkbox" id="firstaid" name="firstaid" {{ !empty($crew_member->firstaid) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="firstaid">First Aid</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="cba" {{ !empty($crew_member->cba) ? 'checked' : '' }} value="{{ $crew_member->cba }}">
-                                            <label class="form-check-label" for="CBA">CBA</label>
-                                        </div>
-
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="rya" {{ !empty($crew_member->rya) ? 'checked' : '' }} value="{{ $crew_member->rya }}">
-                                            <label class="form-check-label" for="RYA">RYA</label>
+                                            <input class="form-check-input" type="checkbox" id="cba" name="cba" {{ !empty($crew_member->cba) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="cba">CBA</label>
                                         </div>
 
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="rya" name="rya" {{ !empty($crew_member->rya) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="rya">RYA</label>
+                                        </div>
+
 
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="iwa" {{ !empty($crew_member->iwa) ? 'checked' : '' }} value="{{ $crew_member->iwa }}">
-                                            <label class="form-check-label" for="IWA">IWA</label>
+                                            <input class="form-check-input" type="checkbox" id="iwa" name="iwa" {{ !empty($crew_member->iwa) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="iwa">IWA</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="skipper" {{ !empty($crew_member->skipper) ? 'checked' : '' }} value="{{ $crew_member->skipper }}">
-                                            <label class="form-check-label" for="Skipper">Skipper</label>
+                                            <input class="form-check-input" type="checkbox" id="skipper" name="skipper" {{ !empty($crew_member->skipper) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="skipper">Skipper</label>
                                         </div>
 
 
@@ -196,7 +204,7 @@
 
                                         <div class="form-group col-md-6">
                                             <label for="privilege">First aid expiry</label>
-                                            <input type="date" class="form-control" name="traveltime" id="privilege" value="{{ $crew_member->faexpire }}">
+                                            <input type="date" class="form-control" name="faexpiry" id="privilege" value="{{ $crew_member->faexpire }}">
                                         </div>
 
 
@@ -209,8 +217,8 @@
                                     <h4>Account Password</h4>
                                     <p class="col-12-descrapction">Please set a temporary password for the crew member.
                                         They can update this once logged in.</p>
-                                    @if($errors->any())
-                                    <p style="color:red ;">{{$errors->first()}}</p>
+                                    @if($errors->any)
+                                    <p style="color:red"> {{ $errors->first('msg') }}</p>
                                     @endif
                                 </div>
 
@@ -244,14 +252,25 @@
                             <div class="profile-picture">
                                 <label>PROFILE PICTURE</label>
 
-                                @if($crew_member->profile)
-                                <img src="{{ asset('assets/profile-images/'.$crew_member->profile) }}" width="190" height="150" />
-                                @else
-                                <img src="{{ asset('assets/images/profile-picture.png') }}" />
+                                @if($errors->any)
+                                <p style="color:red"> {{ $errors->first('image') }}</p>
                                 @endif
 
+                                <?php
+                                if (isset($crew_member->profile) &&  file_exists(public_path() . '/assets/profile-images' . '/' . $crew_member->profile)) {
+                                ?>
+                                    <img src="{{ asset('assets/profile-images/'.$crew_member->profile) }}" width="190" height="150"  class="preview"/>
+                                <?php
+                                } else {
+                                ?>
+                                    <img src="{{ asset('assets/images/profile-picture.png') }}" class="preview" />
+                                <?php
+                                }
+
+                                ?>
+
                                 <div class="teck-btn bg-white upload-btn">
-                                    <input type="file" name="profileImage" />
+                                    <input type="file" name="profileImage" accept="image/*"  onchange="previewFile(this)" />
                                     <a href="#!"><img src="{{ asset('assets/images/camera.svg') }}" class="btn-icon-2" alt=""> Update Image </a>
                                 </div>
                             </div>
@@ -273,3 +292,20 @@
 </div>
 
 @stop
+
+
+<script>
+    function previewFile(input) {
+        var file = $("input[type=file]").get(0).files[0];
+
+        if (file) {
+            var reader = new FileReader();
+
+            reader.onload = function() {
+                $(".preview").attr("src", reader.result);
+            }
+
+            reader.readAsDataURL(file);
+        }
+    }
+</script>

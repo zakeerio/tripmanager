@@ -16,6 +16,6 @@ class ActivityItem extends Model
         'activitypicture',
         'minimumcrew',
         'rgbcolor',
-
+       
     ];
 }

@@ -8,6 +8,7 @@
 
             <h1>Crew Members - Create a new member</h1>
             <p class="sub-pages-text">Please fill out the information below to create a new crew memb.</p>
+            <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
 
         </div>
 

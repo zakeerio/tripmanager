@@ -11,8 +11,7 @@
 
             <div class="col-md-12 dashboard-heading-desc upcoming_activities">
                 <h4>Create Category </h4>
-                <p class="col-12-descrapction">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+                <p class="col-12-descrapction">Here You can Categorize Your Documents By Assigning Name to A Category</p>
 
                 @if (Session::has('status'))
 

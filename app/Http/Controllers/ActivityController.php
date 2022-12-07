@@ -10,6 +10,7 @@ use App\Models\Role;
 use App\Models\Trip;
 use App\Models\Crew;
 use Session;
+use URL;
 use Illuminate\Support\Facades\Hash;
 
 class ActivityController extends Controller
@@ -20,6 +21,7 @@ class ActivityController extends Controller
     protected $check2;
     protected $check3;
     protected $tripnumber;
+
 
     public function index()
     {
@@ -36,7 +38,6 @@ class ActivityController extends Controller
     {
 
         if (Session::get('role') == 'crewmember') {
-
             return true;
         }
     }
@@ -63,7 +64,7 @@ class ActivityController extends Controller
             ->distinct()
             ->select('trips.*')->get();
 
-
+        // dd($upcoming_activites);
         if (!empty($upcoming_activites)) {
             $upcoming_activites = $upcoming_activites;
         } else {
@@ -71,7 +72,7 @@ class ActivityController extends Controller
         }
 
 
-        // dd($upcoming_activites->toArray());
+        // dd(count($upcoming_activites));
 
         updateuseroldpasswordtonew($request);
 
@@ -88,6 +89,7 @@ class ActivityController extends Controller
             ->select(DB::raw('duration as duration,crewcode'))
             ->whereBetween('trips.departuredate', [date('Y-m-01'), date('Y-m-31')])
             ->where('tripcrews.crewcode', Session::get('initials'))
+
             ->get();
 
         if (!empty($month_hours)) {
@@ -129,7 +131,7 @@ class ActivityController extends Controller
         $year_logins = DB::table('trips')
             ->join('tripcrews', 'tripcrews.tripnumber', '=', 'trips.id')
             ->select(DB::raw('duration as duration,crewcode'))
-            ->whereBetween('trips.departuredate', [date('Y-01-01'), date('Y-12-31')])
+            ->whereBetween('trips.departuredate', [date('Y-01-01'), date('Y-12-30')])
             ->where('tripcrews.crewcode', Session::get('initials'))
             ->get();
 
@@ -260,7 +262,7 @@ class ActivityController extends Controller
                 }
             });
 
-            // dd($this->tripnumber);
+            //   dd($this->tripnumber);
 
             if (isset($this->tripnumber) && $this->check1 && $this->check2 && $this->check3) {
 
@@ -270,24 +272,24 @@ class ActivityController extends Controller
                 return redirect('/all-activities-create')->with(['status' => false, 'msg' => 'Error! Activity Failed']);
             }
         } catch (\Exception $e) {
-            return redirect('/all-activities-create')->with(['status' => false, 'msg' => $e->getMessage()]);
             // dd($e->getMessage());
+            return redirect('/all-activities-create')->with(['status' => false, 'msg' => 'Error! Activity Failed']);
         }
     }
-    public function view($id)
+    public function view($id, $status)
     {
 
         $pagetitle = "Edit Activity";
         $activity = Trip::findOrFail($id);
         // dd($activity);
         if ($activity) {
-            return view('pages/all-activities-view')->with("activity", $activity)->with('tripcrews')->with('pagetitle', $pagetitle);
+            return view('pages/all-activities-view')->with("activity", $activity)->with('tripcrews')->with('pagetitle', $pagetitle)->with('status', $status);
         } else {
             abort(403);
         }
     }
 
-    public function edit($id)
+    public function edit($id, $status)
     {
 
         if ($this->Access()) {
@@ -298,7 +300,7 @@ class ActivityController extends Controller
         $activity = Trip::findOrFail($id);
         // sdd($activity);
         if ($activity) {
-            return view('pages/all-activities-edit')->with("activity", $activity)->with('tripcrews')->with('pagetitle', $pagetitle);
+            return view('pages/all-activities-edit')->with("activity", $activity)->with('tripcrews')->with('pagetitle', $pagetitle)->with('status', $status);
         } else {
             abort(403);
         }
@@ -306,45 +308,135 @@ class ActivityController extends Controller
 
     public function update(Request $request)
     {
-        // dd($request->all());
+        //dd($request->all());
 
         if ($this->Access()) {
 
             return redirect('/dashboard')->with(['status' => false, 'msg' => 'Access Denied !']);
         }
-        $activityArray = [
 
-            'departuredate'  => $request->departuredate,
-            'departuretime'  => $request->departuretime,
-            'crewnotes'      => $request->NotesCrew,
-            'boatname'       => $request->boatname,
-            'destination'    => $request->destination,
-            'duration'       => $request->duration,
-            //'archived'     =>
-            'crewneeded'     => $request->crewneeded,
-            'cost'           => $request->tripcost,
-            'balance'        => $request->tripbalance,
-            'passengers'     => $request->passengers
+        try {
+            $activityArray = [
 
-        ];
+                'departuredate'  => $request->departuredate,
+                'departuretime'  => $request->departuretime,
+                'crewnotes'      => $request->NotesCrew,
+                'boatname'       => $request->boatname,
+                'destination'    => $request->destination,
+                'duration'       => $request->duration,
+                //'archived'     =>
+                'crewneeded'     => $request->crewneeded,
+                'cost'           => $request->tripcost,
+                'balance'        => $request->tripbalance,
+                'passengers'     => $request->passengers
 
-        $update =  Trip::whereId($request->id)->update($activityArray);
+            ];
 
-        // dd($update);
+            $update =  Trip::whereId($request->id)->update($activityArray);
 
 
-        if ($update) {
-            $messages[] =  "User Data Updated Successfully";
+            if (!empty($request->unavailable)) {
 
-            return redirect('/all-activities')->with(['status' => true, 'msg' => 'Success ! Activty Updated']);
-        } else {
+                for ($i = 0; $i < count($request->unavailable); $i++) {
+
+                    //  echo $request->unavailable[$i];
+                    if (isset($request->unavailable[$i])) {
+                        $trim = $request->unavailable[$i];
+                        $initials = explode(':', $trim);
+                        $crewcode = $initials[0];
+                       // echo $crewcode;
+                        $this->check1 = DB::table('tripcrews')
+                        ->where('tripnumber', '=', $request->id)
+                        ->where('crewcode', '=', $crewcode)->update([
+                            'isskipper'                 => 'Y'
+                        ]);
+                    }
+                }
+            }
+
+            //    $d= DB::table('tripcrews')->where('tripnumber', '=', $request->id)->get();
+            //    dd($d);
+            //dd( $this->check1);
+
+            if (!empty($request->available)) {
+
+              
+                for ($i = 0; $i < count($request->available); $i++) {
+                    if (isset($request->available[$i])) {
+                        $trim = $request->available[$i];
+                        $initials = explode(':', $trim);
+                        $crewcode2 = $initials[0];
+                        $this->check2 =  DB::table('tripcrews')->where('tripnumber', '=', $request->id)
+                        ->where('crewcode', '=', $crewcode2)
+                        ->update([
+                            'available'                 => 'Y',
+                            'confirmed'                 => NULL,
+                           
+                        ]);
+                    
+                    }
+                }
+            }
+
+
+           //  dd( $this->check2);
+         //  dd($request->confiremd);
+            if (!empty($request->confiremd)) {
+
+              
+                for ($i = 0; $i < count($request->confiremd); $i++) {
+                    if (isset($request->confiremd[$i])) {
+                        $trim = $request->confiremd[$i];
+                        $initials = explode(':', $trim);
+                        $crewcode3 = $initials[0];
+                        $this->check3 = DB::table('tripcrews')->where('tripnumber', '=', $request->id)
+                        ->where('crewcode', '=', $crewcode3)
+                        ->update([
+                            'confirmed'                 => 'Y',
+                           
+                            'available'                 => NULL,
+                        ]);
+                    }
+                }
+            }
+
+           // dd($this->check3);
+
+            if ($update) {
+                $messages[] =  "User Data Updated Successfully";
+
+                return redirect('/all-activities')->with(['status' => true, 'msg' => 'Success ! Activty Updated']);
+            } else {
+                return redirect('/all-activities')->with(['status' => false, 'msg' => 'Error ! Actity Update Failed']);
+            }
+        } catch (\Exception $e) {
             return redirect('/all-activities')->with(['status' => false, 'msg' => 'Error ! Actity Update Failed']);
+           // dd($e->getMessage());
         }
     }
 
     function delete($id)
     {
 
+        //  dd($id);
+
+        if ($this->Access()) {
+            return redirect('/dashboard')->with(['status' => false, 'msg' => 'Access Denied !']);
+        }
+
+        $delete = Trip::whereId($id)->delete();
+        if ($delete) {
+            return redirect()->back()->with(['status' => true, 'msg' => 'Success! Activity Deleted']);
+        } else {
+            return redirect()->back()->with(['status' => false, 'msg' => 'Error! Activity Delete Failed']);
+        }
+    }
+
+
+
+
+    public function dashboard_activites_delete($id)
+    {
         if ($this->Access()) {
             return redirect('/dashboard')->with(['status' => false, 'msg' => 'Access Denied !']);
         }
@@ -352,9 +444,9 @@ class ActivityController extends Controller
         $delete = Trip::whereId($id)->delete();
 
         if ($delete) {
-            return redirect('/all-activities')->with(['status' => true, 'msg' => 'Success! Activity Deleted']);
+            return redirect()->back()->with(['status' => true, 'msg' => 'Success! Activity Deleted']);
         } else {
-            return redirect('/all-activities')->with(['status' => false, 'msg' => 'Error! Activity Delete Failed']);
+            return redirect()->back()->with(['status' => false, 'msg' => 'Error! Activity Delete Failed']);
         }
     }
 
@@ -373,7 +465,7 @@ class ActivityController extends Controller
             ->select('tripcrews.*', 'trips.*')
             ->where('crewcode', '=', Session::get('initials'))
             ->where('available', '=', 'Y')
-            ->get();
+            ->paginate(50);
 
         // dd($trips);
 

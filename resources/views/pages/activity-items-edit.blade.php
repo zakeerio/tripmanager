@@ -9,6 +9,7 @@
 
         <p class="sub-pages-text">Please amend any details below and click save changes to submit the updated
             infromation.</p>
+            <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
 
     </div>
 
@@ -59,16 +60,12 @@
                                     <p style="color:red ;">{{$errors->first('activitytype') }}</p>
                                     @endif
 
-                                    <select id="ActivityType" class="form-control" name="activitytype">
+                                    {{-- <select id="ActivityType" class="form-control" name="activitytype">
 
                                         <option disabled>Please Select...</option>
-                                        <option value="type-1">Type-1</option>
-                                        <option value="type-2">Type-2</option>
-                                        <option value="type-3">Type-3</option>
+                                        <?php
 
-                                         <?php
-                                         /*
-
+                                        /*
                                         $boats = \App\Models\ActivityItem::all();
                                         if (!empty($boats)) {
 
@@ -81,10 +78,19 @@
                                             ?>
                                             <option value="">No Activity Found</option>
                                         <?php
-                                        }
-                                        */
+                                        } */
 
                                         ?>
+
+                                    </select> --}}
+
+                                    <select id="ActivityType" class="form-control" name="activitytype">
+
+                                        <option disabled >Please Select...</option>
+
+                                        <option {{ $items->activityname == "Type 1" ? 'selected':'' }}>Type 1</option>
+                                        <option {{ $items->activityname == "Type 2" ? 'selected':'' }}>Type 2</option>
+                                        <option {{ $items->activityname == "Type 3" ? 'selected':'' }}>Type 3</option>
 
                                     </select>
 
