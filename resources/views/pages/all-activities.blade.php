@@ -116,7 +116,7 @@
                                                 </div>
                                             </td>
                                             <td>{{$trip->departuredate }}</td>
-                                            <td width="250" style="word-break: break-all;">{!! ($trip->crewnotes) !!}</td>
+                                            <td width="250" style="word-break: break-word;">{!! ($trip->crewnotes) !!}</td>
                                             <td>{{ $trip->duration }} hours</td>
                                             <td>{{ $crewneeded }} Crew Members</td>
                                             <td width="250">
