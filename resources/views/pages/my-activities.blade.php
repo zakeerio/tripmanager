@@ -94,6 +94,7 @@
                                         </p>
 
                                     </div>
+                                </td>
 
                                 <td>{{$trip->departuredate}}</td>
                                 <td width="250">{{$trip->crewnotes }}</td>
@@ -125,7 +126,7 @@
                                 </td>
 
 
-                                <td width="200">
+                                <td width="250">
 
 
                                     <?php

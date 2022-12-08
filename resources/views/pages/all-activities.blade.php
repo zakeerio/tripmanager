@@ -153,7 +153,7 @@
                                             <?php
                                             $isReady = 'Needed';
                                             ?>
-                                            <td width="200" data-th="Net Amount" class="crew_btn">
+                                            <td width="240" data-th="Net Amount" class="crew_btn">
                                                 <span class="active-btn-2"><img src="{{ asset('assets/images/Button-Crew-Needed.png') }}" class="alrt-image" alt=""> Crew Needed</span>
                                             </td>
 
