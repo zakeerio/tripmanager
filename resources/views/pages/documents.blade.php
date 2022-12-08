@@ -98,10 +98,12 @@
 
                             @csrf
                             @if(Session::get('role')!='crewmember')
+                            <div class="col-md-12">
+                                <h3><?php echo $category->name ?></h3>
+                                {{-- <img src="{{ asset('assets/images/document.png') }}" class="document-icon-2"> --}}
+                                <br>
+                            </div>
                             <div class="row">
-                                <!-- <span><?php echo $category->name ?></span> -->
-                                <!-- <img src="{{ asset('assets/images/document.png') }}" class="document-icon-2"> -->
-
 
                                 <div class="col-sm-6 col-xl-6">
                                     <input type="file" name="files[]" multiple >
@@ -124,7 +126,7 @@
 
                                     if (isset($items->file_name)) {
                                         $fn = explode('@_@', $items->file_name);
-                                        $filename = explode('.', $fn[0]);
+                                        $filename = explode('.', $fn[1]);
                                         $ext = explode('.', $items->file_name);
                                     } else {
                                         $filename[0] = 'No File';
@@ -133,7 +135,7 @@
                                     // ( {{ucwords($ext[1])}} )
                             ?>
                                     <ul>
-                                        <li class="box-li"><?php echo $filename[0] ?> </li>
+                                        <li class="box-li"><?php echo $filename[0].".".$filename[1] ?> </li>
                                         <li>
                                             <div class="dropdown">
                                                 <button class="btn" type="button" id="BtnAction" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
