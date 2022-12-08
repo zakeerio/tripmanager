@@ -465,6 +465,8 @@ class CrewController extends Controller
             // $password = $request->password;
             $confirmpassword = $request->confirmpassword;
 
+            $user_id = Auth::user()->id;
+
 
             if (isset($password)) {
                 if ($password != $confirmpassword) {
@@ -546,11 +548,12 @@ class CrewController extends Controller
             $user = Crew::WHERE('id', $crewid)->get();
 
             $update_name = User::whereId(Auth::user()->id)->update(['name' => $fullname]);
+
             if (!empty($user) || isset($user[0]->profile)) {
                 $path = $user[0]->profile;
                 $request->session()->put('profile', $path);
+                $request->session()->put('name', $user[0]->fullname);
             }
-            $request->session()->put('name', Auth::user()->name);
 
 
 
@@ -559,11 +562,11 @@ class CrewController extends Controller
                 $messages[] =  "User Data Updated Successfully";
                 return redirect('/my-account')->with(['status' => true, 'msg' => 'Success ! Account Updated']);
             } else {
-                return redirect('/my-account')->with(['status' => false, 'msg' => 'Error ! Account Update Failed']);
+                return redirect('/my-account')->with(['status' => false, 'msg' => 'Error ! Account Update Failed 22']);
             }
         } catch (\Exception $e) {
 
-            return redirect('/my-account')->with(['status' => false, 'msg' => 'Error ! Account Update Failed']);
+            return redirect('/my-account')->with(['status' => false, 'msg' => 'Error ! Account Update Failed 11']);
             // dd($e->getMessage());
 
             //return redirect('/my-account');
