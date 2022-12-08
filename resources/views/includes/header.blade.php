@@ -39,7 +39,7 @@
 
                         if (file_exists(public_path() . '/assets/profile-images' . '/' . Session::get('profile'))) {
                         ?>
-                            <img src="{{ asset('/assets/profile-images').'/'.Session::get('profile') }}" class="img-fluid" alt="" width="50" height="50">
+                            <img src="{{ asset('/assets/profile-images').'/'.Session::get('profile') }}" class="img-fluid" alt="" width="100" height="100">
                         <?php
                         } else {
                         ?>
@@ -52,8 +52,9 @@
                         <img src="{{ asset('/assets/images/Chacha.png'); }}" class="img-fluid" alt="">
                         @endif
 
+                        
                         <div class="profile-matter">
-                            <p> <strong> {{ (Auth::user() !== null) ? Auth::user()->name : '' }} </strong></p>
+                            <p> <strong>{{Session::get('name')}} </strong></p>
                             {{-- <p class="teck-name-color" >{{ (Auth::user() !== null) ? Auth::user()->role['name'] : ""  }}</p> --}}
                             <p class="teck-name-color">{{Session::get('role')}}</p>
 

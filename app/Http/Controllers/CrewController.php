@@ -9,6 +9,7 @@ use App\Http\Middleware\Authenticate;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Session;
+use Auth;
 
 class CrewController extends Controller
 {
@@ -108,7 +109,7 @@ class CrewController extends Controller
             abort(403);
         }
 
-       // dd($crew_member);
+        // dd($crew_member);
         return view('pages/my-account')->with("user", $user)->with('crew_member', $crew_member)->with('pagetitle', $pagetitle);
     }
 
@@ -280,15 +281,28 @@ class CrewController extends Controller
             // $password = $request->password;
             $confirmpassword = $request->confirmpassword;
 
+         // dd($request->all());
+
             if (isset($password)) {
                 if ($password != $confirmpassword) {
                     return redirect()->back()->withErrors(['msg' => 'Confirm Password Does Not Match']);
                 }
                 $password = Hash::make($password);
+
+                $crew = Crew::WHERE('id', $crewid)->get();
+
+                if (!empty($crew) && isset($crew[0]->user_id)) {
+
+                    $update_pass_user_table = User::whereId($crew[0]->user_id)->Update(['password' => $password]);
+                    $update_pass_crew_table = Crew::where('user_id', $crew[0]->user_id)->Update(['pswd' => $password]);
+                    //dd('t');
+                } else {
+                    return redirect()->back()->withErrors(['msg' => 'Access Denied']);
+                }
             } else {
-                $user = Crew::WHERE('id', $crewid)->get()->toArray();
-                if (!empty($user) && isset($user[0]['pswd'])) {
-                    $password = $user[0]['pswd'];
+                $crew = Crew::WHERE('id', $crewid)->get()->toArray();
+                if (!empty($crew) && isset($crew[0]['pswd'])) {
+                    $password = $crew[0]['pswd'];
                 } else {
                     $password = Hash::make($request->password);
                 }
@@ -298,7 +312,6 @@ class CrewController extends Controller
             if ($request->has('profileImage')) {
                 //path will be after choosing any directory inside public folder
                 $path =  $this->UploadSingleImage($request->file('profileImage'), 'assets/profile-images');
-
 
                 if ($path == 'File Extension Error' || $path == 'Image Found Empty') {
                     return redirect()->back()->withErrors(['image' => 'Please Select a Suitable Image']);
@@ -317,6 +330,8 @@ class CrewController extends Controller
             }
 
 
+
+           
             $crew_data = array(
                 "fullname" => $fullname,
                 'mobile' => $mobile,
@@ -342,7 +357,7 @@ class CrewController extends Controller
 
             $update = Crew::WHERE('id', $crewid)->UPDATE($crew_data);
 
-            //dd($update);
+           //dd($update);
 
             if ($update) {
                 $messages[] =  "User Data Updated Successfully";
@@ -352,7 +367,7 @@ class CrewController extends Controller
             }
         } catch (\Exception $e) {
 
-            dd($e->getMessage());
+             //dd($e->getMessage());
 
             return redirect('/crew-members')->with(['status' => false, 'msg' => $e->getMessage()]);
         }
@@ -414,12 +429,11 @@ class CrewController extends Controller
     {
         try {
 
-            // dd($request->all());
-
-            $newpasswordupdated = false;
+            //  dd($request->all());
 
             $emailaddress = $request->emailaddress;
             $secondarynumber = $request->secondarynumber;
+            $username = $request->username;
             $boatpreference = $request->boatpreference;
             $memnumber = $request->memnumber;
             $primary_no = $request->primary_no;
@@ -443,7 +457,6 @@ class CrewController extends Controller
 
             // dd($fullname);
             $crewid = $request->id;
-            $user_id = $request->user_id;
             //$mobile = $request->mobile;
             // $user_type = $request->user_type;
             //$crew = Crew::findOrFail($id);
@@ -459,32 +472,29 @@ class CrewController extends Controller
                 }
 
                 if (isset($old_password)) {
-                    $user = User::WHERE('id', $user_id)->get();
+
+
+                    $user = User::WHERE('id', $crewid)->get();
+
                     if (!empty($user)) {
+
                         if (Hash::check($old_password, $user[0]->password)) {
-                            $password = Hash::make($password);
-
-                            $user->password = $password;
-
-                            // dd($user);
-                            $user->save();
-
-                            // dd($usersave);
-
-                            $newpasswordupdated = true;
-
+                            $updated_password = Hash::make($password);
+                            $up = User::whereId(Auth::user()->id)->update(['password' => $updated_password]);
                         } else {
+
                             return redirect()->back()->withErrors(['msg' => 'Old Password Does not Match']);
                         }
                     }
                 } else {
+
                     return redirect()->back()->withErrors(['msg' => 'Enter Old password']);
                 }
             } else {
                 $user = Crew::WHERE('id', $crewid)->get()->toArray();
-                $password = $user[0]['pswd'];
+                $updated_password = $user[0]['pswd'];
             }
-
+            // dd($password);
             if ($request->has('profileImage')) {
                 //path will be after choosing any directory inside public folder
                 $path =  $this->UploadSingleImage($request->file('profileImage'), 'assets/profile-images');
@@ -505,9 +515,11 @@ class CrewController extends Controller
                 $path = $user[0]['profile'];
             }
 
+
             $crew_data = array(
                 "fullname" => $fullname,
-                'pswd' => $password,
+                'username' => $username,
+                'pswd' => $updated_password,
                 "emailaddress" => $emailaddress,
                 "mobile" => $primary_no,
                 "secondarynumber" => $secondarynumber,
@@ -528,17 +540,22 @@ class CrewController extends Controller
 
             // dd($crew_data);
 
+            //dd( Auth::user()->id);
             $update = Crew::WHERE('id', $crewid)->UPDATE($crew_data);
 
             $user = Crew::WHERE('id', $crewid)->get();
 
-            if(!empty($user) && isset($user[0]->profile)){
+            if (!empty($user) && isset($user[0]->profile)) {
                 $path = $user[0]->profile;
                 $request->session()->put('profile', $path);
+                $request->session()->put('name', Auth::user()->name);
             }
-            // dd($update, $newpasswordupdated);
 
-            if ($update || $newpasswordupdated == true) {
+            $update_name = User::whereId(Auth::user()->id)->update(['name' => $fullname, 'username' => $username]);
+
+
+            //dd($update_name);
+            if ($update) {
                 $messages[] =  "User Data Updated Successfully";
                 return redirect('/my-account')->with(['status' => true, 'msg' => 'Success ! Account Updated']);
             } else {
@@ -546,10 +563,13 @@ class CrewController extends Controller
             }
         } catch (\Exception $e) {
 
-            return redirect('/my-account')->with(['status' => false, 'msg' => 'Error ! Account Update Failed']);
-            //dd($e->getMessage());
+            // return redirect('/my-account')->with(['status' => false, 'msg' => 'Error ! Account Update Failed']);
+            dd($e->getMessage());
 
             //return redirect('/my-account');
         }
     }
 }
+
+
+// 125,135,254,46,89,142,179,228,234,235,245,247,252,26,196,180,159,193,144,117,108,104,

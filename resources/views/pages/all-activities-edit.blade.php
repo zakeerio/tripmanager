@@ -172,7 +172,7 @@
                         </div>
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityDuration">ACTIVITY DURATION</label>
-                            <input type="text" name="duration" class="form-control" id="ActivityDuration" placeholder="Enter duration in decimal hours (2.5) rather than 2:30" value="{{ $activity->duration }}">
+                            <input type="time" name="duration" class="form-control" id="ActivityDuration" value="{{ $activity->duration }}">
                         </div>
                         <div class="form-group col-xl-4 col-lg-12">
                             <label for="BriefDescription">BRIEF DESCRIPTION</label>
@@ -247,7 +247,7 @@
 
                                 $randome_no_1= uniqid();
                                 $randome_no_2= uniqid();
-
+                             
                                 $fullname = $crew_name["fullname"];
                                 if ($crewmember->confirmed == 'Y') {
                                     $confirmed[] = "<input type='text' class='form-control' id=drag" . $randome_no_1 . " draggable='true' ondragstart='drag(event)' name='confirmed[]' value='" . $crewmember->crewcode . " : " . $fullname . "' >";

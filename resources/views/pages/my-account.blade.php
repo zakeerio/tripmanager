@@ -64,7 +64,19 @@
 
             @endphp
 
+           <?php
 
+                if(Session::get('role') == 'crewmember'){
+                    $readonly ='readonly';
+                    $disabled='disabled';
+                }else{
+                    $readonly='';
+                    $disabled='';
+                }
+           
+                // echo $readonly;
+                // exit;
+           ?>
             <div class="col-md-12">
 
                 <form class="teck-form" action="{{ route('update-my-account') }}" method="post" enctype="multipart/form-data">
@@ -79,11 +91,9 @@
 
                                     <label for="Name">NAME</label>
 
-                                    <input type="text" class="form-control" id="Name" name="name" value="{{ $crewmember->fullname }}">
+                                    <input type="text" class="form-control" id="Name" name="name" value="{{ $crewmember->fullname }}"  >
 
                                     <input type="hidden" name="id" value="{{ $crewmember->id }}">
-                                    <input type="hidden" name="user_id" value="{{ $user->id }}">
-
 
                                 </div>
 
@@ -97,6 +107,14 @@
 
                                 </div>
 
+                                <!-- <div class="form-group col-xl-4 col-lg-6">
+
+                                    <label for="PrimaryNumber">Userame</label>
+
+                                    <input type="text" class="form-control" id="username" name="username" value="{{ $crewmember->username }}">
+
+                                </div> -->
+
                                 <div class="form-group col-xl-4 col-lg-6">
 
                                     <label for="PrimaryNumber">PRIMARY NUMBER</label>
@@ -109,7 +127,7 @@
 
                                     <label for="SecondaryNumber">SECONDARY NUMBER</label>
 
-                                    <input type="text" class="form-control" name="secondarynumber" id="SecondaryNumber" value="{{ $crewmember->secondarynumber }}">
+                                    <input type="text" class="form-control" name="secondarynumber" id="SecondaryNumber" value="{{ $crewmember->secondarynumber }}" >
 
                                 </div>
 
@@ -119,7 +137,7 @@
 
                                     <label for="ActivityPreference">ACTIVITY PREFERENCE</label>
 
-                                    <select id="ActivityPreference" name="boatpreference" class="form-control">
+                                    <select id="ActivityPreference" name="boatpreference" class="form-control" >
                                         <option>Please Select...</option>
                                         <?php
 
@@ -133,7 +151,7 @@
 
                                             foreach ($boats as $b) {
                                         ?>
-                                                <option value="{{$b->activityname}}" {{$b->activityname==$crewmember->boatpreference?'Selected':''}}>{{$b->activityname}}</option>
+                                                <option  value="{{$b->activityname}}" {{$b->activityname==$crewmember->boatpreference?'Selected':''}}>{{$b->activityname}}</option>
                                             <?php
                                             }
                                         } else {
@@ -168,7 +186,7 @@
 
                                             <label for="Initials">INITIALS</label>
 
-                                            <input type="text" class="form-control" id="Initials" value="{{ $crewmember->initials }}" disabled>
+                                            <input type="text" class="form-control" id="Initials" value="{{ $crewmember->initials }}"{{$readonly}}>
 
                                         </div>
 
@@ -176,7 +194,7 @@
 
                                             <label for="Username">USERNAME</label>
 
-                                            <input type="text" class="form-control" id="Username" name="username" value="{{ $user->username }}" disabled>
+                                            <input type="text" class="form-control" id="Username" name="username" value="{{ $user->username }}" {{$readonly}}>
 
 
                                         </div>
@@ -187,7 +205,7 @@
                                             <label for="AccountRole">ACCOUNT ROLE</label>
 
 
-                                            <input type="text" class="form-control" value="{{Session::get('role') }}" readonly>
+                                            <input type="text" class="form-control" value="{{Session::get('role') }}" {{$readonly}}>
 
                                         </div>
 
@@ -197,7 +215,7 @@
 
                                             <label for="CctMembershipNumber">CCT MEMBERSHIP NUMBER</label>
 
-                                            <input type="number" class="form-control" id="CctMembershipNumber" name="memnumber" value="{{ $crewmember->memnumber }}">
+                                            <input type="number" class="form-control" id="CctMembershipNumber" name="memnumber" value="{{ $crewmember->memnumber }}" {{$readonly}}>
 
 
                                         </div>
@@ -218,7 +236,7 @@
 
                                         <div class="form-check">
 
-                                            <input class="form-check-input" type="checkbox" id="firstaid" name="firstaid" {{ !empty($crewmember->firstaid) ? 'checked' : '' }}>
+                                            <input class="form-check-input" type="checkbox" id="firstaid" name="firstaid" {{ !empty($crewmember->firstaid) ? 'checked' : '' }} >
                                             <label class="form-check-label" for="firstaid">First Aid</label>
 
                                         </div>
@@ -270,14 +288,14 @@
 
                                         <div class="form-group col-md-6">
                                             <label for="privilege">Privilege</label>
-                                            <input type="number" class="form-control" name="privilege" id="privilege" value="{{ $crewmember->privilege }}">
+                                            <input type="number" class="form-control" name="privilege" id="privilege" value="{{ $crewmember->privilege }}"  {{$readonly}}>
                                         </div>
 
 
 
                                         <div class="form-group col-md-6">
                                             <label for="faexpire">First aid expiry</label>
-                                            <input type="date" class="form-control" name="faexpire" id="faexpire" value="{{ $crewmember->faexpire }}">
+                                            <input type="date" class="form-control" name="faexpire" id="faexpire" value="{{ $crewmember->faexpire }}"  {{$readonly}}>
                                         </div>
 
                                     </div>

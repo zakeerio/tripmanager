@@ -27,7 +27,7 @@ class ActivityController extends Controller
     {
 
         $pagetitle = "All Activities";
-        $trips = Trip::paginate(250);
+        $trips = Trip::orderBy('id', 'DESC')->paginate(250);
 
         // dd($trips);
         return view('pages/all-activities')->with("trips", $trips)->with('tripcrews')->with('pagetitle', $pagetitle);
@@ -61,6 +61,7 @@ class ActivityController extends Controller
             ->where('tripcrews.confirmed', '=', 'Y')
             ->where('trips.departuredate', '>=', date('Y-m-d'))
             ->orderBy('departuredate')
+            ->orderBy('id','DESC')
             ->distinct()
             ->select('trips.*')->get();
 
@@ -465,6 +466,7 @@ class ActivityController extends Controller
             ->select('tripcrews.*', 'trips.*')
             ->where('crewcode', '=', Session::get('initials'))
             ->where('available', '=', 'Y')
+            ->orderBy('trips.id','DESC')
             ->paginate(50);
 
         // dd($trips);

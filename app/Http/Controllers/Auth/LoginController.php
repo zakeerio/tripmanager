@@ -70,18 +70,23 @@ class LoginController extends Controller
 
 
         $updatepassword = false;
+      
 
         $authArray = ['username' => $request->username, 'password' => $request->password];
 
 
         if (Auth::attempt($authArray)) {
 
+           // dd(Auth::user()->password);
             //$role = DB::table('roles')->where('user_name', $request->user_type)->pluck('name')->toArray();
             $user = DB::table('users')->where('username', $request->username)->get();
 
             $request->session()->put('user_id', $user[0]->id);
             $crew = DB::table('crews')->where('user_id', $user[0]->id)->get();
             $request->session()->put('initials', $crew[0]->initials);
+           
+            $name= (Auth::user() !== null) ? Auth::user()->name : 'NO NAME';
+            $request->session()->put('name',$name);
 
             if (!empty($user)) {
 

@@ -127,13 +127,13 @@
                             @if($errors->any())
                             <b style="color:Red">{{$errors->first('duration')}} ! Enter duration in decimal hours (2.5) rather than 2:30</b>
                             @endif
-
+                           
                     </div>
 
                 </div>
             </div>
 
-
+    
             <div class="col-md-12">
 
 
@@ -186,7 +186,7 @@
                         </div>
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityDuration">ACTIVITY DURATION</label>
-
+                           
                             <input type="text" name="duration" class="form-control" id="ActivityDuration" placeholder="Enter duration in decimal hours (2.5) rather than 2:30">
                         </div>
                         <div class="form-group col-xl-4 col-lg-12">
