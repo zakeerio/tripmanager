@@ -166,7 +166,7 @@
                                 <td>{{ $trip->duration }} hours</td>
                                 <td>{{ $trip->crewneeded }}</td>
 
-                                <td>
+                                <td width="250">
                                     <?php
 
                                     $i = 0;
@@ -192,7 +192,7 @@
                                 </td>
 
 
-                                <td width="250">
+                                <td width="150">
 
 
                                     <?php
