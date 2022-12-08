@@ -545,13 +545,13 @@ class CrewController extends Controller
 
             $user = Crew::WHERE('id', $crewid)->get();
 
+            $update_name = User::whereId(Auth::user()->id)->update(['name' => $fullname]);
             if (!empty($user) || isset($user[0]->profile)) {
                 $path = $user[0]->profile;
                 $request->session()->put('profile', $path);
                 $request->session()->put('name', Auth::user()->name);
             }
 
-            $update_name = User::whereId(Auth::user()->id)->update(['name' => $fullname]);
 
 
             //dd($update_name);
