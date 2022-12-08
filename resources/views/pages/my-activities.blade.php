@@ -8,11 +8,11 @@
                 <h1>My Activities</h1>
                 <p>This is a list of all the scheduled activities in the Activity Manager system..</p>
 
-              
 
-               
+
+
                     <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
-               
+
             </div>
 
             @if (Session::has('status'))
@@ -65,7 +65,7 @@
 
                             <tr class="">
 
-                                <td>
+                                <td width="250">
 
                                     <div class="table-div">
 
@@ -96,7 +96,7 @@
                                     </div>
 
                                 <td>{{$trip->departuredate}}</td>
-                                <td width="250px">{{$trip->crewnotes }}</td>
+                                <td width="250">{{$trip->crewnotes }}</td>
                                 <td>{{ $trip->duration }} hours</td>
                                 <td>{{ $trip->crewneeded }}</td>
 
@@ -125,7 +125,7 @@
                                 </td>
 
 
-                                <td width="250px">
+                                <td width="250">
 
 
                                     <?php
@@ -156,7 +156,7 @@
                                             <span></span>
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="BtnAction">
-                                          
+
                                             @if(Session::get('role') !='crewmember')
                                             <a class="dropdown-item" href="{{ route('all-activities-view',  [$trip->id,$isReady]) }}">View</a>
                                             <a class="dropdown-item" href="{{ route('all-activities-edit',  [$trip->id,$isReady]) }}">Edit</a>

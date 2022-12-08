@@ -131,7 +131,7 @@
 
                             <tr class="">
 
-                                <td>
+                                <td width="200">
 
                                     <div class="table-div">
 
@@ -270,7 +270,7 @@
                             </tr>
                             @endforelse
                             {{-- <tr>
-                                
+
 
 
                                     "id" => 1006
