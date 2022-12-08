@@ -324,7 +324,7 @@
 
                                             <label for="OldTypeNewPassword">TYPE OLD PASSWORD</label>
 
-                                            <input type="password" class="form-control" name="old_password" id="OldTypeNewPassword" placeholder="*********">
+                                            <input type="password" class="form-control" autocomplete="off" name="old_password" id="OldTypeNewPassword" placeholder="*********">
 
 
                                         </div>
@@ -335,7 +335,7 @@
                                         <div class="form-group col-md-6">
 
                                             <label for="TypeNewPassword">TYPE NEW PASSWORD</label>
-                                            <input type="password" class="form-control" name="password" id="TypeNewPassword" placeholder="*********">
+                                            <input type="password" class="form-control" name="password"  autocomplete="off" id="TypeNewPassword" placeholder="*********">
 
 
                                         </div>
@@ -346,7 +346,7 @@
 
                                             <label for="ReTypePassword">RE TYPE PASSWORD </label>
 
-                                            <input type="password" class="form-control" name="confirmpassword" id="ReTypePassword" placeholder="*********">
+                                            <input type="password" class="form-control" name="confirmpassword" autocomplete="off" id="ReTypePassword" placeholder="*********">
 
                                         </div>
 

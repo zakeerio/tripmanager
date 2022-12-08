@@ -480,7 +480,7 @@ class CrewController extends Controller
 
                     if (!empty($user)) {
 
-                        if (Hash::check($old_password, $user[0]->password)) {
+                        if (Hash::check($old_password, Auth::user()->password)) {
                             $updated_password = Hash::make($password);
                             $up = User::whereId(Auth::user()->id)->update(['password' => $updated_password]);
                         } else {
