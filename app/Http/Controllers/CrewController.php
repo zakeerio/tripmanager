@@ -331,7 +331,7 @@ class CrewController extends Controller
 
 
 
-           
+
             $crew_data = array(
                 "fullname" => $fullname,
                 'mobile' => $mobile,
@@ -545,17 +545,17 @@ class CrewController extends Controller
 
             $user = Crew::WHERE('id', $crewid)->get();
 
-            if (!empty($user) && isset($user[0]->profile)) {
+            if (!empty($user) || isset($user[0]->profile)) {
                 $path = $user[0]->profile;
                 $request->session()->put('profile', $path);
                 $request->session()->put('name', Auth::user()->name);
             }
 
-            $update_name = User::whereId(Auth::user()->id)->update(['name' => $fullname, 'username' => $username]);
+            $update_name = User::whereId(Auth::user()->id)->update(['name' => $fullname]);
 
 
             //dd($update_name);
-            if ($update) {
+            if ($update || $update_name) {
                 $messages[] =  "User Data Updated Successfully";
                 return redirect('/my-account')->with(['status' => true, 'msg' => 'Success ! Account Updated']);
             } else {
@@ -563,13 +563,10 @@ class CrewController extends Controller
             }
         } catch (\Exception $e) {
 
-            // return redirect('/my-account')->with(['status' => false, 'msg' => 'Error ! Account Update Failed']);
-            dd($e->getMessage());
+            return redirect('/my-account')->with(['status' => false, 'msg' => 'Error ! Account Update Failed']);
+            // dd($e->getMessage());
 
             //return redirect('/my-account');
         }
     }
 }
-
-
-// 125,135,254,46,89,142,179,228,234,235,245,247,252,26,196,180,159,193,144,117,108,104,
