@@ -135,7 +135,7 @@
                                     // ( {{ucwords($ext[1])}} )
                             ?>
                                     <ul>
-                                        <li class="box-li"><?php echo $filename[0].".".$filename[1] ?> </li>
+                                        <li class="box-li"><?php echo $filename[0].".".$ext[1] ?> </li>
                                         <li>
                                             <div class="dropdown">
                                                 <button class="btn" type="button" id="BtnAction" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
