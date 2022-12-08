@@ -87,7 +87,7 @@
 
                                         <tr class="{{ ($check_crewcount == false) ? 'teck-danger' : "" }}">
 
-                                            <td>
+                                            <td width="200">
                                                 <div class="table-div">
                                                     {{-- {{ $crewneeded." ___ ". $tripcrewscount }} --}}
                                                     <?php
@@ -119,7 +119,7 @@
                                             <td width="250">{!! ($trip->crewnotes) !!}</td>
                                             <td>{{ $trip->duration }} hours</td>
                                             <td>{{ $crewneeded }} Crew Members</td>
-                                            <td width="120">
+                                            <td width="250">
                                                 @if($tripcrewscount > 0)
                                                 @foreach ($trip->tripcrews as $tripcrewitem )
 
