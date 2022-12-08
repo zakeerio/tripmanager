@@ -87,7 +87,7 @@
 
                                         <tr class="{{ ($check_crewcount == false) ? 'teck-danger' : "" }}">
 
-                                            <td width="250">
+                                            <td width="300">
                                                 <div class="table-div">
                                                     {{-- {{ $crewneeded." ___ ". $tripcrewscount }} --}}
                                                     <?php
@@ -116,7 +116,7 @@
                                                 </div>
                                             </td>
                                             <td>{{$trip->departuredate }}</td>
-                                            <td width="250" style="word-break: break-word;">{!! ($trip->crewnotes) !!}</td>
+                                            <td width="300" style="word-break: break-word;">{!! ($trip->crewnotes) !!}</td>
                                             <td>{{ $trip->duration }} hours</td>
                                             <td>{{ $crewneeded }} Crew Members</td>
                                             <td width="250">

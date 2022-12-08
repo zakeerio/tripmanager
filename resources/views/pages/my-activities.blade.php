@@ -65,7 +65,7 @@
 
                             <tr class="">
 
-                                <td width="250">
+                                <td width="300">
 
                                     <div class="table-div">
 
@@ -97,7 +97,7 @@
                                 </td>
 
                                 <td>{{$trip->departuredate}}</td>
-                                <td width="250">{{$trip->crewnotes }}</td>
+                                <td width="300">{{$trip->crewnotes }}</td>
                                 <td>{{ $trip->duration }} hours</td>
                                 <td>{{ $trip->crewneeded }}</td>
 
