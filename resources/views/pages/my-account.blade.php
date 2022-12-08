@@ -73,7 +73,7 @@
                     $readonly='';
                     $disabled='';
                 }
-           
+
                 // echo $readonly;
                 // exit;
            ?>
@@ -186,7 +186,7 @@
 
                                             <label for="Initials">INITIALS</label>
 
-                                            <input type="text" class="form-control" id="Initials" value="{{ $crewmember->initials }}"{{$readonly}}>
+                                            <input type="text" class="form-control" id="Initials" value="{{ $crewmember->initials }}"{{$disabled}}>
 
                                         </div>
 
@@ -194,7 +194,7 @@
 
                                             <label for="Username">USERNAME</label>
 
-                                            <input type="text" class="form-control" id="Username" name="username" value="{{ $user->username }}" {{$readonly}}>
+                                            <input type="text" class="form-control" id="Username" name="username" value="{{ $user->username }}" {{$disabled}}>
 
 
                                         </div>
@@ -205,7 +205,7 @@
                                             <label for="AccountRole">ACCOUNT ROLE</label>
 
 
-                                            <input type="text" class="form-control" value="{{Session::get('role') }}" {{$readonly}}>
+                                            <input type="text" class="form-control" value="{{Session::get('role') }}" {{$disabled}}>
 
                                         </div>
 
@@ -215,7 +215,7 @@
 
                                             <label for="CctMembershipNumber">CCT MEMBERSHIP NUMBER</label>
 
-                                            <input type="number" class="form-control" id="CctMembershipNumber" name="memnumber" value="{{ $crewmember->memnumber }}" {{$readonly}}>
+                                            <input type="number" class="form-control" id="CctMembershipNumber" name="memnumber" value="{{ $crewmember->memnumber }}" {{$disabled}}>
 
 
                                         </div>
@@ -373,7 +373,7 @@
 
                                 if (isset($crewmember->profile) && file_exists(public_path() . '/assets/profile-images' . '/' . $crewmember->profile)) {
                                 ?>
-                                    <img src="{{ asset('assets/profile-images').'/'.$crewmember->profile}}" class="img-fluid preview" />
+                                    <img src="{{ asset('assets/profile-images').'/'.$crewmember->profile}}" class="img-fluid preview" style="width: 200px;" />
                                 <?php
 
                                 } else {

@@ -549,8 +549,8 @@ class CrewController extends Controller
             if (!empty($user) || isset($user[0]->profile)) {
                 $path = $user[0]->profile;
                 $request->session()->put('profile', $path);
-                $request->session()->put('name', Auth::user()->name);
             }
+            $request->session()->put('name', Auth::user()->name);
 
 
 
