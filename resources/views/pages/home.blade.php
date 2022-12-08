@@ -131,7 +131,7 @@
 
                             <tr class="">
 
-                                <td width="200">
+                                <td width="250">
 
                                     <div class="table-div">
 

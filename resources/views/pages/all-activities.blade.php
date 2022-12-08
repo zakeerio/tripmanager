@@ -87,7 +87,7 @@
 
                                         <tr class="{{ ($check_crewcount == false) ? 'teck-danger' : "" }}">
 
-                                            <td width="200">
+                                            <td width="250">
                                                 <div class="table-div">
                                                     {{-- {{ $crewneeded." ___ ". $tripcrewscount }} --}}
                                                     <?php
@@ -142,7 +142,7 @@
                                             ?>
                                             @if(($check_crewcount == true) ? 'teck-danger' : "" )
 
-                                            <td data-th="Net Amount">
+                                            <td width="150" data-th="Net Amount">
                                                 <span class="active-btn">
                                                     <img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Ready</span>
                                             </td>
