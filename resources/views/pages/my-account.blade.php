@@ -236,14 +236,14 @@
 
                                         <div class="form-check">
 
-                                            <input class="form-check-input" type="checkbox" id="firstaid" name="firstaid" {{ !empty($crewmember->firstaid) ? 'checked' : '' }} >
+                                            <input class="form-check-input" {{$disabled}} type="checkbox" id="firstaid" name="firstaid" {{ !empty($crewmember->firstaid) ? 'checked' : '' }} >
                                             <label class="form-check-label" for="firstaid">First Aid</label>
 
                                         </div>
 
                                         <div class="form-check">
 
-                                            <input class="form-check-input" type="checkbox" id="cba" name="cba" {{ !empty($crewmember->cba) ? 'checked' : '' }}>
+                                            <input class="form-check-input" {{$disabled}} type="checkbox" id="cba" name="cba" {{ !empty($crewmember->cba) ? 'checked' : '' }}>
                                             <label class="form-check-label" for="cba">CBA</label>
 
                                         </div>
@@ -252,31 +252,30 @@
 
                                         <div class="form-check">
 
-                                            <input class="form-check-input" type="checkbox" id="rya" name="rya" {{ !empty($crewmember->rya) ? 'checked' : '' }}>
+                                            <input class="form-check-input" {{$disabled}} type="checkbox" id="rya" name="rya" {{ !empty($crewmember->rya) ? 'checked' : '' }}>
                                             <label class="form-check-label" for="rya">RYA</label>
 
                                         </div>
 
                                         <div class="form-check">
 
-                                            <input class="form-check-input" id="keyholder" type="checkbox" name="keyholder" {{ !empty($crewmember->keyholder) ? 'checked' : '' }}>
+                                            <input class="form-check-input" {{$disabled}} id="keyholder" type="checkbox" name="keyholder" {{ !empty($crewmember->keyholder) ? 'checked' : '' }}>
                                             <label class="form-check-label" for="keyholder">Key Holder</label>
 
                                         </div>
 
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="iwa" name="iwa" {{ !empty($crewmember->iwa) ? 'checked' : '' }}>
+                                            <input class="form-check-input" {{$disabled}} type="checkbox" id="iwa" name="iwa" {{ !empty($crewmember->iwa) ? 'checked' : '' }}>
                                             <label class="form-check-label" for="iwa">IWA</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="skipper" name="skipper" {{ !empty($crewmember->skipper) ? 'checked' : '' }}>
+                                            <input class="form-check-input" {{$disabled}} type="checkbox" id="skipper" name="skipper" {{ !empty($crewmember->skipper) ? 'checked' : '' }}>
                                             <label class="form-check-label" for="skipper">Skipper</label>
                                         </div>
 
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="optin" name="optin" {{ !empty($crewmember->optin) ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="optin">Opted in for
-                                                Details</label>
+                                            <input class="form-check-input" {{$disabled}} type="checkbox" id="optin" name="optin" {{ !empty($crewmember->optin) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="optin">Opted in for Details</label>
                                         </div>
 
 
