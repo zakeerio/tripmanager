@@ -142,7 +142,7 @@
                                             ?>
                                             @if(($check_crewcount == true) ? 'teck-danger' : "" )
 
-                                            <td width="150" data-th="Net Amount">
+                                            <td width="200" data-th="Net Amount">
                                                 <span class="active-btn">
                                                     <img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Ready</span>
                                             </td>
@@ -153,7 +153,7 @@
                                             <?php
                                             $isReady = 'Needed';
                                             ?>
-                                            <td data-th="Net Amount" class="crew_btn">
+                                            <td width="200" data-th="Net Amount" class="crew_btn">
                                                 <span class="active-btn-2"><img src="{{ asset('assets/images/Button-Crew-Needed.png') }}" class="alrt-image" alt=""> Crew Needed</span>
                                             </td>
 

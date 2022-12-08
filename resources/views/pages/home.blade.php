@@ -192,7 +192,7 @@
                                 </td>
 
 
-                                <td width="150">
+                                <td width="200">
 
 
                                     <?php
