@@ -186,27 +186,27 @@ class CrewController extends Controller
 
                     $profileImage = $request->profileImage;
 
-                    echo "TEST3";
+                    // echo "TEST3";
 
-                    dd($request->all());
+                    // dd($request->all());
 
-                    // return redirect()->back()->with('success', $messages);
+                    return redirect()->back()->with('success', $messages);
 
                 }
             } else {
-                echo "TEST1";
-                dd($request->all());
+                // echo "TEST1";
+                // dd($request->all());
 
                 $messages[] =  "Something went wrong!";
                 $profileImage = $request->profileImage;
 
-                //return redirect()->back()->with('error', $messages);
+                return redirect()->back()->with('error', $messages);
             }
         }
 
-        echo "TEST";
+        // echo "TEST";
 
-        dd($request->all());
+        // dd($request->all());
     }
 
 
