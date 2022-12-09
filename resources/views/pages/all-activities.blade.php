@@ -60,7 +60,8 @@
 
                 <div class="col-md-12">
                     <div class="teck-table">
-                        <table class="rwd-table" id="datatables">
+                        <table class="rwd-table" @if ($trips->count() >  0 ) id="datatables" @endif >
+
                             <thead>
                                 <tr>
                                     <th class="th-heading">Activity</th>
@@ -188,8 +189,8 @@
                                                                 $route = route('all-activities-available-unavailable', $trip->id);
                                                             }
                                                         }else{
-                                                            $route='#!';
-                                                            $isAvailable='';
+                                                            $isAvailable = "I'm Available";
+                                                            $route = route('all-activities-available-unavailable', $trip->id);
                                                         }
 
 
@@ -214,129 +215,17 @@
                                             <td colspan="9">No items found!</td>
                                         </tr>
                                         @endforelse
-                                        {{-- <tr>
+                                    </tbody>
+                                </table>
 
+                            @if ($trips->hasPages())
 
-                                        "id" => 1006
-                                        "departuredate" => "2009-05-24"
-                                        "departuretime" => "10:00:00"
-                                        "crewnotes" => "Public trips every 30 minutes approx 20-25 mins ticket only 10.00-17.00"
-                                        "boatname" => "Seth Ellis"
-                                        "destination" => ""
-                                        "duration" => "00:30:00"
-                                        "archived" => "Y"
-                                        "crewneeded" => 0
-                                        "cost" => null
-                                        "balance" => null
-                                        "sent_notice" => ""
-                                        "passengers" => 0
-                                        "created_at" => null
-                                        "updated_at" => null
+                            <div class="row btm-row">
+                                {{ $trips->links('pagination::bootstrap-4') }}
 
-
-
-                                        <td>
-                                            <div class="table-div">
-                                                <img src="{{ asset('assets/images/Picture-01.png') }}" class="img-fluid"
-                                        alt="">
-                                        <p> <b> Hugh Henshall</b> <br> #7083 </p>
-                    </div>
-                    </td>
-                    <td>Tue 26th July '22 <br> 09:00 AM</td>
-                    <td>Tuesday Bacon Cob Cruise</td>
-                    <td>8 hours</td>
-                    <td>6 Crew Members</td>
-                    <td>ADL, CH, KW1,<br>
-                        PLE, AB, JKL</td>
-                    <td data-th="Net Amount">
-                        <span class="active-btn"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Ready</span>
-                    </td>
-
-                    <td class="action">
-
-                        <div class="dropdown">
-                            <button class="btn" type="button" id="BtnAction" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="BtnAction">
-                                <a class="dropdown-item" href="{{ route('all-activities-edit', 2) }}">Edit</a>
-                                <a class="dropdown-item" href="#">Delete</a>
                             </div>
-                        </div>
 
-                    </td>
-
-                    </tr> --}}
-
-                    {{-- <tr class="teck-danger">
-                                        <td>
-                                            <div class="table-div">
-                                                <img src="{{ asset('assets/images/Picture-02.png') }}" class="img-fluid"
-                    alt="">
-                    <p> <b> Seth Ellis </b> <br> #7084
-                </div>
-                </td>
-                <td>Wed 27th July '22 <br> 09:15 AM</td>
-                <td>Drakehouse 2 hour cruises</td>
-                <td>7.5 hours</td>
-                <td>4 Crew Members</td>
-                <td data-th="Net Amount">ADL, CH,</td>
-                <td data-th="Net Amount" class="crew_btn">
-                    <span class="active-btn-2"><img src="{{ asset('assets/images/Button-Crew-Needed.png') }}" class="alrt-image" alt=""> Crew Needed</span>
-                </td>
-
-                <td class="action">
-
-                    <div class="dropdown">
-                        <button class="btn" type="button" id="BtnAction" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="BtnAction">
-                            <a class="dropdown-item" href="{{ route('all-activities-edit', 2) }}">Edit</a>
-                            <a class="dropdown-item" href="#">Delete</a>
-                        </div>
-                    </div>
-
-                </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="table-div">
-                            <img src="{{ asset('assets/images/Picture-02.png') }}" class="img-fluid" alt="">
-                            <p> <b> Henshall </b> <br> #7083 </p>
-                        </div>
-                    </td>
-                    <td>Tue 26th July '22 <br> 09:00 AM</td>
-                    <td>Tuesday Bacon Cob Cruise</td>
-                    <td>8 hours</td>
-                    <td>6 Crew Members</td>
-                    <td data-th="Net Amount">ADL, CH, KW1,<br> PLE, AB, JKL</td>
-                    <td data-th="Net Amount">
-                        <span class="active-btn"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Ready</span>
-                    </td>
-
-                    <td class="action">
-
-                        <div class="dropdown">
-                            <button class="btn" type="button" id="BtnAction" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="BtnAction">
-                                <a class="dropdown-item" href="{{ route('all-activities-edit', 2) }}">Edit</a>
-                                <a class="dropdown-item" href="#">Delete</a>
-                            </div>
-                        </div>
-
-                    </td>
-                </tr> --}}
-                </tbody>
-                </table>
+                        @endif
             </div>
         </div>
     </div>

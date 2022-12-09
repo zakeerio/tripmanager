@@ -9,6 +9,8 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\Trip;
 use App\Models\Crew;
+use App\Models\Tripcrew;
+
 use Session;
 use URL;
 use Illuminate\Support\Facades\Hash;
@@ -58,12 +60,14 @@ class ActivityController extends Controller
         $upcoming_activites = DB::table('trips')
             ->join('tripcrews', 'trips.id', '=', 'tripcrews.tripnumber')
             ->where('tripcrews.crewcode', '=', SESSION::get('initials'))
-            ->where('tripcrews.confirmed', '=', 'Y')
+            // ->where('tripcrews.confirmed', '=', 'Y')
+            // ->orWhere('tripcrews.skipper', '=', 'Y')
+            // ->orWhere('tripcrews.available', '=', 'Y')
             ->where('trips.departuredate', '>=', date('Y-m-d'))
             ->orderBy('departuredate')
             ->orderBy('id','DESC')
             ->distinct()
-            ->select('trips.*')->get();
+            ->select('trips.*')->paginate(250);
 
         // dd($upcoming_activites);
         if (!empty($upcoming_activites)) {
@@ -361,7 +365,7 @@ class ActivityController extends Controller
 
             if (!empty($request->available)) {
 
-              
+
                 for ($i = 0; $i < count($request->available); $i++) {
                     if (isset($request->available[$i])) {
                         $trim = $request->available[$i];
@@ -372,9 +376,9 @@ class ActivityController extends Controller
                         ->update([
                             'available'                 => 'Y',
                             'confirmed'                 => NULL,
-                           
+
                         ]);
-                    
+
                     }
                 }
             }
@@ -384,7 +388,7 @@ class ActivityController extends Controller
          //  dd($request->confiremd);
             if (!empty($request->confiremd)) {
 
-              
+
                 for ($i = 0; $i < count($request->confiremd); $i++) {
                     if (isset($request->confiremd[$i])) {
                         $trim = $request->confiremd[$i];
@@ -394,7 +398,7 @@ class ActivityController extends Controller
                         ->where('crewcode', '=', $crewcode3)
                         ->update([
                             'confirmed'                 => 'Y',
-                           
+
                             'available'                 => NULL,
                         ]);
                     }
@@ -467,7 +471,9 @@ class ActivityController extends Controller
             ->where('crewcode', '=', Session::get('initials'))
             ->where('available', '=', 'Y')
             ->orderBy('trips.id','DESC')
-            ->paginate(50);
+            ->paginate(250);
+            // ->get();
+
 
         // dd($trips);
 
@@ -487,6 +493,7 @@ class ActivityController extends Controller
 
         //  dd($user_initials);
         $check = DB::table('tripcrews')->where('tripnumber', $trip_id)->where('crewcode', $user_initials)->first();
+        $flag ='';
 
 
         if (!empty($check) && $check->available != 'Y') {
@@ -503,7 +510,19 @@ class ActivityController extends Controller
             }
         }
 
-        // dd($check);
+        if(empty($check)){
+            $tripecrw = DB::table('tripcrews')->insert([
+                'recordnumber'              => rand(10, 10000),
+                'tripnumber'                => $trip_id,
+                'crewcode'                  => $user_initials,
+                'available'                 => 'Y'
+            ]);
+            // $added = DB::table('tripcrews')->where('tripnumber', $trip_id)->where('crewcode', $user_initials)->update(['available' => 'Y']);
+            if ($tripecrw) {
+                // dd($tripecrw);
+                $flag = 'added';
+            }
+        }
 
         if ($flag == 'removed') {
             return redirect('all-activities')->with(['status' => true, 'msg' => 'Success ! Removed Successfully']);

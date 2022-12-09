@@ -59,12 +59,34 @@
 
                                     <div class="form-group col-xl-4 col-lg-12">
                                         <label for="ActivityPreference">ACTIVITY PREFERENCE</label>
-                                        <select id="ActivityPreference" name="boatpreference" class="form-control">
-                                            <option selected>Please Select...</option>
-                                            <option>...</option>
-                                            <option>...</option>
-                                            <option>...</option>
+
+                                        <select id="ActivityPreference" name="boatpreference" class="form-control" >
+                                            <option>Please Select...</option>
+                                            <?php
+
+                                            $initials = Session::get('initials');
+
+
+                                            $boats = \App\Models\ActivityItem::all();
+
+
+                                            if (!empty($boats)) {
+
+                                                foreach ($boats as $b) {
+                                            ?>
+                                                    <option  value="{{$b->activityname}}" >{{$b->activityname}}</option>
+                                                <?php
+                                                }
+                                            } else {
+                                                ?>
+                                                <option value="">No Activity Found</option>
+                                            <?php
+                                            }
+
+                                            ?>
+
                                         </select>
+
                                     </div>
 
 
@@ -120,27 +142,31 @@
                                         <div class="form-group col-md-12">
                                             <div><label>ADDITIONAL</label></div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" placeholder="First Aid" name="firstaid">
-                                                <label class="form-check-label" for="First Aid">First Aid</label>
+                                                <input class="form-check-input" type="checkbox" placeholder="First Aid" id="FirstAid" name="firstaid">
+                                                <label class="form-check-label" for="FirstAid">First Aid</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" placeholder="CBA" name="cba">
+                                                <input class="form-check-input" type="checkbox" placeholder="CBA" id="CBA" name="cba">
                                                 <label class="form-check-label" for="CBA">CBA</label>
                                             </div>
 
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" placeholder="RYA" name="rya">
+                                                <input class="form-check-input" type="checkbox" placeholder="RYA" id="RYA" name="rya">
                                                 <label class="form-check-label" for="RYA">RYA</label>
                                             </div>
 
 
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" placeohlder="IWA" name="iwa">
+                                                <input class="form-check-input" type="checkbox" placeohlder="IWA" id="IWA" name="iwa">
                                                 <label class="form-check-label" for="IWA">IWA</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" placeholder="Skipper" name="skipper">
+                                                <input class="form-check-input" id="Skipper" type="checkbox" placeholder="Skipper" name="skipper">
                                                 <label class="form-check-label" for="Skipper">Skipper</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" name="optin" id="optin" >
+                                                <label for="optin">Opted in for Details</label>
                                             </div>
 
 
@@ -154,11 +180,8 @@
                                                 <label for="privilege">Privilege</label>
                                                 <input type="number" class="form-control" name="privilege" id="privilege">
                                             </div>
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" name="optin" id="optin" >
-                                                <label for="optin">Opted in for Details</label>
-                                            </div>
-                                            <div class="form-check">
+
+                                            <div class="form-group col-md-6">
                                                 <label for="KeyHolder">Key Holder</label>
                                                 <input class="form-control" type="text" id="KeyHolder" name="keyholder">
                                             </div>

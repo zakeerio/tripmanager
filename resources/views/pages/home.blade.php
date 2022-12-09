@@ -111,7 +111,8 @@
             </div>
             <div class="col-md-12">
                 <div class="teck-table">
-                    <table class="rwd-table table" id="datatables">
+                    <table class="rwd-table table" @if ($upcoming_activites->count() >  0 ) id="datatables" @endif >
+
                         <thead>
                             <tr>
                                 <th class="th-heading">Activity</th>
@@ -637,6 +638,16 @@
         </tbody>
         </table> --}}
     </div>
+
+    @if ($upcoming_activites->hasPages())
+
+    <div class="row btm-row">
+        {{ $upcoming_activites->links('pagination::bootstrap-4') }}
+
+    </div>
+
+    @endif
+
 
 </div>
 

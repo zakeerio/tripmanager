@@ -80,24 +80,6 @@
                             @forelse ($crew_members as $crewmember)
                             {{-- {{ dd($crewmember) }} --}}
 
-                            {{-- "id" => 1
-                                    "initials" => "DJM"
-                                    "firstaid" => ""
-                                    "rya" => ""
-                                    "cba" => ""
-                                    "iwa" => ""
-                                    "keyholder" => ""
-                                    "skipper" => ""
-                                    "mobile" => ""
-                                    "privilege" => 2
-                                    "username" => "danielmorris"
-                                    "optin" => ""
-                                    "faexpire" => null
-                                    "boatpreference" => ""
-                                    "traveltime" => 0
-                                    "memnumber" => "1471"
-                                    "suspended" => 0 --}}
-
 
                             <tr>
                                 <td>
@@ -228,134 +210,19 @@
                     </td>
 
                 </tr>
-                <tr>
-                    <td>
-                        <div class="table-div">
-                            <img src="{{ asset("assets/images/Chacha.png") }}" class="img-fluid" alt="">
-                            <p> <b> Rod Auton</b> <br> (RA) </p>
-                        </div>
-                    </td>
-                    <td> rodauton@example.com </td>
-                    <td> 07562852305 </td>
-                    <td> YES </td>
-                    <td> YES </td>
-                    <td> NO </td>
-                    <td> NO </td>
-                    <td> NO </td>
-                    <td> Crew Member </td>
-
-                    <td class="action">
-                        <div class="dropdown">
-                            <button class="btn" type="button" id="BtnAction" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="BtnAction">
-                                <a class="dropdown-item" href="{{ route("crew-members-edit") }}">Edit</a>
-                                <a class="dropdown-item" href="#">Delete</a>
-                            </div>
-                        </div>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>
-                        <div class="table-div">
-                            <img src="{{ asset("assets/images/Chacha.png") }}" class="img-fluid" alt="">
-                            <p> <b> Rod Auton</b> <br> (RA) </p>
-                        </div>
-                    </td>
-                    <td> rodauton@example.com </td>
-                    <td> 07562852305 </td>
-                    <td> YES </td>
-                    <td> YES </td>
-                    <td> NO </td>
-                    <td> NO </td>
-                    <td> NO </td>
-                    <td> Crew Member </td>
-
-                    <td class="action">
-                        <div class="dropdown">
-                            <button class="btn" type="button" id="BtnAction" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="BtnAction">
-                                <a class="dropdown-item" href="{{ route("crew-members-edit") }}">Edit</a>
-                                <a class="dropdown-item " href="#">Delete</a>
-                            </div>
-                        </div>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>
-                        <div class="table-div">
-                            <img src="{{ asset("assets/images/Chacha.png") }}" class="img-fluid" alt="">
-                            <p> <b> Rod Auton</b> <br> (RA) </p>
-                        </div>
-                    </td>
-                    <td> rodauton@example.com </td>
-                    <td> 07562852305 </td>
-                    <td> YES </td>
-                    <td> YES </td>
-                    <td> NO </td>
-                    <td> NO </td>
-                    <td> NO </td>
-                    <td> Crew Member </td>
-
-                    <td class="action">
-                        <div class="dropdown">
-                            <button class="btn" type="button" id="BtnAction" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="BtnAction">
-                                <a class="dropdown-item" href="{{ route("crew-members-edit") }}">Edit</a>
-                                <a class="dropdown-item" href="#">Delete</a>
-                            </div>
-                        </div>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>
-                        <div class="table-div">
-                            <img src="{{ asset("assets/images/Chacha.png") }}" class="img-fluid" alt="">
-                            <p> <b> Rod Auton</b> <br> (RA) </p>
-                        </div>
-                    </td>
-                    <td> rodauton@example.com </td>
-                    <td> 07562852305 </td>
-                    <td> YES </td>
-                    <td> YES </td>
-                    <td> NO </td>
-                    <td> NO </td>
-                    <td> NO </td>
-                    <td> Crew Member </td>
-
-                    <td class="action">
-                        <div class="dropdown">
-                            <button class="btn" type="button" id="BtnAction" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="BtnAction">
-                                <a class="dropdown-item" href="{{ route("crew-members-edit") }}">Edit</a>
-                                <a class="dropdown-item" href="#">Delete</a>
-                            </div>
-                        </div>
-                    </td>
-
-                </tr> --}}
+                 --}}
 
                 </tbody>
                 </table>
             </div>
+            @if ($crew_members->hasPages())
+
+                <div class="row btm-row">
+                    {{ $crew_members->links('pagination::bootstrap-4') }}
+
+                </div>
+
+                @endif
         </div>
     </div>
 

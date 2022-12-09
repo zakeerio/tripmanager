@@ -45,7 +45,7 @@
         <div class="row activity_col">
             <div class="col-md-12">
                 <div class="teck-table">
-                    <table class="rwd-table" id="datatables">
+                    <table class="rwd-table" @if ($trips->count() >  0 ) id="datatables" @endif >
                         <thead>
                             <tr>
                                 <th class="th-heading">Activity</th>
@@ -322,7 +322,6 @@
             </tr> --}}
             </tbody>
             </table>
-            <div class="teck-table"> </div>
 
 
         </div>
@@ -331,33 +330,7 @@
     @if ($trips->hasPages())
 
     <div class="row btm-row">
-        {{-- {{ $trips->links() }} --}}
-
-        {{-- <div class="col-md-6 teck-showin-text">Showing <b>1-50</b> of <b>46</b> available activities.</div>
-
-                        <div class="col-md-6">
-
-                            <div class="pagination-row">
-
-                                <button class="btn-prev teck-arrow"><</button>
-
-                                <ul class="pagination">
-
-                                    <li class="active"> 1 </li>
-
-                                    <li> 2 </li>
-
-                                    <li> 3 </li>
-
-                                    <li> 4 </li>
-
-                                </ul>
-
-                                <button class="btn-next teck-arrow">></button>
-
-                            </div>
-
-                        </div> --}}
+        {{ $trips->links('pagination::bootstrap-4') }}
 
     </div>
 
