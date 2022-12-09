@@ -85,6 +85,7 @@ class ActivityController extends Controller
 
         $datefrom = date('Y-m-01');
         $dateto = date('Y-m-31');
+        //
 
         // $month_logins = DB::table('login_history')->whereBetween('created_at', [date('Y-m-01'), date('Y-m-31')])->where('user_id', Session::get('user_id'))->select(DB::raw('COUNT(created_at) as logins'))->get();
 
