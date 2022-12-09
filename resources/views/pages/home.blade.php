@@ -164,7 +164,21 @@
 
                                 <td>{{$trip->departuredate}}</td>
                                 <td width="300">{{$trip->crewnotes }}</td>
-                                <td>{{ $trip->duration }} hours</td>
+                                <td>
+                                    @php
+                                        $durationfinal = 0;
+                                        $duration = (!empty($trip->duration)) ? $trip->duration : 0;
+                                        // dd($duration);
+                                        if($duration != 0){
+                                            $duration_val = explode(':', $duration);
+                                            $clock = intVal($duration_val[0]);
+
+                                            $minutes = ($duration_val[1] / 10);
+                                            // dd($clock, $minutes);
+                                            $durationfinal = $clock.".".$minutes;
+                                        }
+                                    @endphp
+                                    {{ $durationfinal }} hours</td>
                                 <td>{{ $trip->crewneeded }}</td>
 
                                 <td width="250">

@@ -118,7 +118,21 @@
                                             </td>
                                             <td>{{$trip->departuredate }}</td>
                                             <td width="300" style="word-break: break-word;">{!! ($trip->crewnotes) !!}</td>
-                                            <td>{{ $trip->duration }} hours</td>
+                                            <td>
+                                                @php
+                                                    $durationfinal = 0;
+                                                    $duration = (!empty($trip->duration)) ? $trip->duration : 0;
+                                                    // dd($duration);
+                                                    if($duration != 0){
+                                                        $duration_val = explode(':', $duration);
+                                                        $clock = intVal($duration_val[0]);
+
+                                                        $minutes = ($duration_val[1] / 10);
+                                                        // dd($clock, $minutes);
+                                                        $durationfinal = $clock.".".$minutes;
+                                                    }
+                                                @endphp
+                                                {{ $durationfinal }} hours</td>
                                             <td>{{ $crewneeded }} Crew Members</td>
                                             <td width="250">
                                                 @if($tripcrewscount > 0)
@@ -182,14 +196,14 @@
                                                         if (!empty($check)) {
 
                                                             if ($check->available == 'Y') {
-                                                                $isAvailable = "I'm Available";
+                                                                $isAvailable = "I'm available";
                                                                 $route = route('all-activities-available-unavailable', $trip->id);
                                                             } else {
-                                                                $isAvailable = 'Not Available';
+                                                                $isAvailable = "I'm not available";
                                                                 $route = route('all-activities-available-unavailable', $trip->id);
                                                             }
                                                         }else{
-                                                            $isAvailable = "I'm Available";
+                                                            $isAvailable = "I'm available";
                                                             $route = route('all-activities-available-unavailable', $trip->id);
                                                         }
 
@@ -199,8 +213,8 @@
                                                         <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a>
                                                         @else
 
-                                                        <a class="dropdown-item" href="{{ route('all-activities-edit',[$trip->id,$isReady]) }}">Edit</a>
-                                                        <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete</a>
+                                                        <a class="dropdown-item" href="{{ route('all-activities-edit',[$trip->id,$isReady]) }}">Edit Activity</a>
+                                                        <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete Activity</a>
                                                         @endif
 
                                                     </div>

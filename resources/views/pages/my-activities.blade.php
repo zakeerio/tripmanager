@@ -98,7 +98,21 @@
 
                                 <td>{{$trip->departuredate}}</td>
                                 <td width="300">{{$trip->crewnotes }}</td>
-                                <td>{{ $trip->duration }} hours</td>
+                                <td>
+                                    @php
+                                        $durationfinal = 0;
+                                        $duration = (!empty($trip->duration)) ? $trip->duration : 0;
+                                        // dd($duration);
+                                        if($duration != 0){
+                                            $duration_val = explode(':', $duration);
+                                            $clock = intVal($duration_val[0]);
+
+                                            $minutes = ($duration_val[1] / 10);
+                                            // dd($clock, $minutes);
+                                            $durationfinal = $clock.".".$minutes;
+                                        }
+                                    @endphp
+                                    {{ $durationfinal }} hours</td>
                                 <td>{{ $trip->crewneeded }}</td>
 
                                 <td width="250">
@@ -164,20 +178,20 @@
                                             <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete</a>
                                             @else
 
-                                            <a class="dropdown-item" href="{{ route('all-activities-view',[$trip->id,$isReady]) }}">View</a>
+                                            <a class="dropdown-item" href="{{ route('all-activities-view',[$trip->id,$isReady]) }}">View activity</a>
                                             <?php
 
 
-                                            $initials = Session::get('initials');
-                                            $check = \App\Models\Tripcrew::where(['crewcode' => $initials, 'tripnumber' => $trip->id])->first();
+                                                $initials = Session::get('initials');
+                                                $check = \App\Models\Tripcrew::where(['crewcode' => $initials, 'tripnumber' => $trip->id])->first();
 
-                                            if (!empty($check)) {
+                                                if (!empty($check)) {
 
                                                 if ($check->available == 'Y') {
-                                                    $isAvailable = "I'm Available";
+                                                    $isAvailable = "I'm available";
                                                     $route = route('all-activities-available-unavailable', $trip->id);
                                                 } else {
-                                                    $isAvailable = 'Not Available';
+                                                    $isAvailable = "I'm not available";
                                                     $route = route('all-activities-available-unavailable', $trip->id);
                                                 }
                                             }
