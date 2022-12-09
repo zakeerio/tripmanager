@@ -131,15 +131,18 @@ class CrewController extends Controller
         $skipper = ($request->skipper == "on") ? "Y" : '';
         // echo $request->optin;
         $optin = ($request->optin == "on") ? "Y" : '';
+        $iwa = ($request->iwa == "on") ? "Y" : '';
+        $rya = ($request->rya == "on") ? "Y" : '';
+        $cba = ($request->cba == "on") ? "Y" : '';
+
         $privilege = $request->privilege;
         $traveltime = $request->traveltime;
         $role_id = $request->role_id;
-
+        $initials = $request->initials;
 
         $fullname = $request->fullname;
         $mobile = $request->mobile;
         $user_type = $request->user_type;
-
 
         $password = $request->password;
         $confirmpassword = $request->confirmpassword;
@@ -152,43 +155,91 @@ class CrewController extends Controller
                 'email' => 'required|email',
                 'username' => 'required',
                 'role_id' => 'required',
-                'password' => 'required|confirmed'
+                'password' => 'required',
+                'initials' => 'required',
             ]);
 
-            //  dd($request->all());
+            // dd($request->all());
+
+            $password = Hash::make($password);
+
+            $userdata = [
+                'role_id' => $request->role_id,
+                'username' => $request->username,
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => $password
+            ];
 
 
-            $user = User::create(request(['name', 'email', 'password']));
 
-            // auth()->login($user);
+            $user = User::create($userdata)->id;
 
+            // $userdat = auth()->login($user);
+            // dd($user);
 
             if ($user) {
 
                 $crew_data = array(
                     "fullname" => $name,
+                    'initials' => $initials,
+                    'username' => $request->username,
                     "emailaddress" => $emailaddress,
                     "secondarynumber" => $secondarynumber,
                     "boatpreference" => $boatpreference,
                     "memnumber" => $memnumber,
                     "firstaid" => $firstaid,
                     "keyholder" => $keyholder,
+                    "mobile" => $mobile,
                     "skipper" => $skipper,
                     "optin" => $optin,
-                    "privilege" => $privilege
+                    'iwa' => $iwa,
+                    'rya' => $rya,
+                    'cba' => $cba,
+                    "privilege" => $privilege,
+                    'user_id' => $user,
+                    'suspended' => 0,
+                    'role_id' => $role_id,
+                    'traveltime' => $traveltime
                 );
 
-                // dd($crew_data);
-                $update = $crew->create($crew_data);
+                // print_r($crew_data);
+                $crewupdate = Crew::create($crew_data)->id;
 
-                if ($update) {
+                if ($crewupdate) {
                     $messages[] =  "User Data Updated Successfully";
 
                     $profileImage = $request->profileImage;
 
-                    // echo "TEST3";
+                    if ($request->has('profileImage')) {
+                        //path will be after choosing any directory inside public folder
+                        $path =  $this->UploadSingleImage($request->file('profileImage'), 'assets/profile-images');
 
-                    // dd($request->all());
+                        if ($path == 'File Extension Error' || $path == 'Image Found Empty') {
+                            return redirect()->back()->withErrors(['image' => 'Please Select a Suitable Image']);
+                        } else {
+                            $crewuser = Crew::WHERE('id', $crewid)->get()->toArray();
+                            if (!empty($crewuser) && isset($path)) {
+                                $image = $crewuser[0]['profile'];
+                                $profileimg = ['profile' => $path];
+
+                                $update = Crew::WHERE('id', $crewupdate)->UPDATE($profileimg);
+                                if($update){
+                                    $messages[] =  "User profile photo Updated Successfully";
+
+                                }
+
+                                print_r($messages);
+
+                                 dd($update);
+                            }
+                        }
+                    }
+
+
+                    echo "TEST3";
+
+                    dd($request->all());
 
                     return redirect()->back()->with('success', $messages);
 
@@ -198,7 +249,6 @@ class CrewController extends Controller
                 // dd($request->all());
 
                 $messages[] =  "Something went wrong!";
-                $profileImage = $request->profileImage;
 
                 return redirect()->back()->with('error', $messages);
             }

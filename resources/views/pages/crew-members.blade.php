@@ -127,7 +127,7 @@
                                 <td> {{ $crewmember->rya }} </td>
                                 <td> {{ $crewmember->cba }} </td>
                                 <td>
-                                    {{-- {{ (isset($crewmember->user->role)) ? Str::ucfirst($crewmember->user->role['name']) : '(No Role)' }} --}}
+                                    {{ (isset($crewmember->user->role)) ? Str::ucfirst($crewmember->user->role['name']) : '(No Role)' }}
                                 </td>
 
                                 <td class="action">

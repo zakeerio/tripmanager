@@ -18,6 +18,7 @@ class Crew extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'initials',
         'fullname',
         'emailaddress',
         'firstaid',
@@ -54,5 +55,5 @@ class Crew extends Model
         return $this->hasOne(User::class,  'id', 'user_id');
     }
 
-    
+
 }

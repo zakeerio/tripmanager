@@ -57,14 +57,13 @@ class User extends Authenticatable
     */
    public function role()
    {
-        return "test";
     //    return $this->belongsTo(Role::class);
-    //    return $this->belongsTo(Role::class, 'role_id', 'id');
+       return $this->belongsTo(Role::class, 'role_id', 'id');
 
 
    }
 
-   
+
    /**
     * Get the crew associated with the User
     *

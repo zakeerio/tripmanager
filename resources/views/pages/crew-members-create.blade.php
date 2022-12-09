@@ -54,7 +54,7 @@
 
                                     <div class="form-group col-xl-4 col-lg-6">
                                         <label for="SecondaryNumber">SECONDARY NUMBER</label>
-                                        <input type="number" class="form-control" id="SecondaryNumber">
+                                        <input type="number" class="form-control" name="secondarynumber" id="SecondaryNumber">
                                     </div>
 
                                     <div class="form-group col-xl-4 col-lg-12">
@@ -189,8 +189,8 @@
 
 
                                             <div class="form-group col-md-6">
-                                                <label for="privilege">First aid expiry</label>
-                                                <input type="date" class="form-control" name="traveltime" id="privilege">
+                                                <label for="traveltime">First aid expiry</label>
+                                                <input type="number" class="form-control" name="traveltime" id="traveltime">
                                             </div>
                                         </div>
                                     </div>
