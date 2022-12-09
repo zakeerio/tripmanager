@@ -25,6 +25,7 @@ class DocumentsController extends Controller
 
         $files = DocumentCategory::with('GetFiles')->get();
 
+
         // foreach ($files as $f) {
         //     echo $f->name . "<br>";
         //     //echo $f->file_name;

@@ -97,12 +97,12 @@
                         <form method="POST" action="{{route('/documents-save',$category->id)}}" enctype="multipart/form-data">
 
                             @csrf
-                            @if(Session::get('role')!='crewmember')
                             <div class="col-md-12">
                                 <h3><?php echo $category->name ?></h3>
                                 {{-- <img src="{{ asset('assets/images/document.png') }}" class="document-icon-2"> --}}
                                 <br>
                             </div>
+                            @if(Session::get('role')!='crewmember')
                             <div class="row">
 
                                 <div class="col-sm-6 col-xl-6">
