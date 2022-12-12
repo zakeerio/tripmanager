@@ -321,6 +321,17 @@ class ActivityController extends Controller
         }
 
         try {
+
+            if (isset($request->duration) && str_contains($request->duration, '.')) {
+                $time = $request->duration;
+                $time = explode('.', $time);
+                $time = ($time[0]) . ":" . ($time[1] * 6) . ":" . "00";
+                // dd($time);
+            } else if (isset($request->duration) && str_contains($request->duration, ':')) {
+                $time = $request->duration;
+            }
+
+
             $activityArray = [
 
                 'departuredate'  => $request->departuredate,
@@ -328,7 +339,7 @@ class ActivityController extends Controller
                 'crewnotes'      => $request->NotesCrew,
                 'boatname'       => $request->boatname,
                 'destination'    => $request->destination,
-                'duration'       => $request->duration,
+                'duration'       => $time,
                 //'archived'     =>
                 'crewneeded'     => $request->crewneeded,
                 'cost'           => $request->tripcost,
