@@ -218,30 +218,30 @@ class CrewController extends Controller
                         if ($path == 'File Extension Error' || $path == 'Image Found Empty') {
                             return redirect()->back()->withErrors(['image' => 'Please Select a Suitable Image']);
                         } else {
-                            $crewuser = Crew::WHERE('id', $crewid)->get()->toArray();
+                            $crewuser = Crew::WHERE('id', $crewupdate)->get()->toArray();
                             if (!empty($crewuser) && isset($path)) {
                                 $image = $crewuser[0]['profile'];
                                 $profileimg = ['profile' => $path];
 
                                 $update = Crew::WHERE('id', $crewupdate)->UPDATE($profileimg);
-                                if($update){
+                                if ($update) {
                                     $messages[] =  "User profile photo Updated Successfully";
 
                                 }
 
-                                print_r($messages);
+                                // print_r($messages);
 
-                                 dd($update);
+                                //  dd($update);
                             }
                         }
                     }
 
 
-                    echo "TEST3";
+                    // echo "TEST3";
 
-                    dd($request->all());
+                    // dd($request->all());
 
-                    return redirect()->back()->with('success', $messages);
+                    return redirect()->back()->with(['success', $messages, 'status' => true, 'msg' => 'Success ! User Created']);
 
                 }
             } else {

@@ -154,8 +154,15 @@
 
                                             $isReady = NULL;
 
+
+                                            $confirme_crew = DB::table('tripcrews')
+                                                ->where('tripnumber', $trip->id)
+                                                // ->where('confirmed', 'Y')
+                                                // ->where('available', 'Y')
+                                                ->get()->count();
+
                                             ?>
-                                            @if(($check_crewcount == true) ? 'teck-danger' : "" )
+                                            @if(($check_crewcount == $trip->crewneeded ) ? 'teck-danger' : "" )
 
                                             <td width="200" data-th="Net Amount">
                                                 <span class="active-btn">
@@ -183,7 +190,7 @@
                                                         <span></span>
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="BtnAction">
-                                                        <a class="dropdown-item" href="{{ route('all-activities-view', [$trip->id,$isReady]) }}">View</a>
+                                                        <a class="dropdown-item" href="{{ route('all-activities-view', [$trip->id,$isReady]) }}">View Activity</a>
                                                         @if(Session::get('role')=='crewmember')
 
 
@@ -252,6 +259,32 @@
 
 
 <script>
+    <script>
+        function ShowWarningAlert(msg) {
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: msg,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                }
+
+                return result.isConfirmed
+            });
+
+
+        }
+
     function ShowToast(msg, type) {
 
 

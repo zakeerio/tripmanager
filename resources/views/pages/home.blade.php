@@ -111,7 +111,7 @@
             </div>
             <div class="col-md-12">
                 <div class="teck-table">
-                    <table class="rwd-table table" @if ($upcoming_activites->count() >  0 ) id="datatables" @endif >
+                    <table class="rwd-table table" @if ($upcoming_activites->count() > 0 ) id="datatables" @endif >
 
                         <thead>
                             <tr>
@@ -179,7 +179,7 @@
                                         }
                                     @endphp
                                     {{ $durationfinal }} hours</td>
-                                <td>{{ $trip->crewneeded }}</td>
+                                <td>{{ $trip->crewneeded }} Crew Members</td>
 
                                 <td width="250">
                                     <?php
@@ -193,9 +193,9 @@
 
                                         foreach ($members as $m) {
 
-                                            if ($m->available == 'Y') {
+                                            // if ($m->available == 'Y') {
                                                 echo $m->crewcode . ",";
-                                            }
+                                            // }
                                             $i++;
                                     ?>
 
@@ -213,7 +213,13 @@
                                     <?php
 
                                     $isReady = NULL;
-                                    if ($trip->crewneeded < $i) {
+                                    $confirme_crew = DB::table('tripcrews')
+                                    ->where('tripnumber', $trip->id)
+                                    // ->where('confirmed', 'Y')
+                                    // ->where('available', 'Y')
+                                    ->get()->count();
+
+                                    if ($confirme_crew == $trip->crewneeded) {
                                         $isReady = 'Ready';
                                     ?>
                                         <span class="active-btn">
@@ -246,11 +252,11 @@
                                                  <a class="dropdown-item" href="#">Delete</a> -->
 
                                             @if(Session::get('role') !='crewmember')
-                                            <a class="dropdown-item" href="{{ route('all-activities-view', [$trip->id,$isReady]) }}">View</a>
-                                            <a class="dropdown-item" href="{{ route('all-activities-edit', [$trip->id,$isReady]) }}">Edit</a>
-                                            <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete</a>
+                                            <a class="dropdown-item" href="{{ route('all-activities-view', [$trip->id,$isReady]) }}">View Activity</a>
+                                            <a class="dropdown-item" href="{{ route('all-activities-edit', [$trip->id,$isReady]) }}">Edit Activity</a>
+                                            <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete Activity</a>
                                             @else
-                                            <a class="dropdown-item" href="{{ route('all-activities-view', [$trip->id,$isReady]) }}">View</a>
+                                            <a class="dropdown-item" href="{{ route('all-activities-view', [$trip->id,$isReady]) }}">View Activity</a>
 
                                             <?php
 
@@ -674,6 +680,32 @@
 @stop
 
 <script>
+    function ShowWarningAlert(msg) {
+
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: msg,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            }
+
+            return result.isConfirmed
+        });
+
+
+    }
+
     function ShowToast(msg, type) {
 
 
@@ -718,7 +750,7 @@
 
     function DeleteActivity(id) {
 
-        if (confirm('Do You Want Delete ?')) {
+        if (ShowWarningAlert('Do You Want Delete ?')) {
             window.location.href = "{{URL::to('dashboard-activites-delete')}}/" + id;
         }
 

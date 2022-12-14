@@ -107,10 +107,19 @@ a {text-decoration:none !important  ;}
 /* #main .pagination { margin: 0 2%; border: 1px solid #C2C2C2; border-radius: 10px;  } */
 #main .pagination { margin: 0; border: 1px solid #C2C2C2; border-radius: 10px;  }
 
-#main .pagination > li { padding: 10px 20px; }
+/* #main .pagination > li { padding: 10px 20px; } */
+#main .pagination > li { padding: 0 !important; }
+
 #main .pagination > li:hover, #main .pagination > .active { cursor: pointer; background: #006d3b; border-radius: 10px; color: #fff; }
 .pagination-row .teck-arrow:hover { background: #006d3b; color: #fff; border-color: #006d3b; }
 .btm-row { align-items: center; }
+
+.page-link { position: relative; display: block; padding: 0 !important; margin-left: -1px; line-height: 1.25; color: black !important; background-color: transparent !important; border: 0 !important; }
+#main .pagination > li .page-link { padding: 10px 20px !important; }
+
+.page-link:hover { color: #FFF !important; }
+
+.page-item.active .page-link { color: #FFF  !important; background-color: transparent !important; border-color: transparent !important; }
 
 .active-btn, .active-btn-2 { border-radius: 10px; align-items: center; justify-content: space-between; width: 75%; padding: 10px 15px; font-family: poppins; }
 .active-btn-ready { border-radius: 10px; align-items: center; justify-content: space-between; width: 75%; padding: 10px 15px; font-family: poppins; text-align: end; }

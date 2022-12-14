@@ -179,6 +179,10 @@
                                             <input class="form-check-input" type="checkbox" id="skipper" name="skipper" {{ !empty($crew_member->skipper) ? 'checked' : '' }}>
                                             <label class="form-check-label" for="skipper">Skipper</label>
                                         </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" name="optin" id="optin" {{ !empty($crew_member->optin) ? 'checked' : '' }} value="{{ $crew_member->optin }}">
+                                            <label for="optin">Opted in for Details</label>
+                                        </div>
 
 
                                     </div>
@@ -189,11 +193,9 @@
 
                                         <div class="form-group col-md-6">
                                             <label for="privilege">Privilege</label>
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" name="optin" id="optin" {{ !empty($crew_member->optin) ? 'checked' : '' }} value="{{ $crew_member->optin }}">
-                                                <label for="optin">Opted in for Details</label>
-                                            </div> <input type="number" class="form-control" name="privilege" id="privilege" value="{{ $crew_member->privilege }}">
+                                            <input type="number" class="form-control" name="privilege" id="privilege" value="{{ $crew_member->privilege }}">
                                         </div>
+
 
                                         <div class="form-check">
                                             <label for="KeyHolder">Key Holder</label>
@@ -201,6 +203,10 @@
                                         </div>
 
 
+                                        <div class="form-group col-md-6">
+                                            <label for="traveltime">Travel Time</label>
+                                            <input type="text" class="form-control" name="traveltime" id="traveltime" value="{{ $crew_member->traveltime }}">
+                                        </div>
 
                                         <div class="form-group col-md-6">
                                             <label for="privilege">First aid expiry</label>

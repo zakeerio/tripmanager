@@ -11,7 +11,7 @@
 
 
 
-                    <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
+                <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
 
             </div>
 
@@ -45,7 +45,7 @@
         <div class="row activity_col">
             <div class="col-md-12">
                 <div class="teck-table">
-                    <table class="rwd-table" @if ($trips->count() >  0 ) id="datatables" @endif >
+                    <table class="rwd-table" @if ($trips->count() > 0 ) id="datatables" @endif >
                         <thead>
                             <tr>
                                 <th class="th-heading">Activity</th>
@@ -113,7 +113,7 @@
                                         }
                                     @endphp
                                     {{ $durationfinal }} hours</td>
-                                <td>{{ $trip->crewneeded }}</td>
+                                <td>{{ $trip->crewneeded }} Crew Members</td>
 
                                 <td width="250">
                                     <?php
@@ -126,9 +126,9 @@
                                     if (!empty($members)) {
 
                                         foreach ($members as $m) {
-                                            if ($m->available == 'Y') {
+                                            // if ($m->available == 'Y') {
                                                 echo $m->crewcode . ",";
-                                            }
+                                            // }
                                             $i++;
                                     ?>
 
@@ -173,9 +173,9 @@
                                         <div class="dropdown-menu" aria-labelledby="BtnAction">
 
                                             @if(Session::get('role') !='crewmember')
-                                            <a class="dropdown-item" href="{{ route('all-activities-view',  [$trip->id,$isReady]) }}">View</a>
-                                            <a class="dropdown-item" href="{{ route('all-activities-edit',  [$trip->id,$isReady]) }}">Edit</a>
-                                            <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete</a>
+                                            <a class="dropdown-item" href="{{ route('all-activities-view',  [$trip->id,$isReady]) }}">View Activity</a>
+                                            <a class="dropdown-item" href="{{ route('all-activities-edit',  [$trip->id,$isReady]) }}">Edit Activity</a>
+                                            <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete Activity</a>
                                             @else
 
                                             <a class="dropdown-item" href="{{ route('all-activities-view',[$trip->id,$isReady]) }}">View activity</a>
@@ -397,9 +397,36 @@
         }
     }
 
+
+    function ShowWarningAlert(msg) {
+
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: msg,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            }
+
+            return result.isConfirmed
+        });
+
+
+    }
+
     function DeleteActivity(id) {
 
-        if (confirm('Do You Want Delete ?')) {
+        if (ShowWarningAlert('Do You Want Delete ?')) {
             window.location.href = "{{URL::to('all-activites-delete')}}/" + id;
         }
 

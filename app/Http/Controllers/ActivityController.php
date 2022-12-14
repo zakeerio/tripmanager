@@ -284,7 +284,7 @@ class ActivityController extends Controller
     public function view($id, $status)
     {
 
-        $pagetitle = "Edit Activity";
+        $pagetitle = "View Activity";
         $activity = Trip::findOrFail($id);
         // dd($activity);
         if ($activity) {
@@ -480,7 +480,7 @@ class ActivityController extends Controller
             ->join('tripcrews', 'tripnumber', '=', 'trips.id')
             ->select('tripcrews.*', 'trips.*')
             ->where('crewcode', '=', Session::get('initials'))
-            ->where('available', '=', 'Y')
+            // ->where('available', '=', 'Y')
             ->orderBy('trips.id','DESC')
             ->paginate(250);
             // ->get();
@@ -510,11 +510,14 @@ class ActivityController extends Controller
         if (!empty($check) && $check->available != 'Y') {
 
             $added = DB::table('tripcrews')->where('tripnumber', $trip_id)->where('crewcode', $user_initials)->update(['available' => 'Y']);
+            $added = DB::table('tripcrews')->where('tripnumber', $trip_id)->where('crewcode', $user_initials)->update(['isskipper' => NULL]);
             if ($added) {
                 $flag = 'added';
             }
         } else {
             $removed = DB::table('tripcrews')->where('tripnumber', $trip_id)->where('crewcode', $user_initials)->update(['available' => NULL]);
+            $added = DB::table('tripcrews')->where('tripnumber', $trip_id)->where('crewcode', $user_initials)->update(['isskipper' => 'Y']);
+            $added = DB::table('tripcrews')->where('tripnumber', $trip_id)->where('crewcode', $user_initials)->update(['confirmed' => NULL]);
 
             if ($removed) {
                 $flag = 'removed';
@@ -536,9 +539,9 @@ class ActivityController extends Controller
         }
 
         if ($flag == 'removed') {
-            return redirect('all-activities')->with(['status' => true, 'msg' => 'Success ! Removed Successfully']);
+            return redirect()->back()->with(['status' => true, 'msg' => 'Success ! You Are Unavailable']);
         } else if ($flag == 'added') {
-            return redirect('all-activities')->with(['status' => true, 'msg' => 'Success ! Added Successfully']);
+            return redirect()->back()->with(['status' => true, 'msg' => 'Success ! You Are Available']);
         }
     }
 
