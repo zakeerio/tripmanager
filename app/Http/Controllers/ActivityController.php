@@ -240,7 +240,7 @@ class ActivityController extends Controller
             ->join('tripcrews', 'trips.id', '=', 'tripcrews.tripnumber')
             ->where('tripcrews.crewcode', '=', SESSION::get('initials'))
             // ->where('tripcrews.confirmed', '=', 'Y')
-            ->orWhere('tripcrews.isskipper', '!=', 'Y')
+            // ->orWhere('tripcrews.isskipper', '!=', 'Y')
             // ->orWhere('tripcrews.available', '=', 'Y')
             ->where('trips.departuredate', '>=', date('Y-m-d'))
             ->orderBy('departuredate')
@@ -263,7 +263,7 @@ class ActivityController extends Controller
         $pagetitle = "Dashboard";
 
         $datefrom = date('Y-m-01');
-        $dateto = date('Y-m-31');
+        $dateto = date('Y-m-t');
 
         // $month_logins = DB::table('login_history')->whereBetween('created_at', [date('Y-m-01'), date('Y-m-31')])->where('user_id', Session::get('user_id'))->select(DB::raw('COUNT(created_at) as logins'))->get();
 
@@ -284,7 +284,8 @@ class ActivityController extends Controller
                 if (isset($mh->duration) && str_contains($mh->duration, ':')) {
                     $hours = explode(':', $mh->duration);
 
-                    $hours =  ($hours[0]) + ($hours[1] / 60);
+                    echo $hours[0]."--".$hours[1] / 10;
+                    $hours =  ($hours[0]) + ($hours[1] / 10);
 
                     $total_month_hours += number_format($hours, 0, '.', '');
                 }
