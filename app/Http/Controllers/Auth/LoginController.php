@@ -70,7 +70,7 @@ class LoginController extends Controller
 
 
         $updatepassword = false;
-      
+
 
         $authArray = ['username' => $request->username, 'password' => $request->password];
 
@@ -84,7 +84,7 @@ class LoginController extends Controller
             $request->session()->put('user_id', $user[0]->id);
             $crew = DB::table('crews')->where('user_id', $user[0]->id)->get();
             $request->session()->put('initials', $crew[0]->initials);
-           
+
             $name= (Auth::user() !== null) ? Auth::user()->name : 'NO NAME';
             $request->session()->put('name',$name);
 
@@ -101,7 +101,7 @@ class LoginController extends Controller
                 //dd($login);
 
 
-                $role = DB::table('roles')->where('id', $user[0]->id)->get();
+                $role = DB::table('roles')->where('id', $user[0]->role_id)->get();
                 if (!empty($role) && isset($role[0]->name)) {
                     // dd($role[0]->name);
                     $request->session()->put('role', $role[0]->name);
@@ -256,7 +256,7 @@ class LoginController extends Controller
         // }
 
 
-        
+
     }
     protected function authenticated(Request $request, $user)
     {
