@@ -10,7 +10,7 @@ use App\Models\Role;
 use App\Models\Trip;
 use App\Models\Crew;
 use App\Models\Tripcrew;
-
+use DateTime;
 use Session;
 use URL;
 use Illuminate\Support\Facades\Hash;
@@ -46,10 +46,189 @@ class ActivityController extends Controller
 
     public function analytics_view()
     {
+        $pagetitle = "Analytics";
 
-        $trips = Trip::paginate(250);
+        // $trips = Trip::paginate(250);
         // dd($trips);
-        return view('pages/analytics')->with("trips", $trips)->with('tripcrews');
+
+        // $returnOrderDetails = Order::with('order_items')->whereHas('order_items', function($q) {
+        //     $q->where('item_status', 'Return Approved');
+        //    })->get();
+
+        // $trips = Crew::with('trip_user')->whereHas('trip_user', function ($q) {
+        //     $q->where('available', 'Y');
+        // })->get();
+
+        // foreach ($trips as $tp) {
+
+        //     echo $tp->fullname . "<br>";
+
+        //     foreach ($tp->trip_user as $t) {
+        //         echo $t->crewcode . "<br>";
+        //     }
+        // }
+        // $trips = Tripcrew::with('trip')->whereHas('trip', function ($q) {
+        //     $q->where('available', 'Y');
+        //     $q->where('departuredate', '>',  date('Y-01-01'));
+        //     $q->where('departuredate', '<',  date('Y-12-31'));
+        // })->get();
+        // $trips = Crew::with(['trip_user','tripcrews'])->get()->toArray();
+
+
+        // $date = new DateTime('2000-01-01');
+        // $result = $date->format('Y-m-d H:i:s');
+
+
+
+        $crew = DB::table('crews')->get();
+
+        $i = 0;
+        $user = array();
+
+        foreach ($crew as $cr) {
+
+
+            $tripcrews = DB::table('tripcrews')->where('crewcode', $cr->initials)->get();
+
+            if ($tripcrews[0]->isskipper == 'Y') {
+                $user[$i]['fullname'] = $cr->fullname;
+                $user[$i]['crewcode'] = $cr->initials;
+                $user[$i]['year']['jan'] = 0;
+                $user[$i]['year']['fab'] = 0;
+                $user[$i]['year']['march'] = 0;
+                $user[$i]['year']['april'] = 0;
+                $user[$i]['year']['may'] = 0;
+                $user[$i]['year']['june'] = 0;
+                $user[$i]['year']['june'] = 0;
+                $user[$i]['year']['july'] = 0;
+                $user[$i]['year']['augest'] = 0;
+                $user[$i]['year']['sep'] = 0;
+                $user[$i]['year']['oct'] = 0;
+                $user[$i]['year']['nov'] = 0;
+                $user[$i]['year']['des'] = 0;
+            } else {
+                if (isset($tripcrews[0]->tripnumber)) {
+                    $trip = DB::table('trips')->where('id', $tripcrews[0]->tripnumber)->get();
+
+                    $exp = explode('-', $trip[0]->departuredate);
+                    $monthNum  = $exp[1];
+                    $dateObj   = DateTime::createFromFormat('!m', $monthNum);
+                    $monthName = $dateObj->format('F');
+                    // echo  $monthName. "<br>";
+
+                    if (isset($trip[0]->duration) && str_contains($trip[0]->duration, ':')) {
+                        $hours = explode(':', $trip[0]->duration);
+                        $hours =  ($hours[0]) + ($hours[1] / 60);
+                        $total_month_hours = ceil($hours);
+                    } else {
+                        $total_month_hours = 0;
+                    }
+
+
+                    if ($monthName == 'January') {
+                        $jan = $total_month_hours = ceil($hours);
+                    } else {
+                        $jan = 0;
+                    }
+
+                    if ($monthName == 'February') {
+                        $fab = $total_month_hours = ceil($hours);
+                    } else {
+                        $fab = 0;
+                    }
+
+                    if ($monthName == 'March') {
+                        $march = $total_month_hours = ceil($hours);
+                    } else {
+                        $march = 0;
+                    }
+
+
+                    if ($monthName == 'April') {
+                        $april = $total_month_hours = ceil($hours);
+                    } else {
+                        $april = 0;
+                    }
+
+                    if ($monthName == 'May') {
+
+                        $may = $total_month_hours;
+                    } else {
+                        $may = 0;
+                    }
+
+                    if ($monthName == 'June') {
+                        $june = $total_month_hours = ceil($hours);
+                    } else {
+                        $june = 0;
+                    }
+
+                    if ($monthName == 'July') {
+                        $july = $total_month_hours = ceil($hours);
+                    } else {
+                        $july = 0;
+                    }
+
+
+                    if ($monthName == 'Augest') {
+                        $augest = $total_month_hours = ceil($hours);
+                    } else {
+                        $augest = 0;
+                    }
+
+
+                    if ($monthName == 'September') {
+                        $sep = $total_month_hours = ceil($hours);
+                    } else {
+                        $sep = 0;
+                    }
+
+
+                    if ($monthName == 'October') {
+                        $oct = $total_month_hours = ceil($hours);
+                    } else {
+                        $oct = 0;
+                    }
+
+
+                    if ($monthName == 'November') {
+                        $nov = $total_month_hours = ceil($hours);
+                    } else {
+                        $nov = 0;
+                    }
+
+
+                    if ($monthName == 'December') {
+                        $des = $total_month_hours = ceil($hours);
+                    } else {
+                        $des = 0;
+                    }
+
+                    $user[$i]['fullname'] = $cr->fullname;
+                    $user[$i]['crewcode'] = $cr->initials;
+                    $user[$i]['year']['jan'] = $jan;
+                    $user[$i]['year']['fab'] = $fab;
+                    $user[$i]['year']['march'] = $march;
+                    $user[$i]['year']['april'] = $april;
+                    $user[$i]['year']['may'] = $may;
+                    $user[$i]['year']['june'] = $june;
+                    $user[$i]['year']['june'] = $june;
+                    $user[$i]['year']['july'] = $july;
+                    $user[$i]['year']['augest'] = $augest;
+                    $user[$i]['year']['sep'] = $sep;
+                    $user[$i]['year']['oct'] = $oct;
+                    $user[$i]['year']['nov'] = $nov;
+                    $user[$i]['year']['des'] = $des;
+                }
+            }
+            $i++;
+        }
+
+        // echo "<pre>";
+        // print_r($user);
+        // dd($user);
+
+        return view('pages/analytics')->with("user", $user)->with('tripcrews')->with("pagetitle", $pagetitle);
     }
 
     public function dashboard(request $request)
@@ -406,12 +585,12 @@ class ActivityController extends Controller
                         $initials = explode(':', $trim);
                         $crewcode3 = $initials[0];
                         $this->check3 = DB::table('tripcrews')->where('tripnumber', '=', $request->id)
-                        ->where('crewcode', '=', $crewcode3)
-                        ->update([
-                            'confirmed'                 => 'Y',
+                            ->where('crewcode', '=', $crewcode3)
+                            ->update([
+                                'confirmed'                 => 'Y',
 
-                            'available'                 => NULL,
-                        ]);
+                                'available'                 => NULL,
+                            ]);
                     }
                 }
             }
