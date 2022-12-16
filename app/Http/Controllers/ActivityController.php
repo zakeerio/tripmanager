@@ -284,7 +284,7 @@ class ActivityController extends Controller
                 if (isset($mh->duration) && str_contains($mh->duration, ':')) {
                     $hours = explode(':', $mh->duration);
 
-                    echo $hours[0]."--".$hours[1] / 10;
+                    // echo $hours[0]."--".$hours[1] / 10;
                     $hours =  ($hours[0]) + ($hours[1] / 10);
 
                     $total_month_hours += number_format($hours, 0, '.', '');
