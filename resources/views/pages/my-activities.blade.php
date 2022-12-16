@@ -185,6 +185,7 @@
                                                 $initials = Session::get('initials');
                                                 $check = \App\Models\Tripcrew::where(['crewcode' => $initials, 'tripnumber' => $trip->id])->first();
 
+
                                                 if (!empty($check)) {
 
                                                 if ($check->available == 'Y') {
@@ -194,6 +195,9 @@
                                                     $isAvailable = "I'm not available";
                                                     $route = route('all-activities-available-unavailable', $trip->id);
                                                 }
+                                            } else {
+                                                $isAvailable = "I'm available";
+                                                $route = route('all-activities-available-unavailable', $trip->id);
                                             }
 
                                             ?>

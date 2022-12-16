@@ -58,7 +58,7 @@
                         </thead>
 
                         <tbody>
-                            <?php
+                            <?php /*
 
                             if (!empty($user)) {
 
@@ -93,7 +93,7 @@
                             }
 
 
-                                ?>
+                              */  ?>
 
 
                         </tbody>
