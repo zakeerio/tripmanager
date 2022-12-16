@@ -658,7 +658,7 @@ class ActivityController extends Controller
             ->join('tripcrews', 'tripnumber', '=', 'trips.id')
             ->select('tripcrews.*', 'trips.*')
             ->where('crewcode', '=', Session::get('initials'))
-            // ->where('isskipper', '!=', 'Y')
+            ->where('isskipper', '!=', 'Y')
             // ->where('confirmed', '=', 'Y')
             // ->groupBy('tripcrews.tripnumber')
             ->orderBy('trips.id', 'DESC')
