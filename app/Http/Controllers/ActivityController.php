@@ -240,7 +240,7 @@ class ActivityController extends Controller
             ->join('tripcrews', 'trips.id', '=', 'tripcrews.tripnumber')
             ->where('tripcrews.crewcode', '=', SESSION::get('initials'))
             // ->where('tripcrews.confirmed', '=', 'Y')
-            // ->orWhere('tripcrews.skipper', '=', 'Y')
+            ->orWhere('tripcrews.isskipper', '!=', 'Y')
             // ->orWhere('tripcrews.available', '=', 'Y')
             ->where('trips.departuredate', '>=', date('Y-m-d'))
             ->orderBy('departuredate')
