@@ -286,7 +286,7 @@ class ActivityController extends Controller
 
                     $hours =  ($hours[0]) + ($hours[1] / 60);
 
-                    $total_month_hours += ceil($hours);
+                    $total_month_hours += number_format($hours, 2, '.', '');
                 }
             }
         } else {
@@ -330,7 +330,7 @@ class ActivityController extends Controller
 
                     $hours =  ($hours[0]) + ($hours[1] / 60);
 
-                    $total_year_hours += ceil($hours);
+                    $total_year_hours += number_format($hours, 2, '.', '');
                 }
             }
         } else {
@@ -656,7 +656,7 @@ class ActivityController extends Controller
 
         $trips = DB::table('trips')
             ->join('tripcrews', 'tripnumber', '=', 'trips.id')
-            ->select('tripcrews.*', 'trips.*')
+            ->select('tripcrews.*', 'trips.*')\
             ->where('crewcode', '=', Session::get('initials'))
             // ->where('isskipper', '!=', 'Y')
             // ->where('confirmed', '=', 'Y')
