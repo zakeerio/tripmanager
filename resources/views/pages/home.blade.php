@@ -267,12 +267,15 @@
                                             if (!empty($check)) {
 
                                                 if ($check->available == 'Y') {
-                                                    $isAvailable = "I'm Available";
+                                                    $isAvailable = "I'm not Available";
                                                     $route = route('all-activities-available-unavailable', $trip->id);
                                                 } else {
-                                                    $isAvailable = 'Not Available';
+                                                    $isAvailable = "I'm available";
                                                     $route = route('all-activities-available-unavailable', $trip->id);
                                                 }
+                                            } else {
+                                                $isAvailable = "I'm available";
+                                                $route = route('all-activities-available-unavailable', $trip->id);
                                             }
 
                                             ?>
