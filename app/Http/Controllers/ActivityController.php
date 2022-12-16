@@ -244,8 +244,8 @@ class ActivityController extends Controller
             // ->orWhere('tripcrews.available', '=', 'Y')
             ->where('trips.departuredate', '>=', date('Y-m-d'))
             ->orderBy('departuredate')
-            ->orderBy('id', 'DESC')
-            ->distinct()
+            // ->orderBy('id', 'DESC')
+            // ->distinct()
             ->select('trips.*')->paginate(250);
 
         // dd($upcoming_activites);
@@ -263,7 +263,7 @@ class ActivityController extends Controller
         $pagetitle = "Dashboard";
 
         $datefrom = date('Y-m-01');
-        $dateto = date('Y-m-31');
+        $dateto = date('Y-m-t');
 
         // $month_logins = DB::table('login_history')->whereBetween('created_at', [date('Y-m-01'), date('Y-m-31')])->where('user_id', Session::get('user_id'))->select(DB::raw('COUNT(created_at) as logins'))->get();
 
@@ -281,13 +281,24 @@ class ActivityController extends Controller
             $total_month_hours = 0;
             foreach ($month_hours as $mh) {
 
-                if (isset($mh->duration) && str_contains($mh->duration, ':')) {
-                    $hours = explode(':', $mh->duration);
+                $duration = (!empty($mh->duration)) ? $mh->duration : 0;
+                // dd($duration);
+                if($duration != 0){
+                    $duration_val = explode(':', $duration);
+                    $clock = intVal($duration_val[0]);
 
-                    $hours =  ($hours[0]) + ($hours[1] / 60);
-
-                    $total_month_hours += number_format($hours, 0, '.', '');
+                    $minutes = ($duration_val[1] / 10);
+                    // dd($clock, $minutes);
+                    $total_month_hours += $clock.".".$minutes;
                 }
+
+                // if (isset($mh->duration) && str_contains($mh->duration, ':')) {
+                //     $hours = explode(':', $mh->duration);
+
+                //     $hours =  ($hours[0]) + ($hours[1] / 60);
+
+                //     $total_month_hours += number_format($hours, 0, '.', '');
+                // }
             }
         } else {
             $total_month_hours = 0;
@@ -315,7 +326,7 @@ class ActivityController extends Controller
         $year_logins = DB::table('trips')
             ->join('tripcrews', 'tripcrews.tripnumber', '=', 'trips.id')
             ->select(DB::raw('duration as duration,crewcode'))
-            ->whereBetween('trips.departuredate', [date('Y-01-01'), date('Y-12-30')])
+            ->whereBetween('trips.departuredate', [date('Y-01-01'), date('Y-12-31')])
             ->where('tripcrews.crewcode', Session::get('initials'))
             ->get();
 
@@ -325,13 +336,24 @@ class ActivityController extends Controller
             $total_year_hours = 0;
             foreach ($year_logins as $yh) {
 
-                if (isset($yh->duration) && str_contains($yh->duration, ':')) {
-                    $hours = explode(':', $yh->duration);
+                $duration = (!empty($yh->duration)) ? $yh->duration : 0;
+                // dd($duration);
+                if($duration != 0){
+                    $duration_val = explode(':', $duration);
+                    $clock = intVal($duration_val[0]);
 
-                    $hours =  ($hours[0]) + ($hours[1] / 60);
-
-                    $total_year_hours += number_format($hours, 0, '.', '');
+                    $minutes = ($duration_val[1] / 10);
+                    // dd($clock, $minutes);
+                    $total_year_hours += $clock.".".$minutes;
                 }
+
+                // if (isset($yh->duration) && str_contains($yh->duration, ':')) {
+                //     $hours = explode(':', $yh->duration);
+
+                //     $hours =  ($hours[0]) + ($hours[1] * 60);
+
+                //     $total_year_hours += number_format($hours, 2, '.', '');
+                // }
             }
         } else {
             $total_year_hours = 0;
@@ -658,12 +680,13 @@ class ActivityController extends Controller
             ->join('tripcrews', 'tripnumber', '=', 'trips.id')
             ->select('tripcrews.*', 'trips.*')
             ->where('crewcode', '=', Session::get('initials'))
-            // ->where('isskipper', '!=', 'Y')
+            // ->where('tripcrews.isskipper', '!=', "Y")
             // ->where('confirmed', '=', 'Y')
             // ->groupBy('tripnumber')
             ->orderBy('trips.id', 'DESC')
             ->paginate(250);
         // ->get();
+        // ->toSql();
 
 
         // dd($trips);
