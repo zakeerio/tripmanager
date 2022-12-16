@@ -329,7 +329,7 @@ class ActivityController extends Controller
                 if (isset($yh->duration) && str_contains($yh->duration, ':')) {
                     $hours = explode(':', $yh->duration);
 
-                    $hours =  ($hours[0]) + ($hours[1] / 60);
+                    $hours =  ($hours[0]) + ($hours[1] / 10);
 
                     $total_year_hours += number_format($hours, 0, '.', '');
                 }
