@@ -247,6 +247,10 @@ class ActivityController extends Controller
             // ->orderBy('id', 'DESC')
             // ->distinct()
             ->select('trips.*')->paginate(250);
+            // ->select('trips.*')->toSql();
+
+
+
 
         // dd($upcoming_activites);
         if (!empty($upcoming_activites)) {
@@ -273,6 +277,7 @@ class ActivityController extends Controller
             ->select(DB::raw('duration as duration,crewcode'))
             ->whereBetween('trips.departuredate', [date('Y-m-01'), date('Y-m-t')])
             ->where('tripcrews.crewcode', Session::get('initials'))
+            // ->where('tripcrews.isskipper','!=','Y')
 
             ->get();
 
@@ -325,10 +330,13 @@ class ActivityController extends Controller
 
         $year_logins = DB::table('trips')
             ->join('tripcrews', 'tripcrews.tripnumber', '=', 'trips.id')
-            ->select(DB::raw('duration as duration,crewcode'))
+            ->select(DB::raw('tripcrews.isskipper,duration as duration,crewcode'))
             ->whereBetween('trips.departuredate', [date('Y-01-01'), date('Y-12-31')])
             ->where('tripcrews.crewcode', Session::get('initials'))
+            // ->where('tripcrews.isskipper','!=','Y')
             ->get();
+            // ->toSql();
+
 
         // dd($year_logins);
         if (!empty($year_logins)) {
@@ -360,16 +368,20 @@ class ActivityController extends Controller
         }
 
         // dd($year_logins);
-        $current_month_crews = Trip::whereBetween('departuredate', [$datefrom, $dateto])->get();
-
-        $trips = Trip::limit(3)->get();
-        // dd($trips);
+        // $current_month_crews = Trip::whereBetween('departuredate', [$datefrom, $dateto])->get();
+        $current_month_crews = DB::table('trips')
+            ->join('tripcrews', 'tripcrews.tripnumber', '=', 'trips.id')
+            ->select(DB::raw('duration as duration,crewcode'))
+            ->whereBetween('trips.departuredate', [$datefrom, $dateto])
+            ->where('tripcrews.crewcode', Session::get('initials'))
+            // ->where('tripcrews.isskipper','!=','Y')
+            ->get();
 
 
         // $current_month_crews1 = DB::table('trips')->whereBetween('departuredate', [$datefrom, $dateto])->selectRaw('SELECT time(sum(TIMEDIFF( duration, duration )))')->get();
         // dd($current_month_crews);
 
-        return view('pages/home')->with('pagetitle', $pagetitle)->with('current_month_crews', $current_month_crews)->with("trips", $trips)->with('tripcrews')->with('month_hours', $total_month_hours)->with('year_hours', $total_year_hours)->with('upcoming_activites', $upcoming_activites);
+        return view('pages/home')->with('pagetitle', $pagetitle)->with('current_month_crews', $current_month_crews)->with('tripcrews')->with('month_hours', $total_month_hours)->with('year_hours', $total_year_hours)->with('upcoming_activites', $upcoming_activites);
     }
 
 
@@ -680,6 +692,8 @@ class ActivityController extends Controller
             ->join('tripcrews', 'tripnumber', '=', 'trips.id')
             ->select('tripcrews.*', 'trips.*')
             ->where('crewcode', '=', Session::get('initials'))
+            // ->where('tripcrews.isskipper','!=','Y')
+
             // ->where('tripcrews.isskipper', '!=', "Y")
             // ->where('confirmed', '=', 'Y')
             // ->groupBy('tripnumber')
@@ -687,9 +701,6 @@ class ActivityController extends Controller
             ->paginate(250);
         // ->get();
         // ->toSql();
-
-
-        // dd($trips);
 
 
         // $res=Crew::where(['initials' => 'JY'])->first()->toArray();
