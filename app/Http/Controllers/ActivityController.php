@@ -660,13 +660,10 @@ class ActivityController extends Controller
             ->where('crewcode', '=', Session::get('initials'))
             // ->where('isskipper', '!=', 'Y')
             // ->where('confirmed', '=', 'Y')
-            // ->groupBy('tripcrews.tripnumber')
+            // ->groupBy('tripnumber')
             ->orderBy('trips.id', 'DESC')
             ->paginate(250);
-        // ->get()
-        // ->toSql();
-
-
+        // ->get();
 
 
         // dd($trips);
