@@ -663,7 +663,10 @@ class ActivityController extends Controller
             // ->groupBy('tripcrews.tripnumber')
             ->orderBy('trips.id', 'DESC')
             ->paginate(250);
-        // ->get();
+        // ->get()
+        // ->toSql();
+
+
 
 
         // dd($trips);
