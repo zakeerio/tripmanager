@@ -656,7 +656,7 @@ class ActivityController extends Controller
 
         $trips = DB::table('trips')
             ->join('tripcrews', 'tripnumber', '=', 'trips.id')
-            ->select('tripcrews.*', 'trips.*')\
+            ->select('tripcrews.*', 'trips.*')
             ->where('crewcode', '=', Session::get('initials'))
             // ->where('isskipper', '!=', 'Y')
             // ->where('confirmed', '=', 'Y')
