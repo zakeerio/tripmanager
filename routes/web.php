@@ -142,7 +142,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::any('/documents-download/{name}', [DocumentsController::class, 'download'])->name('/documents-download');
     Route::any('/documents-delete/{id}', [DocumentsController::class, 'destroy'])->name('/documents-delete');
 
-    
+    Route::any('/validate-crewcode', [ActivityController::class, 'validate_crewcode'])->name('/validate-crewcode');
+    Route::any('/validate-email', [ActivityController::class, 'validate_email'])->name('/validate-email');
+    Route::any('/validate-username', [ActivityController::class, 'validate_username'])->name('/validate-username');
+
 
     // Route::get('/permissions', function () {
     //     return view('pages/roles-permissions');
