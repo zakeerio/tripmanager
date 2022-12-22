@@ -10,7 +10,11 @@
         <h1>Crew Members - Update an existing member</h1>
         <p class="sub-pages-text">Please amend any details below and click save changes to submit the updated
             information.</p>
-        <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
+
+            <div class="teck-btn justify-content-start">
+
+                <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a>
+            </div>
 
     </div>
 

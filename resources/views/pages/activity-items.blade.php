@@ -13,7 +13,11 @@
 
                 <p class="sub-pages-text">This is a list of all the scheduled activities in the Activity Manager system..
                 </p>
-                <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
+
+                <div class="teck-btn justify-content-start">
+
+                    <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a>
+                </div>
 
 
                 @if (Session::has('status'))

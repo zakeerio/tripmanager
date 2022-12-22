@@ -12,7 +12,9 @@
         <h1>My Account</h1>
 
         <p class="sub-pages-text">This is your user account area, please make sure your information is up to date.</p>
-        <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
+        <div class="teck-btn justify-content-start">
+            <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a>
+        </div>
     </div>
 
     @if (Session::has('success'))
@@ -30,33 +32,32 @@
 
         <div class="row activity_col">
 
-            <div class="col-md-12 dashboard-heading-desc">
-                <div class="col-lg-12 col-md-12 upcoming_activities">
+            <div class="col-md-12 dashboard-heading-desc1 mb-4">
+                <div class="col-lg-12 col-md-12  upcoming_activities">
 
                     <h4>Your Information</h4>
 
                     <p class="col-12-descrapction">You can freely ammend the information below to keep your records up to
                         date on our system.</p>
-
-                    @if (Session::has('status'))
-
-                    @if(Session::get('status'))
-                    <script>
-                        var msg = "{{Session::get('msg')}}";
-                        ShowToast(msg, 'success');
-                    </script>
-                    @else
-                    <script>
-                        var msg = "{{Session::get('msg')}}";
-                        ShowToast(msg, 'error');
-                    </script>
-                    @endif
-
-                    @endif
                 </div>
 
+                @if (Session::has('status'))
 
-            </div>
+                @if(Session::get('status'))
+                <script>
+                    var msg = "{{Session::get('msg')}}";
+                    ShowToast(msg, 'success');
+                </script>
+                @else
+                <script>
+                    var msg = "{{Session::get('msg')}}";
+                    ShowToast(msg, 'error');
+                </script>
+                @endif
+
+                @endif
+                </div>
+
 
 
             @php
@@ -91,7 +92,7 @@
 
                                     <label for="Name">NAME</label>
 
-                                    <input type="text" class="form-control" id="Name" name="name" value="{{ $crewmember->fullname }}"  >
+                                    <input type="text" class="form-control" id="Name" name="name" value="{{ $crewmember->fullname }}">
 
                                     <input type="hidden" name="id" value="{{ $crewmember->id }}">
 
@@ -172,8 +173,13 @@
 
                                     <h4>System Information</h4>
 
+                                    @if(Session::get('role')=='crewmember')
+
+                                    <p class="col-12-descrapction">If you wish for the information below to be updated, please contact an administrator.</p>
+                                    @else
                                     <p class="col-12-descrapction">This information is not editable by the crew member
                                         and they will not be able to update it themselves.</p>
+                                    @endif
 
                                 </div>
 
@@ -285,10 +291,10 @@
                                 <div class="form-group col-xl-8 col-lg-12">
                                     <div class="form-row">
 
-                                        <div class="form-group col-md-6">
+                                        {{-- <div class="form-group col-md-6">
                                             <label for="privilege">Privilege</label>
                                             <input type="number" class="form-control" name="privilege" id="privilege" value="{{ $crewmember->privilege }}"  {{$readonly}}>
-                                        </div>
+                                        </div> --}}
 
 
 
@@ -306,8 +312,20 @@
 
                                     <h4>Account Password</h4>
 
-                                    <p class="col-12-descrapction">Please set a temporary password for the crew member.
-                                        They can update this once logged in.</p>
+                                    {{-- <p class="col-12-descrapction">Please set a temporary password for the crew member.
+                                        They can update this once logged in.</p> --}}
+                                    @php
+                                        $passwordlabel = "Please set a temporary password for the crew member.
+                                        They can update this once logged in.";
+                                    @endphp
+                                    @if(Session::get('role') == "crewmember")
+                                        @php
+                                            $passwordlabel = "To reset your account password, simply fill in the fields below and click save changes";
+                                        @endphp
+
+                                    @endif
+                                    <p class="col-12-descrapction"> {{ $passwordlabel }} </p>
+
 
                                     @if($errors->any)
                                     <p style="color:red"> {{ $errors->first('msg') }}</p>
@@ -399,8 +417,17 @@
                     </div>
 
                     <div class="teck-btn">
+                        @php
+                            $updatebtn = "Update User";
+                        @endphp
+                        @if(Session::get('role') == "crewmember")
+                            @php
+                                $updatebtn = "Save Changes";
+                            @endphp
 
-                        <button type="submit" class="btn btn-primary"> <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Update User </button>
+                        @endif
+
+                        <button type="submit" class="btn btn-primary"> <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> {{ $updatebtn }} </button>
 
                     </div>
 

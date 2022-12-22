@@ -9,9 +9,10 @@
                 <p>This is a list of all the scheduled activities in the Activity Manager system..</p>
 
 
+                <div class="teck-btn justify-content-start">
 
-
-                <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
+                    <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a>
+                </div>
 
             </div>
 
@@ -62,6 +63,21 @@
                         <tbody>
 
                             @forelse ($trips as $trip )
+
+
+                            <?php
+
+                            $confirme_crew = DB::table('tripcrews')
+                                ->where('tripnumber', $trip->id)
+                                // ->where('confirmed', 'Y')
+                                // ->where('available', 'Y')
+                                ->get()->count();
+
+
+                            if (Session::get('role') == 'crewmember' && ($confirme_crew == $trip->crewneeded))
+                                continue;
+
+                            ?>
 
                             <tr class="">
 
@@ -143,9 +159,19 @@
                                 <td width="250">
 
 
+
                                     <?php
                                     $isReady = NULL;
-                                    if ($trip->crewneeded < $i) {
+
+                                    $isReady = NULL;
+                                    $confirme_crew = DB::table('tripcrews')
+                                        ->where('tripnumber', $trip->id)
+                                         ->where('confirmed', 'Y')
+                                        // ->where('available', 'Y')
+                                        ->get()->count();
+
+                                    if ($confirme_crew == $trip->crewneeded) {
+
                                         $isReady = 'Ready';
                                     ?>
                                         <span class="active-btn">
@@ -201,7 +227,7 @@
                                             }
 
                                             ?>
-                                            <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a>
+                                            {{-- <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a> --}}
                                             @endif
 
 

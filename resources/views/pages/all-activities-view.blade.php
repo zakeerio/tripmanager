@@ -56,7 +56,10 @@
 
         <h1>Activities - View an existing activity</h1>
         <p>Please amend any details below and click save changes to submit</p>
-        <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
+        <div class="teck-btn justify-content-start">
+
+            <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a>
+        </div>
 
     </div>
 
@@ -72,7 +75,12 @@
                             system.</p>
                     </div>
                     <div class="col-lg-4 col-md-12 ready">
-                        <lable>ACTIVITY STATUS</lable>
+                        <div class="teck-btn-view-activites justify-content-end">
+
+                            <a href="{{$InNotIn['route']}}" class="btn btn-primary">{{(!empty($InNotIn['isAvailable'])?$InNotIn['isAvailable']:'N/A')}}</a>
+                        </div>
+                        <br>
+                        <label>ACTIVITY STATUS</label>
                         <?php
 
                         if ($status == 'Ready') {
@@ -191,6 +199,12 @@
                         <label for="NotesCrew">NOTES FOR CREW</label>
                         <p><strong>{{ $activity->crewnotes }}</strong></p>
                     </div>
+
+                    <div class="form-group col-xl-6 col-lg-14">
+                        <label for="NotesCrew">Availablity Status</label>
+                        <p><strong> {{(!empty($InNotIn['availStatus'])?$InNotIn['availStatus']:'N/A')}}</strong></p>
+                    </div>
+
             </div>
             <br>
             <div class="row col-md-12">
@@ -287,7 +301,7 @@
 
                     <div id="div1" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="unavailable[]">
                         <?php
-                        $unavailable = DB::table('crews')->whereNotIn('initials', array_unique($available_member))->get();
+                        $unavailable = DB::table('crews')->whereNotIn('initials', array_unique($available_member))->whereNotIn('initials', array_unique($confirmed))->get();
                         // echo "<pre>";
                         // print_r($unavailable);
                         if (!empty($unavailable)) {

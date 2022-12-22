@@ -8,8 +8,10 @@
 
         <h1>Crew Members - Create a new member</h1>
         <p class="sub-pages-text">Please fill out the information below to create a new crew memb.</p>
-        <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
+        <div class="teck-btn justify-content-start">
 
+            <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a>
+        </div>
         @if(Session::get('status'))
 
         @if(Session::get('status'))
@@ -54,18 +56,19 @@
                             <div class="form-row">
                                 <div class="form-group col-xl-4 col-lg-6">
                                     <label for="Name">NAME</label>
-                                    <input type="text" class="form-control" id="Name" name="name">
+                                    <input type="text" class="form-control" id="Name" name="name" required>
                                 </div>
 
                                 <div class="form-group col-xl-4 col-lg-6">
-                                    <label for="EmailAddress">EMAIL ADDRESS</label>
-                                    <input type="email" class="form-control" id="EmailAddress" name="email">
+                                    <label for="email">EMAIL ADDRESS</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                    <b> <span id="email_msg"></span></b>
                                 </div>
 
 
                                 <div class="form-group col-xl-4 col-lg-6">
                                     <label for="PrimaryNumber">PRIMARY NUMBER</label>
-                                    <input type="number" class="form-control" id="PrimaryNumber" name="mobile">
+                                    <input type="number" class="form-control" id="PrimaryNumber" name="mobile" required>
                                 </div>
 
 
@@ -77,7 +80,7 @@
                                 <div class="form-group col-xl-4 col-lg-12">
                                     <label for="ActivityPreference">ACTIVITY PREFERENCE</label>
 
-                                    <select id="ActivityPreference" name="boatpreference" class="form-control">
+                                    <select id="ActivityPreference" name="boatpreference" class="form-control" required>
                                         <option>Please Select...</option>
                                         <?php
 
@@ -111,6 +114,8 @@
                                     <h4>System Information</h4>
                                     <p class="col-12-descrapction">This information is not editable by the crew member
                                         and they will not be able to update it themselves.</p>
+
+                                    <b> <span id="crew_code_msg"></span></b>
                                 </div>
 
 
@@ -119,11 +124,12 @@
 
                                         <div class="form-group col-md-6">
                                             <label for="Initials">INITIALS</label>
-                                            <input type="text" class="form-control" id="Initials" name="initials">
+                                            <input type="text" class="form-control" id="initials" name="initials" required>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="Username">USERNAME</label>
-                                            <input type="text" class="form-control" id="Username" name="username">
+                                            <input type="text" class="form-control" id="username" name="username" required>
+                                            <b> <span id="username_msg"></span></b>
                                         </div>
 
 
@@ -195,22 +201,22 @@
 
                                         <div class="form-group col-md-6">
                                             <label for="privilege">Privilege</label>
-                                            <input type="number" class="form-control" name="privilege" id="privilege">
+                                            <input type="number" class="form-control" name="privilege" id="privilege" required>
                                         </div>
 
                                         <div class="form-group col-md-6">
                                             <label for="KeyHolder">Key Holder</label>
-                                            <input class="form-control" type="text" id="KeyHolder" name="keyholder">
+                                            <input class="form-control" type="text" id="KeyHolder" name="keyholder" required>
                                         </div>
 
                                         <div class="form-group col-md-6">
                                             <label for="traveltime">Travel Time</label>
-                                            <input type="number" class="form-control" name="traveltime" id="traveltime">
+                                            <input type="number" class="form-control" name="traveltime" id="traveltime" required>
                                         </div>
 
                                         <div class="form-group col-md-6">
                                             <label for="traveltime">First aid expiry</label>
-                                            <input type="date" class="form-control" name="faexpire" id="faexpire">
+                                            <input type="date" class="form-control" name="faexpire" id="faexpire" required>
                                         </div>
                                     </div>
                                 </div>
@@ -228,12 +234,12 @@
 
                                         <div class="form-group col-md-6">
                                             <label for="TypeNewPassword">TYPE NEW PASSWORD</label>
-                                            <input type="password" class="form-control" name="password" id="TypeNewPassword" placeholder="********">
+                                            <input type="password" class="form-control" name="password" id="TypeNewPassword" placeholder="********" required>
                                         </div>
 
                                         <div class="form-group col-md-6">
                                             <label for="ReTypePassword">RE TYPE PASSWORD</label>
-                                            <input type="password" class="form-control" id="ReTypePassword" name="confirmpassword">
+                                            <input type="password" class="form-control" id="ReTypePassword" name="confirmpassword" required>
                                         </div>
 
                                     </div>
@@ -282,7 +288,7 @@
 </div>
 
 @stop
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script>
     function ShowToast(msg, type) {
 
@@ -325,4 +331,142 @@
             })
         }
     }
+
+    $(document).on('keyup', '#initials', function(e) {
+
+        //  alert();
+
+        if ($(this).val() != "") {
+
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            e.stopPropagation();
+
+            const settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": '{{route("/validate-crewcode")}}',
+                "data": {
+                    crewcode: $(this).val()
+                },
+                'dataType': 'json',
+                "method": "GET",
+            };
+
+            $.ajax(settings).done(function(response) {
+                // alert(response.msg)
+                // $('#crew_code_msg')
+                if (response.status) {
+                    var msg = "<span id='crew_code_msg'><span class='active-btn-ready'><img src='{{asset('assets/images/Activity-Ready-Button.png')}}' class='img-fluid' alt=''> " + response.msg + "</span></span>";
+                    $('#crew_code_msg').css('color', 'green');
+
+                } else {
+                    $('#crew_code_msg').css('color', 'red');
+                    var msg = response.msg;
+                }
+
+                $('#crew_code_msg').html(msg);
+                // LoadProductGird()
+            });
+
+            $.ajax(settings).fail(function(jqXHR, textStatus, errorThrown) {
+                // alert(errorThrown);
+            });
+        } else {
+            $('#crew_code_msg').empty();
+        }
+    });
+
+
+    $(document).on('keyup', '#email', function(e) {
+
+        //  alert();
+
+        if ($(this).val() != "") {
+
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            e.stopPropagation();
+
+            const settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": '{{route("/validate-email")}}',
+                "data": {
+                    email: $(this).val()
+                },
+                'dataType': 'json',
+                "method": "GET",
+            };
+
+            $.ajax(settings).done(function(response) {
+                // alert(response.msg)
+                // $('#crew_code_msg')
+                if (response.status) {
+                    var msg = "<span class='active-btn-ready'><img src='{{asset('assets/images/Activity-Ready-Button.png')}}' class='img-fluid' alt=''> " + response.msg + "</span>";
+                    $('#email_msg').css('color', 'green');
+
+                } else {
+                    $('#email_msg').css('color', 'red');
+                    var msg = response.msg;
+                }
+
+                $('#email_msg').html(msg);
+                // LoadProductGird()
+            });
+
+            $.ajax(settings).fail(function(jqXHR, textStatus, errorThrown) {
+                // alert(errorThrown);
+            });
+        } else {
+            $('#crew_code_msg').empty();
+        }
+    });
+
+
+
+    $(document).on('keyup', '#username', function(e) {
+
+        //  alert();
+
+        if ($(this).val() != "") {
+
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            e.stopPropagation();
+
+            const settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": '{{route("/validate-username")}}',
+                "data": {
+                    username: $(this).val()
+                },
+                'dataType': 'json',
+                "method": "GET",
+            };
+
+            $.ajax(settings).done(function(response) {
+                // alert(response.msg)
+                // $('#crew_code_msg')
+                if (response.status) {
+                    var msg = "<span class='active-btn-ready'><img src='{{asset('assets/images/Activity-Ready-Button.png')}}' class='img-fluid' alt=''> " + response.msg + "</span>";
+                    $('#username_msg').css('color', 'green');
+
+                } else {
+                    $('#username_msg').css('color', 'red');
+                    var msg = response.msg;
+                }
+
+                $('#username_msg').html(msg);
+                // LoadProductGird()
+            });
+
+            $.ajax(settings).fail(function(jqXHR, textStatus, errorThrown) {
+                // alert(errorThrown);
+            });
+        } else {
+            $('#username_msg').empty();
+        }
+    });
 </script>

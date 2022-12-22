@@ -4,7 +4,7 @@
 
         <div class="logo">
 
-            <a href="#!">
+            <a href="{{ route('dashboard') }}">
 
                 <img src="{{ asset('/assets/images/logo.png'); }}" class="img-fluid" alt="">
 
@@ -39,20 +39,20 @@
 
                         if (file_exists(public_path() . '/assets/profile-images' . '/' . Session::get('profile'))) {
                         ?>
-                            <img src="{{ asset('/assets/profile-images').'/'.Session::get('profile') }}" class="img-fluid" alt="" width="100" height="100">
+                            <img src="{{ asset('/assets/profile-images').'/'.Session::get('profile') }}" class="img-fluid userprofileimg" alt="">
                         <?php
                         } else {
                         ?>
-                            <img src="{{ asset('/assets/images/Chacha.png'); }}" class="img-fluid" alt="">
+                            <img src="{{ asset('/assets/images/Chacha.png'); }}" class="img-fluid userprofileimg" alt="">
                         <?php
                         }
                         ?>
 
                         @else
-                        <img src="{{ asset('/assets/images/Chacha.png'); }}" class="img-fluid" alt="">
+                        <img src="{{ asset('/assets/images/Chacha.png'); }}" class="img-fluid userprofileimg" alt="">
                         @endif
 
-                        
+
                         <div class="profile-matter">
                             <p> <strong>{{Session::get('name')}} </strong></p>
                             {{-- <p class="teck-name-color" >{{ (Auth::user() !== null) ? Auth::user()->role['name'] : ""  }}</p> --}}

@@ -8,10 +8,12 @@
 
 <script>
 
-    
+
     $(document).ready(function() {
         if ($("#datatables").length > 0) {
-            $('#datatables').DataTable();
+            $('#datatables').DataTable( {
+            "pageLength": 50
+            });
         }
     });
 

@@ -239,6 +239,7 @@ class ActivityController extends Controller
         $upcoming_activites = DB::table('trips')
             ->join('tripcrews', 'trips.id', '=', 'tripcrews.tripnumber')
             ->where('tripcrews.crewcode', '=', SESSION::get('initials'))
+            ->where('tripcrews.available', '=', 'Y')
             // ->where('tripcrews.confirmed', '=', 'Y')
             // ->orWhere('tripcrews.skipper', '=', 'Y')
             // ->orWhere('tripcrews.available', '=', 'Y')
@@ -276,6 +277,7 @@ class ActivityController extends Controller
             ->join('tripcrews', 'tripcrews.tripnumber', '=', 'trips.id')
             ->select(DB::raw('duration as duration,crewcode'))
             ->whereBetween('trips.departuredate', [date('Y-m-01'), date('Y-m-t')])
+            ->where('departuredate' ,'<',date('Y-m-d'))
             ->where('tripcrews.crewcode', Session::get('initials'))
             // ->where('tripcrews.isskipper','!=','Y')
 
@@ -332,6 +334,7 @@ class ActivityController extends Controller
             ->join('tripcrews', 'tripcrews.tripnumber', '=', 'trips.id')
             ->select(DB::raw('tripcrews.isskipper,duration as duration,crewcode'))
             ->whereBetween('trips.departuredate', [date('Y-01-01'), date('Y-12-31')])
+            ->where('departuredate' ,'<',date('Y-m-d'))
             ->where('tripcrews.crewcode', Session::get('initials'))
             // ->where('tripcrews.isskipper','!=','Y')
             ->get();
@@ -500,8 +503,28 @@ class ActivityController extends Controller
         $pagetitle = "View Activity";
         $activity = Trip::findOrFail($id);
         // dd($activity);
+        // dd($activity);
+
+        $trips=Tripcrew::where('tripnumber',$id)->where('available','Y')->where('crewcode',Session::get('initials'))->get();
+
+         //dd($trips);
+        if($trips->isNotEmpty()){
+
+               $InNotInArr['isAvailable'] = "I'm available";
+               $InNotInArr['    ']="I'm not available";
+
+        }else{
+            //$InNotInArr['isAvailable'] = "N/A";
+           $InNotInArr['isAvailable'] = "I'm not available";
+           $InNotInArr['availStatus']="I'm available";
+
+        }
+
+        $InNotInArr['route'] = route('all-activities-available-unavailable', $id);
+       // dd($trips);
+       // dd($trips);
         if ($activity) {
-            return view('pages/all-activities-view')->with("activity", $activity)->with('tripcrews')->with('pagetitle', $pagetitle)->with('status', $status);
+            return view('pages/all-activities-view')->with("activity", $activity)->with('tripcrews')->with('pagetitle', $pagetitle)->with('status', $status)->with('InNotIn',$InNotInArr);
         } else {
             abort(403);
         }
@@ -692,6 +715,7 @@ class ActivityController extends Controller
             ->join('tripcrews', 'tripnumber', '=', 'trips.id')
             ->select('tripcrews.*', 'trips.*')
             ->where('crewcode', '=', Session::get('initials'))
+            ->where('tripcrews.available', '=', 'Y')
             // ->where('tripcrews.isskipper','!=','Y')
 
             // ->where('tripcrews.isskipper', '!=', "Y")
@@ -759,6 +783,44 @@ class ActivityController extends Controller
         }
     }
 
+    public function validate_crewcode(Request $request)
+    {
+        //dd($request->crewcode);
+        $crew = Crew::where('initials', $request->crewcode)->get()->toArray();
+
+        if (!empty($crew)) {
+            //  dd($crew);
+            return response()->json(['status' => false, 'msg' => 'Crew Code Already Exists Try An Other One']);
+        } else {
+            return response()->json(['status' => true, 'msg' => 'You Can Proceed']);
+        }
+    }
+
+    public function validate_email(Request $request)
+    {
+        //dd($request->crewcode);
+        $crew = User::where('email', $request->email)->get()->toArray();
+
+        if (!empty($crew)) {
+            //  dd($crew);
+            return response()->json(['status' => false, 'msg' => 'Email Already Exists']);
+        } else {
+            return response()->json(['status' => true, 'msg' => 'You Can Proceed']);
+        }
+    }
+
+    public function validate_username(Request $request)
+    {
+        //dd($request->crewcode);
+        $crew = User::where('username', $request->username)->get()->toArray();
+
+        if (!empty($crew)) {
+            //  dd($crew);
+            return response()->json(['status' => false, 'msg' => 'Username Already Exists']);
+        } else {
+            return response()->json(['status' => true, 'msg' => 'You Can Proceed']);
+        }
+    }
     public function rolespermissions()
     {
         dd(Role::all());

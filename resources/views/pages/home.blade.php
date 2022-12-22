@@ -130,6 +130,19 @@
 
                             @forelse ($upcoming_activites as $trip )
 
+                            <?php
+
+                            $confirme_crew = DB::table('tripcrews')
+                                ->where('tripnumber', $trip->id)
+                                // ->where('confirmed', 'Y')
+                                // ->where('available', 'Y')
+                                ->get()->count();
+
+
+                            if (Session::get('role') == 'crewmember' && ($confirme_crew == $trip->crewneeded))
+                                continue;
+                            ?>
+
                             <tr class="">
 
                                 <td width="300">
@@ -163,7 +176,7 @@
                                     </div>
 
                                 <td>{{$trip->departuredate}}</td>
-                                <td width="300">{{$trip->crewnotes }}</td>
+                                <td width="300">{!! $trip->crewnotes !!}</td>
                                 <td>
                                     @php
                                         $durationfinal = 0;
@@ -279,7 +292,7 @@
                                             }
 
                                             ?>
-                                            <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a>
+                                            {{-- <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a> --}}
                                             @endif
                                         </div>
                                     </div>

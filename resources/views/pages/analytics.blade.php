@@ -7,7 +7,10 @@
             <div class="col-lg-8 col-md-12">
                 <h1>Analysis</h1>
                 <p class="sub-pages-text">This is a list all analysis results.</p>
-                <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
+                <div class="teck-btn justify-content-start">
+
+                    <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a>
+                </div>
             </div>
 
             <div class="col-lg-4 col-md-6">

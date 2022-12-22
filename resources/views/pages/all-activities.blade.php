@@ -9,7 +9,11 @@
                 <h1>All Activities</h1>
                 <p>This is a list of all the scheduled activities in the Activity Manager system..</p>
 
-                <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
+                <div class="teck-btn justify-content-start">
+
+                    <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a>
+                </div>
+
                 @if (Session::has('status'))
 
                 @if(Session::get('status'))
@@ -85,6 +89,14 @@
 
                                     $check_crewcount = ($crewneeded < $tripcrewscount) ? true : false; // echo $check_crewcount."<br>";
                                         @endphp
+
+                                         <?php
+
+                                         if (Session::get('role') == 'crewmember' && ($check_crewcount == $trip->crewneeded))
+                                             continue;
+
+                                         ?>
+
 
                                         <tr class="{{ ($check_crewcount == false) ? 'teck-danger' : "" }}">
 
