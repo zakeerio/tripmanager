@@ -39,17 +39,23 @@
 
                         if (file_exists(public_path() . '/assets/profile-images' . '/' . Session::get('profile'))) {
                         ?>
+                        <a href="{{ route('my-account') }}">
                             <img src="{{ asset('/assets/profile-images').'/'.Session::get('profile') }}" class="img-fluid userprofileimg" alt="">
+                        </a>
                         <?php
                         } else {
                         ?>
+                        <a href="{{ route('my-account') }}">
                             <img src="{{ asset('/assets/images/Chacha.png'); }}" class="img-fluid userprofileimg" alt="">
+                        </a>
                         <?php
                         }
                         ?>
 
                         @else
-                        <img src="{{ asset('/assets/images/Chacha.png'); }}" class="img-fluid userprofileimg" alt="">
+                        <a href="{{ route('my-account') }}">
+                            <img src="{{ asset('/assets/images/Chacha.png'); }}" class="img-fluid userprofileimg" alt="">
+                        </a>
                         @endif
 
 
