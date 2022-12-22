@@ -135,7 +135,7 @@ class CrewController extends Controller
         $rya = ($request->rya == "on") ? "Y" : '';
         $cba = ($request->cba == "on") ? "Y" : '';
 
-        $privilege = $request->privilege;
+        // $privilege = $request->privilege;
         $traveltime = $request->traveltime;
         $role_id = $request->role_id;
         $initials = $request->initials;
@@ -196,7 +196,6 @@ class CrewController extends Controller
                     'iwa' => $iwa,
                     'rya' => $rya,
                     'cba' => $cba,
-                    "privilege" => $privilege,
                     'user_id' => $user,
                     'suspended' => 0,
                     'role_id' => $role_id,
@@ -317,7 +316,7 @@ class CrewController extends Controller
             $iwa = ($request->iwa == "on") ? "Y" : '';
 
             //  dd($request->rya == "on");
-            $privilege = $request->privilege;
+            // $privilege = $request->privilege;
             $keyholder = $request->keyholder;
             $traveltime = $request->traveltime;
 
@@ -399,7 +398,6 @@ class CrewController extends Controller
                 "iwa" => $iwa,
                 'profile' => $path,
                 // "traveltime" => $traveltime,
-                "privilege" => $privilege,
                 "faexpire" => $request->faexpiry
             );
 
@@ -500,7 +498,7 @@ class CrewController extends Controller
             $iwa = ($request->iwa == "on") ? "Y" : '';
             $optin = ($request->optin == "on") ? "Y" : '';
 
-            $privilege = $request->privilege;
+            // $privilege = $request->privilege;
             $keyholder = $request->keyholder;
             $traveltime = $request->traveltime;
             $fullname = $request->name;
@@ -586,7 +584,6 @@ class CrewController extends Controller
                 "iwa" => $iwa,
                 'profile' => $path,
                 // "traveltime" => $traveltime,
-                "privilege" => $privilege,
                 'faexpire' => $faexpire,
             );
 
