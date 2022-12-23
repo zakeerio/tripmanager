@@ -32,39 +32,37 @@ class ActivityController extends Controller
 
         $pagetitle = "All Activities";
 
-        if (Session::get('role') == 'crewmember') {
+
+
 
             if(isset($request->filter) && $request->filter !="" ){
                 $activitycheck = ActivityItem::where('activityname',$request->filter)->count();
 
                 if($activitycheck > 0){
-
-                    $trips = Trip::orderBy('departuredate', 'DESC')->where('archived', "!=", "Y")->where('boatname',$request->filter)->paginate(50);
+                    if (Session::get('role') == 'crewmember') {
+                        $trips = Trip::orderBy('departuredate', 'DESC')->where('archived', "!=", "Y")->where('boatname',$request->filter)->paginate(50);
+                    } else {
+                        $trips = Trip::orderBy('departuredate', 'DESC')->where('boatname',$request->filter)->paginate(50);
+                    }
                 } else {
-                    $trips = Trip::orderBy('departuredate', 'DESC')->where('archived', "!=", "Y")->paginate(50);
+                    if (Session::get('role') == 'crewmember') {
+
+                        $trips = Trip::orderBy('departuredate', 'DESC')->where('archived', "!=", "Y")->paginate(50);
+                    } else {
+                        $trips = Trip::orderBy('departuredate', 'DESC')->paginate(50);
+
+                    }
                 }
             } else {
-
-                $trips = Trip::orderBy('departuredate', 'DESC')->where('archived', "!=", "Y")->paginate(50);
-            }
-
-        } else {
-
-            if(isset($request->filter) && $request->filter !="" ){
-                $activitycheck = ActivityItem::where('activityname',$request->filter)->count();
-
-                if($activitycheck > 0){
-
-                    $trips = Trip::orderBy('departuredate', 'DESC')->where('boatname',$request->filter)->paginate(50);
+                if (Session::get('role') == 'crewmember') {
+                    $trips = Trip::orderBy('departuredate', 'DESC')->where('archived', "!=", "Y")->paginate(50);
                 } else {
                     $trips = Trip::orderBy('departuredate', 'DESC')->paginate(50);
-                }
-            } else {
 
-                $trips = Trip::orderBy('departuredate', 'DESC')->paginate(50);
+                }
             }
 
-        }
+
 
         if(isset($request->filter) && $request->filter !="" ){
             $activitycheck = ActivityItem::where('activityname',$request->filter)->count();
