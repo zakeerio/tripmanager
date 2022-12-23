@@ -206,9 +206,12 @@
 
                                         foreach ($members as $m) {
 
-                                            // if ($m->available == 'Y') {
+                                            // echo $m->isskipper . ",11";
+                                            $member = \App\Models\Crew::where(['initials' => $m->crewcode])->first();
+
+                                            if($member && $m->isskipper != 'Y' && $m->isskipper == '') {
                                                 echo $m->crewcode . ",";
-                                            // }
+                                            }
                                             $i++;
                                     ?>
 

@@ -10,6 +10,8 @@ use App\Models\Role;
 use App\Models\Trip;
 use App\Models\Crew;
 use App\Models\Tripcrew;
+use App\Models\ActivityItem;
+
 use DateTime;
 use Session;
 use URL;
@@ -25,14 +27,31 @@ class ActivityController extends Controller
     protected $tripnumber;
 
 
-    public function index()
+    public function index(Request $request)
     {
 
         $pagetitle = "All Activities";
-        $trips = Trip::orderBy('id', 'DESC')->paginate(250);
+
+        if(isset($request->filter) && $request->filter !="" ){
+            $activitycheck = ActivityItem::where('activityname',$request->filter)->count();
+
+            if($activitycheck > 0){
+
+                $trips = Trip::orderBy('departuredate', 'DESC')->where('boatname',$request->filter)->paginate(50);
+            } else {
+                $trips = Trip::orderBy('departuredate', 'DESC')->paginate(50);
+            }
+        } else {
+
+            $trips = Trip::orderBy('departuredate', 'DESC')->paginate(50);
+        }
+
+        $activities_filter = ActivityItem::orderBy('id', 'DESC')->get();
+
+
 
         // dd($trips);
-        return view('pages/all-activities')->with("trips", $trips)->with('tripcrews')->with('pagetitle', $pagetitle);
+        return view('pages/all-activities')->with("trips", $trips)->with('tripcrews')->with('pagetitle', $pagetitle)->with('activities_filter',$activities_filter);
     }
 
 
@@ -278,6 +297,7 @@ class ActivityController extends Controller
             ->select(DB::raw('duration as duration,crewcode'))
             ->whereBetween('trips.departuredate', [date('Y-m-01'), date('Y-m-t')])
             ->where('departuredate' ,'<',date('Y-m-d'))
+            ->where('archived' ,'=',"Y")
             ->where('tripcrews.crewcode', Session::get('initials'))
             // ->where('tripcrews.isskipper','!=','Y')
 
@@ -335,6 +355,8 @@ class ActivityController extends Controller
             ->select(DB::raw('tripcrews.isskipper,duration as duration,crewcode'))
             ->whereBetween('trips.departuredate', [date('Y-01-01'), date('Y-12-31')])
             ->where('departuredate' ,'<',date('Y-m-d'))
+            ->where('archived' ,'=',"Y")
+
             ->where('tripcrews.crewcode', Session::get('initials'))
             // ->where('tripcrews.isskipper','!=','Y')
             ->get();
@@ -510,13 +532,13 @@ class ActivityController extends Controller
          //dd($trips);
         if($trips->isNotEmpty()){
 
-               $InNotInArr['isAvailable'] = "I'm available";
-               $InNotInArr['    ']="I'm not available";
+            $InNotInArr['isAvailable'] = "I'm not available";
+            $InNotInArr['    ']="I'm not available";
 
         }else{
             //$InNotInArr['isAvailable'] = "N/A";
-           $InNotInArr['isAvailable'] = "I'm not available";
-           $InNotInArr['availStatus']="I'm available";
+            $InNotInArr['isAvailable'] = "I'm available";
+            $InNotInArr['availStatus']="I'm available";
 
         }
 
@@ -549,7 +571,9 @@ class ActivityController extends Controller
 
     public function update(Request $request)
     {
-        //dd($request->all());
+
+        // dd($request->all());
+
 
         if ($this->Access()) {
 
@@ -566,6 +590,9 @@ class ActivityController extends Controller
             } else if (isset($request->duration) && str_contains($request->duration, ':')) {
                 $time = $request->duration;
             }
+
+
+
 
 
             $activityArray = [
@@ -587,66 +614,111 @@ class ActivityController extends Controller
             $update =  Trip::whereId($request->id)->update($activityArray);
 
 
+
             if (!empty($request->unavailable)) {
 
                 for ($i = 0; $i < count($request->unavailable); $i++) {
 
                     //  echo $request->unavailable[$i];
                     if (isset($request->unavailable[$i])) {
-                        $trim = $request->unavailable[$i];
-                        $initials = explode(':', $trim);
-                        $crewcode = $initials[0];
+                        $trim1 = $request->unavailable[$i];
+                        $initials1 = explode(':', $trim1);
+                        $crewcode = trim($initials1[0]);
                         // echo $crewcode;
-                        $this->check1 = DB::table('tripcrews')
+
+                        $check_crew = DB::table('tripcrews')->where('tripnumber', '=', $request->id)
+                            ->where('crewcode', '=', $crewcode)->first();
+                        if($check_crew){
+
+                            $this->check1 =  DB::table('tripcrews')->where('tripnumber', '=', $request->id)
                             ->where('tripnumber', '=', $request->id)
                             ->where('crewcode', '=', $crewcode)->update([
-                                'isskipper'                 => 'Y'
+                                'isskipper'                 => 'Y',
+                                'available'                 => NULL,
+                                'confirmed'                 => NULL,
                             ]);
+                        }
                     }
+
                 }
             }
 
+
+
             //    $d= DB::table('tripcrews')->where('tripnumber', '=', $request->id)->get();
             //    dd($d);
-            //dd( $this->check1);
+            // dd( $this->check1);
 
             if (!empty($request->available)) {
 
 
                 for ($i = 0; $i < count($request->available); $i++) {
                     if (isset($request->available[$i])) {
-                        $trim = $request->available[$i];
-                        $initials = explode(':', $trim);
-                        $crewcode2 = $initials[0];
-                        $this->check2 =  DB::table('tripcrews')->where('tripnumber', '=', $request->id)
+                        $trim2 = $request->available[$i];
+                        $initials2 = explode(':', $trim2);
+                        $crewcode2 = trim($initials2[0]);
+
+                        $check_crew = DB::table('tripcrews')->where('tripnumber', '=', $request->id)
+                            ->where('crewcode', '=', $crewcode2)->first();
+                        if($check_crew){
+
+                            $this->check2 =  DB::table('tripcrews')->where('tripnumber', '=', $request->id)
                             ->where('crewcode', '=', $crewcode2)
                             ->update([
                                 'available'                 => 'Y',
                                 'confirmed'                 => NULL,
+                                'isskipper'                 => NULL,
 
                             ]);
+                        } else {
+
+                            $userData = [
+                                'tripnumber'                => $request->id,
+                                'crewcode'                  => $crewcode2,
+                                'available'                 => 'Y',
+                            ];
+                            $this->check2 = Tripcrew::create($userData);
+
+                        }
+
                     }
                 }
             }
+
 
 
             //  dd( $this->check2);
             //  dd($request->confiremd);
             if (!empty($request->confiremd)) {
 
+                // dd($request->confiremd);
 
                 for ($i = 0; $i < count($request->confiremd); $i++) {
                     if (isset($request->confiremd[$i])) {
-                        $trim = $request->confiremd[$i];
-                        $initials = explode(':', $trim);
-                        $crewcode3 = $initials[0];
-                        $this->check3 = DB::table('tripcrews')->where('tripnumber', '=', $request->id)
+                        $trim3 = $request->confiremd[$i];
+                        $initials3 = explode(':', $trim3);
+                        $crewcode3 = trim($initials3[0]);
+                        $check_crew = DB::table('tripcrews')->where('tripnumber', '=', $request->id)
+                            ->where('crewcode', '=', $crewcode3)->first();
+                        if($check_crew){
+
+                            $this->check3 = DB::table('tripcrews')->where('tripnumber', '=', $request->id)
                             ->where('crewcode', '=', $crewcode3)
                             ->update([
                                 'confirmed'                 => 'Y',
-
+                                'isskipper'                 => NULL,
                                 'available'                 => NULL,
                             ]);
+                        } else {
+
+                            $userData = [
+                                'tripnumber'                => $request->id,
+                                'crewcode'                  => $crewcode3,
+                                'confirmed'                 => 'Y',
+                            ];
+                            $this->check3 = Tripcrew::create($userData);
+
+                        }
                     }
                 }
             }
@@ -710,21 +782,44 @@ class ActivityController extends Controller
         $pagetitle = "My Activities";
 
         // $trips = Trip::paginate(50);
+        $role = Session::get('role');
+        if($role == 'crewmember'){
 
-        $trips = DB::table('trips')
+            $trips = DB::table('trips')
             ->join('tripcrews', 'tripnumber', '=', 'trips.id')
             ->select('tripcrews.*', 'trips.*')
             ->where('crewcode', '=', Session::get('initials'))
-            ->where('tripcrews.available', '=', 'Y')
-            // ->where('tripcrews.isskipper','!=','Y')
+            ->where('trips.archived', '!=', 'Y')
 
+            ->where('tripcrews.confirmed', '=', 'Y')
+            // ->where('tripcrews.isskipper','!=','Y')
             // ->where('tripcrews.isskipper', '!=', "Y")
             // ->where('confirmed', '=', 'Y')
             // ->groupBy('tripnumber')
             ->orderBy('trips.id', 'DESC')
             ->paginate(250);
-        // ->get();
-        // ->toSql();
+            // ->get();
+            // ->toSql();
+
+        } else{
+
+
+            $trips = DB::table('trips')
+            ->join('tripcrews', 'tripnumber', '=', 'trips.id')
+            ->select('tripcrews.*', 'trips.*')
+            ->where('crewcode', '=', Session::get('initials'))
+
+            ->where('tripcrews.confirmed', '=', 'Y')
+            // ->where('tripcrews.available', '=', 'Y')
+            // ->where('tripcrews.isskipper','!=','Y')
+            // ->where('tripcrews.isskipper', '!=', "Y")
+            // ->where('confirmed', '=', 'Y')
+            // ->groupBy('tripnumber')
+            ->orderBy('trips.id', 'DESC')
+            ->paginate(250);
+            // ->get();
+            // ->toSql();
+        }
 
 
         // $res=Crew::where(['initials' => 'JY'])->first()->toArray();

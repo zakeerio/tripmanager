@@ -64,21 +64,6 @@
 
                             @forelse ($trips as $trip )
 
-
-                            <?php
-
-                            $confirme_crew = DB::table('tripcrews')
-                                ->where('tripnumber', $trip->id)
-                                // ->where('confirmed', 'Y')
-                                // ->where('available', 'Y')
-                                ->get()->count();
-
-
-                            if (Session::get('role') == 'crewmember' && ($confirme_crew == $trip->crewneeded))
-                                continue;
-
-                            ?>
-
                             <tr class="">
 
                                 <td width="300">
@@ -142,10 +127,14 @@
                                     if (!empty($members)) {
 
                                         foreach ($members as $m) {
-                                            // if ($m->available == 'Y') {
-                                                echo $m->crewcode . ",";
-                                            // }
-                                            $i++;
+                                            $member = \App\Models\Crew::where(['initials' => $m->crewcode])->first();
+
+                                            if($member){
+                                                if ($m->isskipper != 'Y' && $m->isskipper == '') {
+                                                    echo $m->crewcode . ",";
+                                                }
+                                                $i++;
+                                            }
                                     ?>
 
                                     <?php

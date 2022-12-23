@@ -109,17 +109,11 @@
                                     @if($errors->any())
                                     <p style="color:red ;">{{$errors->first('rgbcolor') }}</p>
                                     @endif
-                                    <select id="ColourTag" class="form-control" name="rgbcolor">
+                                    <div class="d-flex justify-content-center">
+                                        <input type="color" id="colorpicker" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" value="#bada55">
 
-                                        <option disabled>__RGB Selector__</option>
-
-                                        <option value="red">Red</option>
-
-                                        <option value="green">Green</option>
-
-                                        <option value="Blue">Blue</option>
-
-                                    </select>
+                                        <input type="text" class="form-control" name="rgbcolor" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" value="#bada55" id="hexcolor">
+                                    </div>
 
                                 </div>
 
@@ -172,3 +166,5 @@
 
 </div>
 @stop
+
+

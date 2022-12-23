@@ -37,9 +37,12 @@
                         <a href="#!"><img src="{{ asset('assets/images/Activity-Items.png') }}" class="btn-icon-2" alt="">Filter by activity item </a>
 
                         <ul class="teck-dropdown">
-                            <li>Item 01</li>
-                            <li>Item 02</li>
-                            <li>Item 03</li>
+                            @forelse ($activities_filter as $activity )
+                                <li><a href="{{ route('all-activities') }}?filter={{ $activity->activityname }}">{{ $activity->activityname }}</a></li>
+                            @empty
+                                <li>Not found!</li>
+                            @endforelse
+
                         </ul>
                     </div>
 
@@ -88,14 +91,14 @@
                                 $tripcrewscount = ($trip->tripcrews->count() <= 0 ) ? '0' : $trip->tripcrews->count();
 
                                     $check_crewcount = ($crewneeded < $tripcrewscount) ? true : false; // echo $check_crewcount."<br>";
-                                        @endphp
 
-                                         <?php
+
+
 
                                          if (Session::get('role') == 'crewmember' && ($check_crewcount == $trip->crewneeded))
                                              continue;
 
-                                         ?>
+                                            @endphp
 
 
                                         <tr class="{{ ($check_crewcount == false) ? 'teck-danger' : "" }}">
@@ -149,10 +152,13 @@
                                             <td width="250">
                                                 @if($tripcrewscount > 0)
                                                 @foreach ($trip->tripcrews as $tripcrewitem )
+                                                @php
+                                                $crew_name = \App\Models\Crew::where(['initials' => $tripcrewitem->crewcode])->first();
+                                                @endphp
 
 
-                                                @if($tripcrewitem->available=='Y')
-                                                {{ $tripcrewitem->crewcode }},
+                                                @if($crew_name && $tripcrewitem->isskipper!='Y')
+                                                    {{ $tripcrewitem->crewcode }},
 
                                                 @endif
                                                 {{-- {!! ( ($tripcrewscount % 3 == 0)) ? '<br>' : "" !!} --}}
@@ -162,36 +168,59 @@
                                                 @endif
                                             </td>
 
-                                            <?php
+                                            @php
+                                                $isReady = NULL;
+                                            @endphp
 
-                                            $isReady = NULL;
+                                            @if($trip->archived == "Y")
 
+                                                @php
+                                                    $isReady = 'completed';
+                                                @endphp
 
-                                            $confirme_crew = DB::table('tripcrews')
-                                                ->where('tripnumber', $trip->id)
-                                                // ->where('confirmed', 'Y')
-                                                // ->where('available', 'Y')
-                                                ->get()->count();
+                                                <td width="200" data-th="Net Amount">
+                                                    <span class="active-btn"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Completed</span>
+                                                </td>
 
-                                            ?>
-                                            @if(($check_crewcount == $trip->crewneeded ) ? 'teck-danger' : "" )
-
-                                            <td width="200" data-th="Net Amount">
-                                                <span class="active-btn">
-                                                    <img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Ready</span>
-                                            </td>
-                                            <?php
-                                            $isReady = 'Ready';
-                                            ?>
                                             @else
-                                            <?php
-                                            $isReady = 'Needed';
-                                            ?>
-                                            <td width="240" data-th="Net Amount" class="crew_btn">
-                                                <span class="active-btn-2"><img src="{{ asset('assets/images/Button-Crew-Needed.png') }}" class="alrt-image" alt=""> Crew Needed</span>
-                                            </td>
+
+                                                @php
+                                                    $confirme_crew = DB::table('tripcrews')
+                                                    ->where('tripnumber', $trip->id)
+                                                    // ->join('crews', 'crews.')
+                                                    // ->where('confirmed', 'Y')
+                                                    // ->where('available', 'Y')
+                                                    ->get()->count();
+
+                                                    @endphp
+
+
+                                                    @if(($check_crewcount == $trip->crewneeded ) ? 'teck-danger' : "" )
+
+                                                        <td width="200" data-th="Net Amount">
+                                                            <span class="active-btn"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Ready</span>
+                                                        </td>
+                                                    @php
+                                                    $isReady = 'Ready';
+                                                    @endphp
+                                                @else
+                                                @php
+                                                    $isReady = 'Needed';
+                                                    @endphp
+                                                    <td width="240" data-th="Net Amount" class="crew_btn">
+                                                        <span class="active-btn-2"><img src="{{ asset('assets/images/Button-Crew-Needed.png') }}" class="alrt-image" alt=""> Crew Needed</span>
+                                                    </td>
+
+                                                @endif
 
                                             @endif
+
+
+
+
+
+
+
 
                                             <td class="action">
 
@@ -254,7 +283,7 @@
                             @if ($trips->hasPages())
 
                             <div class="row btm-row">
-                                {{ $trips->links('pagination::bootstrap-4') }}
+                                {{ $trips->appends(request()->query())->links('pagination::bootstrap-4') }}
 
                             </div>
 
@@ -271,31 +300,30 @@
 
 
 <script>
-    <script>
-        function ShowWarningAlert(msg) {
+    function ShowWarningAlert(msg) {
 
-            Swal.fire({
-                title: 'Are you sure?',
-                text: msg,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire(
-                        'Deleted!',
-                        'Your file has been deleted.',
-                        'success'
-                    )
-                }
+        Swal.fire({
+            title: 'Are you sure?',
+            text: msg,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            }
 
-                return result.isConfirmed
-            });
+            return result.isConfirmed
+        });
 
 
-        }
+    }
 
     function ShowToast(msg, type) {
 

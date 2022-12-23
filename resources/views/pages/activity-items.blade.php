@@ -85,7 +85,6 @@
 
                                 <th class="th-heading">Action</th>
 
-
                             </tr>
 
                             @forelse($items as $i)
@@ -123,7 +122,7 @@
 
                                 <td> {{$i['minimumcrew']}}</td>
 
-                                <td> {{$i['rgbcolor']}}</td>
+                                <td><div class="d-flex justify-content-left align-items-center"> <div style="width:30px; height: 30px; background-color:{{$i['rgbcolor']}}"></div> &nbsp; <span> {{$i['rgbcolor']}}</span> </div></td>
 
 
                                 <td class="action">

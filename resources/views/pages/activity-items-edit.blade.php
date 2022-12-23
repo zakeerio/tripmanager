@@ -63,29 +63,6 @@
                                     <p style="color:red ;">{{$errors->first('activitytype') }}</p>
                                     @endif
 
-                                    {{-- <select id="ActivityType" class="form-control" name="activitytype">
-
-                                        <option disabled>Please Select...</option>
-                                        <?php
-
-                                        /*
-                                        $boats = \App\Models\ActivityItem::all();
-                                        if (!empty($boats)) {
-
-                                            foreach ($boats as $b) {
-                                        ?>
-                                                <option value="{{$b->activityname}}" {{$b->activityname == $items->activityname ? 'selected':'' }}>{{$b->activityname}}</option>
-                                            <?php
-                                            }
-                                        } else {
-                                            ?>
-                                            <option value="">No Activity Found</option>
-                                        <?php
-                                        } */
-
-                                        ?>
-
-                                    </select> --}}
 
                                     <select id="ActivityType" class="form-control" name="activitytype">
 
@@ -128,17 +105,12 @@
                                     @if($errors->any())
                                     <p style="color:red ;">{{$errors->first('rgbcolor') }}</p>
                                     @endif
-                                    <select id="ColourTag" class="form-control" name="rgbcolor">
 
-                                        <option disabled>__RGB Selector__</option>
+                                    <div class="d-flex justify-content-center">
+                                        <input type="color" id="colorpicker" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" value="{{$items->rgbcolor}}">
 
-                                        <option value="red" {{"red" == $items->rgbcolor ? 'selected':'' }}>Red</option>
-
-                                        <option value="green" {{"green" == $items->rgbcolor ? 'selected':'' }}>Green</option>
-
-                                        <option value="blue" {{"blue" == $items->rgbcolor ? 'selected':'' }}>Blue</option>
-
-                                    </select>
+                                        <input type="text" class="form-control" name="rgbcolor" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" value="{{ $items->rgbcolor }}" id="hexcolor">
+                                    </div>
 
                                 </div>
 

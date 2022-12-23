@@ -75,29 +75,20 @@
                             system.</p>
                     </div>
                     <div class="col-lg-4 col-md-12 ready">
-                        <div class="teck-btn-view-activites justify-content-end">
 
-                            <a href="{{$InNotIn['route']}}" class="btn btn-primary">{{(!empty($InNotIn['isAvailable'])?$InNotIn['isAvailable']:'N/A')}}</a>
-                        </div>
-                        <br>
                         <label>ACTIVITY STATUS</label>
-                        <?php
 
-                        if ($status == 'Ready') {
-                        ?>
-                            <span class="active-btn-ready"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Read</span>
-                        <?php
-                        } else {
-                        ?>
+                        @if($status == 'completed')
+                            <span class="active-btn-ready"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Completed</span>
 
+                        @elseif($status == 'Ready')
+
+                            <span class="active-btn-ready"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Ready</span>
+                        @else
 
                             <span class="active-btn-2"><img src="{{ asset('assets/images/Button-Crew-Needed.png') }}" class="img-fluid" alt=""> Crew Needed</span>
 
-
-                        <?php
-                        }
-
-                        ?>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -240,11 +231,12 @@
                         $randome_no_2 = uniqid();
 
                         $fullname = $crew_name["fullname"];
-                        if ($crewmember->confirmed == 'Y') {
+                        if ($crewmember->confirmed == 'Y' && $crewmember->isskipper != 'Y') {
+
                             $confirmed[] = "<input type='text' class='form-control' id=drag" . $randome_no_1 . " draggable='true' ondragstart='drag(event)' name='confirmed[]' value='" . $crewmember->crewcode . " : " . $fullname . "' disabled>";
                         }
 
-                        if ($crewmember->available == 'Y') {
+                        if ($crewmember->available == 'Y' && $crewmember->isskipper != 'Y') {
                             $available[] = "<input type='text' class='form-control' id=drag" .  $randome_no_2 . " draggable='true' ondragstart='drag(event)' name='available[]' value='" . $crewmember->crewcode . " : " . $fullname . "' disabled>";
                             $available_member[] = $crew_name['initials'];
                         }
@@ -319,8 +311,13 @@
 
 
             </div>
-            <div class="teck-btn">
-                <button type="submit" class="btn btn-primary" style="display: none;"> <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Update Activity</button>
+            <div class="teck-btn mt-4 pl-3">
+                <div class="teck-btn-view-activites justify-content-end">
+
+                    <a href="{{$InNotIn['route']}}" class="btn btn-primary">{{(!empty($InNotIn['isAvailable'])?$InNotIn['isAvailable']:'N/A')}}</a>
+                </div>
+                <br>
+                {{-- <button type="submit" class="btn btn-primary" > <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Update Activity</button> --}}
             </div>
             </form>
 
