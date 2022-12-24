@@ -277,14 +277,14 @@ class ActivityController extends Controller
             ->where('tripcrews.crewcode', '=', SESSION::get('initials'))
             // ->where('tripcrews.available', '=', 'Y')
             // ->where('tripcrews.confirmed', '=', 'Y')
-            ->where('tripcrews.isskipper', '<>', 'Y')
+            ->where('tripcrews.isskipper', '', NULL)
             // ->orWhere('tripcrews.skipper', '!=', 'Y')
             // ->orWhere('tripcrews.available', '=', 'Y')
             ->where('trips.departuredate', '>=', date('Y-m-d'))
             ->orderBy('departuredate')
             // ->orderBy('id', 'DESC')
             // ->distinct()
-            ->select('trips.*')->paginate(250);
+            ->select('trips.*')->paginate(50);
             // ->select('trips.*')->toSql();
 
 
@@ -315,7 +315,7 @@ class ActivityController extends Controller
             ->select(DB::raw('duration as duration,crewcode'))
             ->whereBetween('trips.departuredate', [date('Y-m-01'), date('Y-m-t')])
             ->where('departuredate' ,'<',date('Y-m-d'))
-            // ->where('archived' ,'=',"Y")
+            ->where('archived' ,'=',"Y")
             ->where('tripcrews.crewcode', Session::get('initials'))
             // ->where('tripcrews.isskipper','!=','Y')
 
@@ -381,7 +381,7 @@ class ActivityController extends Controller
             // ->toSql();
 
 
-        // dd($year_logins);
+        // dd($year_logins->toArray());
         if (!empty($year_logins)) {
 
             $total_year_hours = 0;
@@ -815,7 +815,7 @@ class ActivityController extends Controller
             // ->where('confirmed', '=', 'Y')
             // ->groupBy('tripnumber')
             ->orderBy('trips.id', 'DESC')
-            ->paginate(250);
+            ->paginate(50);
             // ->get();
             // ->toSql();
 
@@ -834,7 +834,7 @@ class ActivityController extends Controller
             // ->where('confirmed', '=', 'Y')
             // ->groupBy('tripnumber')
             ->orderBy('trips.id', 'DESC')
-            ->paginate(250);
+            ->paginate(50);
             // ->get();
             // ->toSql();
         }
