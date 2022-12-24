@@ -234,7 +234,7 @@
                         if ($crewmember->confirmed == 'Y' && $crewmember->isskipper != 'Y') {
 
                             $confirmed[] = "<input type='text' class='form-control' id=drag" . $randome_no_1 . " draggable='true' ondragstart='drag(event)' name='confirmed[]' value='" . $crewmember->crewcode . " : " . $fullname . "' disabled>";
-                            $confirmed_member[] = $crew_name['initials'];
+                            $available_member[] = $crew_name['initials'];
 
                         }
 
@@ -296,8 +296,7 @@
                     <div id="div1" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="unavailable[]">
                         <?php
 
-                        $result_arr = array_merge($available_member, $confirmed_member);
-                        $unavailable = DB::table('crews')->whereNotIn('initials', array_unique($result_arr))->get();
+                        $unavailable = DB::table('crews')->whereNotIn('initials', array_unique($available_member))->get();
                         // echo "<pre>";
                         // print_r($unavailable);
                         if (!empty($unavailable)) {
