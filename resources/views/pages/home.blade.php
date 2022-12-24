@@ -139,8 +139,7 @@
                                 ->get()->count();
 
 
-                            if (Session::get('role') == 'crewmember' && ($confirme_crew == $trip->crewneeded))
-                                continue;
+
                             ?>
 
                             <tr class="">

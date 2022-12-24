@@ -275,9 +275,10 @@ class ActivityController extends Controller
         $upcoming_activites = DB::table('trips')
             ->join('tripcrews', 'trips.id', '=', 'tripcrews.tripnumber')
             ->where('tripcrews.crewcode', '=', SESSION::get('initials'))
-            ->where('tripcrews.available', '=', 'Y')
+            // ->where('tripcrews.available', '=', 'Y')
             // ->where('tripcrews.confirmed', '=', 'Y')
-            // ->orWhere('tripcrews.skipper', '=', 'Y')
+            ->where('tripcrews.isskipper', '<>', 'Y')
+            // ->orWhere('tripcrews.skipper', '!=', 'Y')
             // ->orWhere('tripcrews.available', '=', 'Y')
             ->where('trips.departuredate', '>=', date('Y-m-d'))
             ->orderBy('departuredate')
@@ -289,7 +290,7 @@ class ActivityController extends Controller
 
 
 
-        // dd($upcoming_activites);
+        // dd($upcoming_activites->toArray());
         if (!empty($upcoming_activites)) {
             $upcoming_activites = $upcoming_activites;
         } else {
@@ -314,7 +315,7 @@ class ActivityController extends Controller
             ->select(DB::raw('duration as duration,crewcode'))
             ->whereBetween('trips.departuredate', [date('Y-m-01'), date('Y-m-t')])
             ->where('departuredate' ,'<',date('Y-m-d'))
-            ->where('archived' ,'=',"Y")
+            // ->where('archived' ,'=',"Y")
             ->where('tripcrews.crewcode', Session::get('initials'))
             // ->where('tripcrews.isskipper','!=','Y')
 
