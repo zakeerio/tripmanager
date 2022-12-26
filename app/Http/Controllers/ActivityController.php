@@ -56,10 +56,14 @@ class ActivityController extends Controller
         } else {
             if (Session::get('role') == 'crewmember') {
 
-                $trips = Trip::orderBy('departuredate', 'DESC')->where('archived', "=", NULL)->paginate(50);
+                $trips = Trip::orderBy('departuredate', 'DESC')->where('archived', "=", NULL)->orWhere('archived', "=", '')->paginate(50);
+                // $trips = Trip::orderBy('departuredate', 'DESC')->where('archived', "=", NULL)->toSql();
+                // dd($trips);
+
 
             } else {
                 $trips = Trip::orderBy('departuredate', 'DESC')->paginate(50);
+
 
             }
         }
