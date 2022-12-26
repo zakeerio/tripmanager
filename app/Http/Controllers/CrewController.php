@@ -74,7 +74,7 @@ class CrewController extends Controller
 
         */
 
-        $crew_members = Crew::with('user')->paginate(50);
+        $crew_members = Crew::orderBy('id', 'DESC')->with('user')->paginate(50);
         // dd($crew_members);
         //  $crew_members = Crew::whereId('30')->get()->toArray();
         //  dd($crew_members);
