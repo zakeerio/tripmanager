@@ -199,10 +199,10 @@
                                 <div class="form-group col-xl-8 col-lg-12">
                                     <div class="form-row">
 
-                                        <div class="form-group col-md-6">
+                                        {{-- <div class="form-group col-md-6">
                                             <label for="privilege">Privilege</label>
                                             <input type="number" class="form-control" name="privilege" id="privilege" required>
-                                        </div>
+                                        </div> --}}
 
                                         <div class="form-group col-md-6">
                                             <label for="KeyHolder">Key Holder</label>

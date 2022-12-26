@@ -267,34 +267,34 @@
                                                  <a class="dropdown-item" href="#">Delete</a> -->
 
                                             @if(Session::get('role') !='crewmember')
-                                            <a class="dropdown-item" href="{{ route('all-activities-view', [$trip->id,$isReady]) }}">View Activity</a>
-                                            <a class="dropdown-item" href="{{ route('all-activities-edit', [$trip->id,$isReady]) }}">Edit Activity</a>
-                                            <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete Activity</a>
+                                                <a class="dropdown-item" href="{{ route('all-activities-view', [$trip->id,$isReady]) }}">View Activity</a>
+                                                <a class="dropdown-item" href="{{ route('all-activities-edit', [$trip->id,$isReady]) }}">Edit Activity</a>
+                                                <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete Activity</a>
                                             @else
-                                            <a class="dropdown-item" href="{{ route('all-activities-view', [$trip->id,$isReady]) }}">View Activity</a>
+                                                <a class="dropdown-item" href="{{ route('all-activities-view', [$trip->id,$isReady]) }}">View Activity</a>
 
-                                            <?php
+                                                <?php
 
 
-                                            $initials = Session::get('initials');
-                                            $check = \App\Models\Tripcrew::where(['crewcode' => $initials, 'tripnumber' => $trip->id])->first();
+                                                $initials = Session::get('initials');
+                                                $check = \App\Models\Tripcrew::where(['crewcode' => $initials, 'tripnumber' => $trip->id])->first();
 
-                                            if (!empty($check)) {
+                                                if (!empty($check)) {
 
-                                                if ($check->available == 'Y') {
-                                                    $isAvailable = "I'm not Available";
-                                                    $route = route('all-activities-available-unavailable', $trip->id);
+                                                    if ($check->available == 'Y' || $check->confirmed == 'Y') {
+                                                        $isAvailable = "I'm not Available";
+                                                        $route = route('all-activities-available-unavailable', $trip->id);
+                                                    } else {
+                                                        $isAvailable = "I'm available";
+                                                        $route = route('all-activities-available-unavailable', $trip->id);
+                                                    }
                                                 } else {
                                                     $isAvailable = "I'm available";
                                                     $route = route('all-activities-available-unavailable', $trip->id);
                                                 }
-                                            } else {
-                                                $isAvailable = "I'm available";
-                                                $route = route('all-activities-available-unavailable', $trip->id);
-                                            }
 
-                                            ?>
-                                            {{-- <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a> --}}
+                                                ?>
+                                                <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a>
                                             @endif
                                         </div>
                                     </div>

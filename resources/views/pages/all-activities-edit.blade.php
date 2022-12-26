@@ -91,22 +91,26 @@
                     </div>
                     <div class="col-lg-4 col-md-12 ready">
                         <label>ACTIVITY STATUS</label>
+                        <div class="" style="max-width: 190px;">
                         @php
 
-                        use Illuminate\Validation\Rules\Unique;
-                        @endphp
 
-                        @if($status == 'completed')
-                            <span class="active-btn-ready"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Completed</span>
 
-                        @elseif($status == 'Ready')
+                            use Illuminate\Validation\Rules\Unique;
+                            @endphp
 
-                            <span class="active-btn-ready"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Ready</span>
-                        @else
+                            @if($status == 'completed')
+                                <span class="active-btn"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Completed</span>
 
-                            <span class="active-btn-2"><img src="{{ asset('assets/images/Button-Crew-Needed.png') }}" class="img-fluid" alt=""> Crew Needed</span>
+                            @elseif($status == 'Ready')
 
-                        @endif
+                                <span class="active-btn"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Ready</span>
+                            @else
+
+                                <span class="active-btn-2"><img src="{{ asset('assets/images/Button-Crew-Needed.png') }}" class="img-fluid" alt=""> Crew Needed</span>
+
+                            @endif
+                        </div>
 
                     </div>
                 </div>

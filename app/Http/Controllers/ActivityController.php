@@ -277,7 +277,7 @@ class ActivityController extends Controller
             ->where('tripcrews.crewcode', '=', SESSION::get('initials'))
             // ->where('tripcrews.available', '=', 'Y')
             // ->where('tripcrews.confirmed', '=', 'Y')
-            ->where('tripcrews.isskipper', '', NULL)
+            ->where('tripcrews.isskipper', '=', NULL)
             // ->orWhere('tripcrews.skipper', '!=', 'Y')
             // ->orWhere('tripcrews.available', '=', 'Y')
             ->where('trips.departuredate', '>=', date('Y-m-d'))
@@ -418,6 +418,8 @@ class ActivityController extends Controller
             ->whereBetween('trips.departuredate', [$datefrom, $dateto])
             ->where('tripcrews.crewcode', Session::get('initials'))
             // ->where('tripcrews.isskipper','!=','Y')
+            ->where('archived' ,'=',"Y")
+
             ->get();
 
 
@@ -545,11 +547,9 @@ class ActivityController extends Controller
         // dd($activity);
         // dd($activity);
 
-        $trips=Tripcrew::where('tripnumber',$id)->where('available','Y')->where('crewcode',Session::get('initials'))->get();
-
-         //dd($trips);
-        if($trips->isNotEmpty()){
-
+        $trips=Tripcrew::where('tripnumber',$id)->where('crewcode',Session::get('initials'))->get()->toArray();
+        //  dd($trips);
+        if($trips && ($trips[0]['available'] == 'Y' || $trips[0]['confirmed'] == 'Y')){
             $InNotInArr['isAvailable'] = "I'm not available";
             $InNotInArr['    ']="I'm not available";
 
@@ -676,9 +676,12 @@ class ActivityController extends Controller
                         $initials2 = explode(':', $trim2);
                         $crewcode2 = trim($initials2[0]);
 
+
+
                         $check_crew = DB::table('tripcrews')->where('tripnumber', '=', $request->id)
-                            ->where('crewcode', '=', $crewcode2)->first();
+                        ->where('crewcode', '=', $crewcode2)->first();
                         if($check_crew){
+                            // dd($request->available);
 
                             $this->check2 =  DB::table('tripcrews')->where('tripnumber', '=', $request->id)
                             ->where('crewcode', '=', $crewcode2)
@@ -689,13 +692,21 @@ class ActivityController extends Controller
 
                             ]);
                         } else {
+                            // dd($request->available);
 
                             $userData = [
+                                'recordnumber'              => rand(10, 10000),
                                 'tripnumber'                => $request->id,
                                 'crewcode'                  => $crewcode2,
                                 'available'                 => 'Y',
                             ];
-                            $this->check2 = Tripcrew::create($userData);
+                            // dd($userData);
+                            // $this->check2 = Tripcrew::create($userData);
+                            $this->check2  = DB::table('tripcrews')->insert($userData);
+
+
+                            // dd($this->check2);
+
 
                         }
 
@@ -730,11 +741,13 @@ class ActivityController extends Controller
                         } else {
 
                             $userData = [
+                                'recordnumber'              => rand(10, 10000),
                                 'tripnumber'                => $request->id,
                                 'crewcode'                  => $crewcode3,
                                 'confirmed'                 => 'Y',
                             ];
-                            $this->check3 = Tripcrew::create($userData);
+                            // $this->check3 = Tripcrew::create($userData);
+                            $this->check3  = DB::table('tripcrews')->insert($userData);
 
                         }
                     }
@@ -751,8 +764,8 @@ class ActivityController extends Controller
                 return redirect('/all-activities')->with(['status' => false, 'msg' => 'Error ! Actity Update Failed']);
             }
         } catch (\Exception $e) {
-            return redirect('/all-activities')->with(['status' => false, 'msg' => 'Error ! Actity Update Failed']);
-            // dd($e->getMessage());
+            dd($e->getMessage());
+            // return redirect('/all-activities')->with(['status' => false, 'msg' => 'Error ! Actity Update Failed']);
         }
     }
 
@@ -857,21 +870,26 @@ class ActivityController extends Controller
         $check = DB::table('tripcrews')->where('tripnumber', $trip_id)->where('crewcode', $user_initials)->first();
         $flag = '';
 
+        print_r($check);
 
-        if (!empty($check) && $check->available != 'Y') {
+        if (!empty($check) && $check->available == 'Y') {
 
-            $added = DB::table('tripcrews')->where('tripnumber', $trip_id)->where('crewcode', $user_initials)->update(['available' => 'Y']);
-            $added = DB::table('tripcrews')->where('tripnumber', $trip_id)->where('crewcode', $user_initials)->update(['isskipper' => NULL]);
+            $added = DB::table('tripcrews')->where('tripnumber', $trip_id)->where('crewcode', $user_initials)->update(['available' => NULL, 'isskipper' => 'Y', 'confirmed' => NULL]);
             if ($added) {
-                $flag = 'added';
+                $flag = 'removed';
             }
-        } else {
-            $removed = DB::table('tripcrews')->where('tripnumber', $trip_id)->where('crewcode', $user_initials)->update(['available' => NULL]);
-            $added = DB::table('tripcrews')->where('tripnumber', $trip_id)->where('crewcode', $user_initials)->update(['isskipper' => 'Y']);
-            $added = DB::table('tripcrews')->where('tripnumber', $trip_id)->where('crewcode', $user_initials)->update(['confirmed' => NULL]);
+        } else if (!empty($check) && $check->confirmed == 'Y') {
+
+            $added = DB::table('tripcrews')->where('tripnumber', $trip_id)->where('crewcode', $user_initials)->update(['available' => NULL, 'isskipper' => 'Y', 'confirmed' => NULL]);
+            if ($added) {
+                $flag = 'removed';
+            }
+        }
+         else {
+            $removed = DB::table('tripcrews')->where('tripnumber', $trip_id)->where('crewcode', $user_initials)->update(['available' => 'Y', 'isskipper' => NULL, 'confirmed' => NULL]);
 
             if ($removed) {
-                $flag = 'removed';
+                $flag = 'added';
             }
         }
 
