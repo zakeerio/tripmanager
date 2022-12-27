@@ -20,9 +20,10 @@
                             <span>Filter by Role <br> <b> Show all analysis</b></span> </a>
 
                         <ul class="teck-dropdown">
-                            <li>Item 01</li>
-                            <li>Item 02</li>
-                            <li>Item 03</li>
+
+                            <li><a href="{{ route('analytics') }}?filter=1">Admin</a></li>
+                            <li><a href="{{ route('analytics') }}?filter=2">Crewmember</a></li>
+                            <li><a href="{{ route('analytics') }}?filter=3">Developer</a></li>
                         </ul>
                     </div>
                 </div>
@@ -106,7 +107,7 @@
         </div>
 
 
-        <div class="row btm-row">
+        {{-- <div class="row btm-row">
             <div class="col-md-6 teck-showin-text">Showing <b>1-50</b> of <b>46</b> available activities.</div>
             <div class="col-md-6">
                 <div class="pagination-row">
@@ -121,7 +122,7 @@
                             <button class="btn-next teck-arrow">></button>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
     </div>
 </div>

@@ -93,11 +93,6 @@
                                     $check_crewcount = ($crewneeded < $tripcrewscount) ? true : false; // echo $check_crewcount."<br>";
 
 
-
-
-                                         if (Session::get('role') == 'crewmember' && ($check_crewcount == $trip->crewneeded))
-                                             continue;
-
                                             @endphp
 
 

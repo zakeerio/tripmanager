@@ -13,4 +13,5 @@ class Tripcrew extends Model
     {
         return $this->belongsTo(Trip::class,  'tripnumber', 'id');
     }
+
 }

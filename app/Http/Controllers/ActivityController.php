@@ -84,45 +84,24 @@ class ActivityController extends Controller
         }
     }
 
-    public function analytics_view()
+    public function analytics_view(Request $request)
     {
+        $crew = DB::table('crews')->get();
+
+        if(isset($request->filter) && $request->filter !="" ){
+
+            $crew = DB::table('crews')
+            ->join('users', 'users.id', 'crews.user_id')
+            ->where('users.role_id', $request->filter)
+            ->select('crews.*')
+            ->get();
+
+        }
 
         try {
             $pagetitle = "Analytics";
 
-            // $trips = Trip::paginate(250);
-            // dd($trips);
-
-            // $returnOrderDetails = Order::with('order_items')->whereHas('order_items', function($q) {
-            //     $q->where('item_status', 'Return Approved');
-            //    })->get();
-
-            // $trips = Crew::with('trip_user')->whereHas('trip_user', function ($q) {
-            //     $q->where('available', 'Y');
-            // })->get();
-
-            // foreach ($trips as $tp) {
-
-            //     echo $tp->fullname . "<br>";
-
-            //     foreach ($tp->trip_user as $t) {
-            //         echo $t->crewcode . "<br>";
-            //     }
-            // }
-            // $trips = Tripcrew::with('trip')->whereHas('trip', function ($q) {
-            //     $q->where('available', 'Y');
-            //     $q->where('departuredate', '>',  date('Y-01-01'));
-            //     $q->where('departuredate', '<',  date('Y-12-31'));
-            // })->get();
-            // $trips = Crew::with(['trip_user','tripcrews'])->get()->toArray();
-
-
-            // $date = new DateTime('2000-01-01');
-            // $result = $date->format('Y-m-d H:i:s');
-
-
-
-            $crew = DB::table('crews')->limit(3)->get();
+            // $crew = DB::table('crews')->get();
 
             // dd($crew);
             // print_r($crew);
@@ -145,125 +124,123 @@ class ActivityController extends Controller
 
             foreach ($crew as $cr) {
 
-                // echo $j;
-                // echo $cr->tripnumber;
-
-                // $tripcrews = DB::table('tripcrews')->where('crewcode', $cr->crewcode)->get();
-                //echo $tripcrews[0]->tripnumber;
-                // if (false) {
-                //     $user[$i]['fullname'] = $cr->crewcode;
-                //     $user[$i]['crewcode'] = $cr->crewcode;
-                //     $user[$i]['year']['jan'] = 0;
-                //     $user[$i]['year']['fab'] = 0;
-                //     $user[$i]['year']['march'] = 0;
-                //     $user[$i]['year']['april'] = 0;
-                //     $user[$i]['year']['may'] = 0;
-                //     $user[$i]['year']['june'] = 0;
-                //     $user[$i]['year']['june'] = 0;
-                //     $user[$i]['year']['july'] = 0;
-                //     $user[$i]['year']['augest'] = 0;
-                //     $user[$i]['year']['sep'] = 0;
-                //     $user[$i]['year']['oct'] = 0;
-                //     $user[$i]['year']['nov'] = 0;
-                //     $user[$i]['year']['des'] = 0;
-                // } else {
-
                 //  echo $cr->initials;
                 if (isset($cr->initials)) {
 
-                    $tripcrews = DB::table('tripcrews')->where('crewcode', $cr->initials)->get();
+                    $tripcrews = DB::table('tripcrews')
+                    ->join('trips','trips.id','tripcrews.tripnumber')
+                    ->select('tripcrews.*')
+                    ->where('crewcode', $cr->initials)
+                    ->whereBetween('departuredate',[date('Y-01-01'), date('Y-12-t')])
+                    ->get();
+
+                    // dd($tripcrews->count());
 
                     if ($tripcrews->isNotEmpty()) {
                         foreach ($tripcrews as $ts) {
+
+                            // dd($ts);
                             $trip = DB::table('trips')->where('id', $ts->tripnumber)->get();
-                            $exp = explode('-', $trip[0]->departuredate);
-                            $monthNum  = $exp[1];
-                            $dateObj   = DateTime::createFromFormat('!m', $monthNum);
-                            $monthName = $dateObj->format('F');
-                            // echo  $monthName . "<br>";
 
-                            // echo $trip[0]->departuredate;
-                            if (isset($trip[0]->duration) && str_contains($trip[0]->duration, ':')) {
-                                $hours = explode(':', $trip[0]->duration);
-                                $hours =  ($hours[0]) + ($hours[1] / 60);
+                            if(isset($trip[0]->departuredate)) {
+                                $exp = explode('-', $trip[0]->departuredate);
+                                $monthNum  = $exp[1];
+                                $dateObj   = DateTime::createFromFormat('!m', $monthNum);
+                                $monthName = $dateObj->format('F');
+                                // echo  $cr->initials." __ ".$trip[0]->id." -- ".$monthName . "<br>";
 
-                                //    echo  $trip[0]->departuredate;
+                                // echo $trip[0]->departuredate;
+
+                                if (isset($trip[0]->duration) && str_contains($trip[0]->duration, ':')) {
+                                $hours = 0;
+
+                                    $duration_val = explode(':', $trip[0]->duration);
+                                    $clock = intVal($duration_val[0]);
+
+
+                                    $minutes = ($duration_val[1] / 10);
+
+                                    $hours = $clock . "." . $minutes;
+
+                                // echo  $cr->initials." __ ".$trip[0]->id." -- ".$monthName ." Hours:  " .$hours."<br>";
+
+
 
                                 if ($monthName == 'January') {
-                                    $jan_hours += ceil($hours);
+                                    $jan_hours += $hours;
                                 } else {
                                     $jan_hours += 0;
                                 }
 
                                 if ($monthName == 'February') {
-                                    $fab_hours += ceil($hours);
+                                    $fab_hours += $hours;
                                 } else {
                                     $fab_hours += 0;
                                 }
 
                                 if ($monthName == 'March') {
-                                    $march_hours += ceil($hours);
+                                    $march_hours += $hours;
                                 } else {
                                     $march_hours += 0;
                                 }
 
 
                                 if ($monthName == 'April') {
-                                    $april_hours += ceil($hours);
+                                    $april_hours += $hours;
                                 } else {
                                     $april_hours += 0;
                                 }
 
                                 if ($monthName == 'May') {
 
-                                    $may_hours  += ceil($hours);
+                                    $may_hours  += $hours;
                                 } else {
                                     $june_hours += 0;
                                 }
 
                                 if ($monthName == 'June') {
-                                    $june_hours += ceil($hours);
+                                    $june_hours += $hours;
                                 } else {
                                     $june_hours += 0;
                                 }
 
                                 if ($monthName == 'July') {
-                                    $july_hours += ceil($hours);
+                                    $july_hours += $hours;
                                     $july_hours = $july_hours;
                                 } else {
                                     $july_hours += 0;
                                 }
 
 
-                                if ($monthName == 'Augest') {
-                                    $aguest_hours += ceil($hours);
+                                if ($monthName == 'August') {
+                                    $aguest_hours += $hours;
                                 } else {
                                     $aguest_hours += 0;
                                 }
 
 
                                 if ($monthName == 'September') {
-                                    $sept_hours += ceil($hours);
+                                    $sept_hours += $hours;
                                 } else {
                                     $sept_hours += 0;
                                 }
 
 
                                 if ($monthName == 'October') {
-                                    $oct_hours += ceil($hours);
+                                    $oct_hours += $hours;
                                 } else {
                                     $oct_hours += 0;
                                 }
 
 
                                 if ($monthName == 'November') {
-                                    $nov_hours  += ceil($hours);
+                                    $nov_hours  += $hours;
                                 } else {
                                     $nov_hours += 0;
                                 }
 
                                 if ($monthName == 'December') {
-                                    $des_hours += ceil($hours);
+                                    $des_hours += $hours;
                                 } else {
                                     $des_hours += 0;
                                 }
@@ -285,6 +262,8 @@ class ActivityController extends Controller
                             $user[$i]['year']['nov'] = $nov_hours;
                             $user[$i]['year']['des'] = $des_hours;
                         }
+
+                        }
                     }
                 }
                 // }
@@ -303,13 +282,11 @@ class ActivityController extends Controller
                 $des_hours = 0;
             } //main_loop
 
-            // echo "<pre>";
-            // print_r($user);
-            //print_r($mon);
-           // dd($user);
             return view('pages/analytics')->with("user", $user)->with('tripcrews')->with("pagetitle", $pagetitle);
+
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            return view('pages/analytics')->with("user", $user)->with('tripcrews')->with("pagetitle", $pagetitle);
+            // dd($e->getMessage());
         }
     }
 
