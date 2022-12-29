@@ -7,6 +7,8 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ActivityItemController;
 use App\Http\Controllers\DocumentCategoryController;
 use App\Http\Controllers\DocumentsController;
+use App\Http\Controllers\ActivityTypeController;
+
 use App\Http\Middleware\Authenticate;
 
 
@@ -107,21 +109,22 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
-    Route::get('/activity-items-create', function () {
-        $pagetitle = "Activity Item Create";
+    // Route::get('/activity-items-create', function () {
+    //     $pagetitle = "Activity Item Create";
 
-        if (Session::has('role') && Session::get('role') == 'crewmember') {
-            return redirect('/dashboard')->with(['status' => false, 'msg' => 'Access Denied !']);
-        }
+    //     if (Session::has('role') && Session::get('role') == 'crewmember') {
+    //         return redirect('/dashboard')->with(['status' => false, 'msg' => 'Access Denied !']);
+    //     }
 
-        return view('pages/activity-items-create')->with('pagetitle', $pagetitle);
-    })->name('activity-items-create');
+    //     return view('pages/activity-items-create')->with('pagetitle', $pagetitle);
+    // })->name('activity-items-create');
 
-    Route::get('/activity-items-edit', function () {
-        return view('pages/activity-items-edit');
-    })->name('activity-items-edit');
+    // Route::get('/activity-items-edit', function () {
+    //     return view('pages/activity-items-edit');
+    // })->name('activity-items-edit');
 
 
+    Route::any('/activity-items-create', [ActivityItemController::class, 'create'])->name('activity-items-create');
 
     Route::any('/item-activity-update', [ActivityItemController::class, 'update'])->name('item-activity-update');
     Route::any('/activity-items-edit/{id}', [ActivityItemController::class, 'edit'])->name('activity-items-edit');
@@ -135,6 +138,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::any('/create-document-category', [DocumentCategoryController::class, 'index'])->name('/create-document-category');
     Route::any('/create-document-add', [DocumentCategoryController::class, 'store'])->name('/create-document-add');
+    Route::any('/create-document-delete/{id}', [DocumentCategoryController::class, 'destroy'])->name('/create-document-delete');
+    Route::any('/create-document-edit/{id}', [DocumentCategoryController::class, 'edit'])->name('/create-document-edit');
+    Route::any('/create-document-update', [DocumentCategoryController::class, 'update'])->name('/create-document-update');
 
 
     Route::get('/documents', [DocumentsController::class, 'index'])->name('/documents');
@@ -146,6 +152,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::any('/validate-email', [ActivityController::class, 'validate_email'])->name('/validate-email');
     Route::any('/validate-username', [ActivityController::class, 'validate_username'])->name('/validate-username');
 
+
+    Route::any('/activity-types', [ActivityTypeController::class, 'index'])->name('/activity-types');
+    Route::any('/activity-type-add', [ActivityTypeController::class, 'store'])->name('/activity-type-add');
+    Route::any('/activity-type-delete/{id}', [ActivityTypeController::class, 'destroy'])->name('/activity-type-delete');
+    Route::any('/activity-type-edit/{id}', [ActivityTypeController::class, 'edit'])->name('/activity-type-edit');
+    Route::any('/activity-type-update', [ActivityTypeController::class, 'update'])->name('/activity-type-update');
 
     // Route::get('/permissions', function () {
     //     return view('pages/roles-permissions');

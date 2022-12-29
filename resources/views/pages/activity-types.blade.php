@@ -14,8 +14,8 @@
             </div>
 
             <div class="col-md-12 dashboard-heading-desc upcoming_activities">
-                <h4>Create Category </h4>
-                <p class="col-12-descrapction">Here You can Categorize Your Documents By Assigning Name to A Category</p>
+                <h4>Activity Type</h4>
+                <p class="col-12-descrapction">Here You can Name Your Actvity Types</p>
 
                 @if (Session::has('status'))
 
@@ -43,20 +43,20 @@
 
             <div class="col-md-12">
 
-                <form class="teck-form upload-form" enctype="multipart/form-data" method="POST" action="{{route('/create-document-add')}}">
+                <form class="teck-form upload-form" enctype="multipart/form-data" method="POST" action="{{route('/activity-type-add')}}">
 
                     @csrf
                     <div class="row">
                         <div class="col-xl-6 col-lg-6">
-                            <label for="document-name"> Document Name</label>
-                            <input type="name" class="form-control" name="doc_name" id="doc_name" value="">
+                            <label for="document-name">Activity Type Name</label>
+                            <input type="name" class="form-control" name="type_name" id="type_name" value="">
                         </div>
 
                         <div class=" col-xl-6 col-lg-6">
                             <label for="document-name"> </label>
                             <div class="teck-btn" style="margin-top:5px;">
                                 <button type="submit" class="btn btn-primary"> <img src="http://127.0.0.1:8000/assets/images/save.svg" class="img-fluid"> Create
-                                    Category</button>
+                                    Type</button>
                             </div>
 
                         </div>
@@ -74,7 +74,7 @@
 
                                     <thead>
                                         <tr>
-                                            <th class="th-heading">Cateogry Name</th>
+                                            <th class="th-heading">Activity Type Name</th>
                                             <th class="th-heading">Created At</th>
                                             <th class="th-heading-brief">Action</th>
 
@@ -85,17 +85,17 @@
 
                                         <?php
 
-                                        $docx = \App\Models\DocumentCategory::all();
+                                       
 
                                         // print_r($docx);
                                         // exit;
 
-                                        if ($docx->isNotEmpty()) {
+                                        if ($types->isNotEmpty()) {
 
-                                            foreach ($docx as $d) {
+                                            foreach ($types as $d) {
                                         ?>
                                                 <tr>
-                                                    <td>{{$d->name}}</td>
+                                                    <td>{{$d->type_name}}</td>
                                                     <td>{{$d->created_at}}</td>
                                                     <td class="action">
 
@@ -106,10 +106,10 @@
                                                                 <span></span>
                                                             </button>
                                                             <div class="dropdown-menu" aria-labelledby="BtnAction">
-                                                                <a class="dropdown-item" href="{{route('/create-document-edit',[$d->id])}}">Edit</a>
+                                                                <a class="dropdown-item" href="{{route('/activity-type-edit',[$d->id])}}">Edit</a>
 
 
-                                                                <a class="dropdown-item" href="#" onclick="DeleteDocx('{{$d->id}}')">Delete</a>
+                                                                <a class="dropdown-item" href="#" onclick="DeleteType('{{$d->id}}')">Delete</a>
 
                                                             </div>
                                                         </div>
@@ -118,7 +118,13 @@
                                                 </tr>
                                         <?php
                                             }
-                                        }
+                                        }else{
+                                           ?>
+                                           <tr>
+                                            <td>No data Found</td>
+                                           </tr>
+                                           <?php
+;                                        }
 
 
                                         ?>
@@ -180,10 +186,10 @@
             }
 
 
-            function DeleteDocx(id) {
+            function DeleteType(id) {
 
                 if (confirm('Do You Want Delete ?')) {
-                    window.location.href = "{{URL::to('create-document-delete')}}/" + id;
+                    window.location.href = "{{URL::to('/activity-type-delete')}}/" + id;
                 }
 
             }

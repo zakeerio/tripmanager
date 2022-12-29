@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DocumentCategory;
 use Illuminate\Http\Request;
+use App\Models\Documents;
 
 class DocumentCategoryController extends Controller
 {
@@ -42,7 +43,7 @@ class DocumentCategoryController extends Controller
         $add = DocumentCategory::CREATE(['name' => $request->doc_name]);
 
         if (isset($add->id) && $add->id != 0) {
-            //dd($add->id);   
+            //dd($add->id);
             return redirect('/create-document-category')->with(['status' => true, 'msg' => 'Success ! Category Added']);
         } else {
             return redirect('/create-document-category')->with(['status' => false, 'msg' => 'Failed ! Category Added Failed']);
@@ -65,9 +66,18 @@ class DocumentCategoryController extends Controller
      * @param  \App\Models\DocumentCategory  $documentCategory
      * @return \Illuminate\Http\Response
      */
-    public function edit(DocumentCategory $documentCategory)
+    public function edit($id)
     {
-        //
+        $cat = DocumentCategory::where('id', $id)->get();
+
+        if ($cat->isNotEmpty()) {
+
+            return view('pages/document-category-edit')->with('cat', $cat);
+        } else {
+            return redirect()->with(['status' => false, 'msg' => 'Error ! Someting Went Wrong']);
+        }
+
+        // dd($cat);
     }
 
     /**
@@ -79,7 +89,18 @@ class DocumentCategoryController extends Controller
      */
     public function update(Request $request, DocumentCategory $documentCategory)
     {
-        //
+        // dd($request->all());
+
+        if (!isset($request->doc_name)) {
+            return redirect()->back()->with(['status' => false, 'msg' => 'Error ! Category Name Can Not Be Empty']);
+        }
+        $update = DocumentCategory::where('id', $request->update_id)->update(['name' => $request->doc_name]);
+
+        if ($update) {
+            return redirect('pages/activity-types')->with(['status' => true, 'msg' => 'Success ! Category Name Update']);
+        } else {
+            return redirect()->back()->with(['status' => false, 'msg' => 'Error ! Someting Went Wrong']);
+        }
     }
 
     /**
@@ -88,8 +109,23 @@ class DocumentCategoryController extends Controller
      * @param  \App\Models\DocumentCategory  $documentCategory
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DocumentCategory $documentCategory)
+    public function destroy($id)
     {
-        //
+        // dd($id);
+
+
+
+        $files = Documents::where('category_id', $id)->get();
+
+        if ($files->isNotEmpty()) {
+            return redirect()->back()->with(['status' => false, 'msg' => 'Category Contains Data']);
+        } else {
+            $delete = DocumentCategory::where('id', $id)->delete();
+            return redirect()->back()->with(['status' => true, 'msg' => 'Success ! Category Deleted ']);
+        }
+
+        // dd();
+
+
     }
 }

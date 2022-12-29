@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActivityItem;
+use App\Models\ActivityType;
+
 use Illuminate\Http\Request;
 use Session;
 
@@ -63,6 +65,14 @@ class ActivityItemController extends Controller
      */
     public function create()
     {
+        $pagetitle = "Activity Item Create";
+
+        if (Session::has('role') && Session::get('role') == 'crewmember') {
+            return redirect('/dashboard')->with(['status' => false, 'msg' => 'Access Denied !']);
+        }
+        $activitytypes = ActivityType::all();
+
+        return view('pages/activity-items-create')->with('pagetitle', $pagetitle)->with("activitytypes",$activitytypes);
     }
 
     /**
@@ -133,9 +143,12 @@ class ActivityItemController extends Controller
      */
     public function edit($id)
     {
+        $activitytypes = ActivityType::all();
+
+        // dd($activitytypes);
         $items = ActivityItem::findorFail($id);
         if (!empty($items)) {
-            return view('pages/activity-items-edit')->with('items', $items);
+            return view('pages/activity-items-edit')->with('items', $items)->with('activitytypes',$activitytypes);
         }
     }
 

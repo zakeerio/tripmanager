@@ -20,7 +20,6 @@
                             <span>Filter by Role <br> <b> Show all analysis</b></span> </a>
 
                         <ul class="teck-dropdown">
-
                             <li><a href="{{ route('analytics') }}?filter=1">Admin</a></li>
                             <li><a href="{{ route('analytics') }}?filter=2">Crewmember</a></li>
                             <li><a href="{{ route('analytics') }}?filter=3">Developer</a></li>

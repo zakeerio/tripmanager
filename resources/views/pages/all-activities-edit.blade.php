@@ -336,6 +336,7 @@
                             </div>
                         </div>
                     </div>
+                    <div id="confirm_msg" class="alert alert-danger d-none mt-4"></div>
             </div>
             <div class="teck-btn">
                 <button type="submit" class="btn btn-primary"> <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Update Activity</button>
@@ -350,13 +351,16 @@
 </div>
 
 <script>
-    function allowDrop(ev) {
+    var crewcount = <?php echo $activity->crewneeded; ?>;
+
+    function allowDrop(ev, th) {
         ev.preventDefault();
 
     }
 
-    function drag(ev) {
+    function drag(ev, th) {
         ev.dataTransfer.setData("text", ev.target.id);
+
     }
 
     function drop(ev, th) {
@@ -365,6 +369,55 @@
         ev.target.appendChild(document.getElementById(data));
         console.log(data);
         document.getElementById(data).setAttribute('name', th.getAttribute('content'))
+
+
+        var confirm_count = 0;
+        $('#div2').find('input[type="text"]').each(function() {
+
+            confirm_count += 1
+            // alert("Filled Value=" + $(this).val());
+
+        });
+        // alert("Total Input Count=" + $('#container').find('input[type="text"]').length + "//Filled Inputs Count=" + count);
+        console.log(confirm_count , crewcount);
+        if (confirm_count == crewcount) {
+            $("#confirm_msg").removeClass('d-none');
+
+            document.getElementById('confirm_msg').innerHTML='Limit Reached Of '+crewcount;
+            document.getElementById('div2').setAttribute('ondrop', ' ')
+
+        } else {
+            $("#confirm_msg").addClass('d-none');
+
+            document.getElementById('div2').setAttribute('ondrop', 'drop(event,this)')
+            document.getElementById('confirm_msg').innerHTML='';
+        }
+    }
+
+
+    function ShowWarningAlert(msg) {
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: msg,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            }
+
+            return result.isConfirmed
+        });
+
+
     }
 </script>
 @stop

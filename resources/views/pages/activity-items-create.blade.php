@@ -70,11 +70,9 @@
 
                                         <option disabled >Please Select...</option>
 
-                                        <option>Type 1</option>
-
-                                        <option>Type 2</option>
-
-                                        <option>Type 3</option>
+                                        @foreach ($activitytypes as $activitytype )
+                                            <option value="{{ $activitytype->type_name }}">{{ $activitytype->type_name }}</option>
+                                        @endforeach
 
                                     </select>
 
