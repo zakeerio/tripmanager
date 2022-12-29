@@ -99,6 +99,17 @@
             ?>
 
                     <div class="col-md-3 box-1" style="height:auto !important;">
+                        @if(Session::get('role')!='crewmember')
+                            <div class="d-flex justify-content-end">
+                                <a href="javascript:;" onclick="DeleteCategory('{{$category->id}}')" title="Delete Category" >
+                                    <button type="button" class="badge badge-danger" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </a>
+                            </div>
+
+                        @endif
+
                         <form method="POST" action="{{route('/documents-save',$category->id)}}" enctype="multipart/form-data">
 
                             @csrf
@@ -348,5 +359,43 @@
                 title: msg
             })
         }
+    }
+
+    function ShowWarningAlert(msg) {
+
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: msg,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Swal.fire(
+                //     'Deleted!',
+                //     'Category has been deleted.',
+                //     'success'
+                // )
+            }
+
+            return result.isConfirmed
+        });
+
+
+    }
+
+    function DeleteCategory(id) {
+
+        if (confirm('Do You Want Delete ?')) {
+            window.location.href = "{{URL::to('document-category-delete')}}/" + id;
+        }
+
+        // if (ShowWarningAlert('Do You Want Delete ?')) {
+        //     window.location.href = "{{URL::to('document-category-delete')}}/" + id;
+        // }
+
     }
 </script>

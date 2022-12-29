@@ -137,6 +137,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::any('/create-document-category', [DocumentCategoryController::class, 'index'])->name('/create-document-category');
+    Route::any('/document-category-delete/{id}', [DocumentCategoryController::class, 'destroy'])->name('document-category-delete');
+
     Route::any('/create-document-add', [DocumentCategoryController::class, 'store'])->name('/create-document-add');
     Route::any('/create-document-delete/{id}', [DocumentCategoryController::class, 'destroy'])->name('/create-document-delete');
     Route::any('/create-document-edit/{id}', [DocumentCategoryController::class, 'edit'])->name('/create-document-edit');
