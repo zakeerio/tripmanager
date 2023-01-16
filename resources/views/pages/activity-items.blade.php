@@ -14,10 +14,10 @@
                 <p class="sub-pages-text">This is a list of all the scheduled activities in the Activity Manager system..
                 </p>
 
-                <div class="teck-btn justify-content-start">
+                {{-- <div class="teck-btn justify-content-start">
 
                     <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a>
-                </div>
+                </div> --}}
 
 
                 @if (Session::has('status'))
@@ -98,9 +98,10 @@
                                         <?php
 
                                             if(isset($i['activitypicture'])){
-                                                    ?>
-                                                     <img src="./assets/activity-images/<?php echo $i['activitypicture'] ?>" class="img-fluid" alt="">
-                                                    <?php
+                                            $backgroundColor =  ($i['rgbcolor']) ? $i['rgbcolor'] : "#38e25d";
+                                                ?>
+                                                    <img src="./assets/activity-images/<?php echo $i['activitypicture'] ?>" class="img-fluid" alt="" style="box-shadow: 0 0 0 4px {{ $backgroundColor }}">
+                                                <?php
                                             }else{
                                                 ?>
                                                   <img src="./assets/images/Picture-01.png" class="img-fluid" alt="">

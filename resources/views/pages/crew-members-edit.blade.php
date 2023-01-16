@@ -13,7 +13,7 @@
 
             <div class="teck-btn justify-content-start">
 
-                <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a>
+                <a href="{{ route('crew-members') }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a>
             </div>
 
     </div>
@@ -142,11 +142,48 @@
                                         </div>
 
 
-                                        <div class="form-group col-md-6">
-                                            <label for="AccountRole">ACCOUNT ROLE</label>
+                                        {{-- <div class="form-group col-md-6"> --}}
+                                            {{-- <label for="AccountRole">ACCOUNT ROLE</label> --}}
 
-                                            <input type="text" class="form-control" value="{{Session::get('role') }}" readonly>
-                                        </div>
+                                            {{-- <input type="text" class="form-control" value="{{Session::get('role') }}" readonly> --}}
+                                            {{-- </div> --}}
+                                            <?php
+
+                                            $crew_role = \App\Models\User::where(['username'=>$crew_member->username,'email'=>$crew_member->emailaddress])->get();
+                                            // dd($crew_role->count());
+
+                                            if($crew_role->count() > 0){
+                                                $crew_role_id = $crew_role[0]->role_id;
+                                                $userId = $crew_role[0]->id;
+
+                                            } else {
+                                                $crew_role_id = "";
+                                                $userId = 0;
+
+                                            }
+
+                                            ?>
+
+                                            <input type="hidden" name="user_id" value="{{$userId}}">
+                                            <div class="form-group col-md-6">
+                                                <label for="AccountRole">ACCOUNT ROLE</label>
+
+                                                <select name="role_id" id="" class="form-control" >
+                                                    <option value="">-- Select Role --</option>
+                                                    <?php
+
+                                                    $roles = DB::table('roles')->get();
+                                                    if ($roles->isNotEmpty()) {
+                                                        foreach ($roles as $r) {
+                                                            ?>
+                                                                <option value="{{$r->id}}" {{($crew_role_id==$r->id?'selected':'')}} @if(Session::get('role')=='crewmember') 'disabled' @endif>{{ucfirst($r->name)}}</option>
+                                                            <?php
+                                                        }
+                                                    }
+
+                                                    ?>
+                                                </select>
+                                            </div>
 
 
                                         <div class="form-group col-md-6">

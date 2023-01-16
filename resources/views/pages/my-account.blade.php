@@ -12,9 +12,9 @@
         <h1>My Account</h1>
 
         <p class="sub-pages-text">This is your user account area, please make sure your information is up to date.</p>
-        <div class="teck-btn justify-content-start">
+        {{-- <div class="teck-btn justify-content-start">
             <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a>
-        </div>
+        </div> --}}
     </div>
 
     @if (Session::has('success'))
@@ -72,7 +72,7 @@
                     $disabled='disabled';
                 }else{
                     $readonly='';
-                    $disabled='';
+                    $disabled='disabled';
                 }
 
                 // echo $readonly;

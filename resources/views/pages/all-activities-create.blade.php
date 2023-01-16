@@ -205,6 +205,9 @@
                         <div class="col-lg-12 col-md-12 upcoming_activities">
                             <h4>Crew Information</h4>
                             <p class="col-12-descrapction">This information is regarding the crew of this activity.</p>
+                            @if($errors->any())
+                            <b style="color:Red">{{$errors->first('crewneeded')}}  Crew Need Can Not Be 0</b>
+                            @endif
                         </div>
                         <div class="form-group col-xl-4 col-lg-12">
                             <label for="NumberCrewNeeded">NUMBER OF CREW NEEDED</label>

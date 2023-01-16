@@ -7,10 +7,10 @@
 <div class="row dashboard_col" id="document">
 
     <div class="col-md-7 document_Sec">
-        <div class="teck-btn justify-content-start">
+        {{-- <div class="teck-btn justify-content-start">
 
             <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a>
-        </div>
+        </div> --}}
         <br>
         <h1>Documents</h1>
         <p>Here you will find all the relevant CCT Activity documents..</p>

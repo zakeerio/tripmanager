@@ -132,11 +132,11 @@
 
                             <?php
 
-                            $confirme_crew = DB::table('tripcrews')
-                                ->where('tripnumber', $trip->id)
-                                // ->where('confirmed', 'Y')
-                                // ->where('available', 'Y')
-                                ->get()->count();
+                            // $confirme_crew = DB::table('tripcrews')
+                            //     ->where('tripnumber', $trip->id)
+                            //     // ->where('confirmed', 'Y')
+                            //     // ->where('available', 'Y')
+                            //     ->get()->count();
 
 
 
@@ -154,9 +154,10 @@
                                         // print_r($boat->activitypicture);
                                         // exit;
                                         if (!empty($boat) && isset($boat->activityname) && file_exists(public_path() . '/assets/activity-images' . '/' . $boat->activitypicture)) {
+                                            $backgroundColor =  ($boat->rgbcolor) ? $boat->rgbcolor : "#38e25d";
                                         ?>
 
-                                            <img src="{{asset('assets/activity-images').'/'.$boat->activitypicture}}" class="img-fluid" alt="">
+                                            <img src="{{asset('assets/activity-images').'/'.$boat->activitypicture}}" class="img-fluid" alt="142122" style="box-shadow:0 0 0 4px {{ $backgroundColor }}">
                                         <?php
                                         } else {
                                         ?>
@@ -199,7 +200,10 @@
                                     $i = 0;
                                     $initials = Session::get('initials');
 
-                                    $members = \App\Models\Tripcrew::where(['tripnumber' => $trip->id])->get();
+                                    $members = \App\Models\Tripcrew::where(['tripnumber' => $trip->id, 'confirmed' => 'Y'])->get();
+
+                                    $check_crewcount = 0;
+
 
                                     if (!empty($members)) {
 
@@ -209,6 +213,8 @@
                                             $member = \App\Models\Crew::where(['initials' => $m->crewcode])->first();
 
                                             if($member && $m->isskipper != 'Y' && $m->isskipper == '') {
+                                                $check_crewcount++;
+
                                                 echo $m->crewcode . ",";
                                             }
                                             $i++;
@@ -228,13 +234,14 @@
                                     <?php
 
                                     $isReady = NULL;
-                                    $confirme_crew = DB::table('tripcrews')
-                                    ->where('tripnumber', $trip->id)
+                                    // $confirme_crew = DB::table('tripcrews')
+                                    // ->join('crews', 'crews.initials', 'tripcrews.crewcode')
+                                    // ->where('tripnumber', $trip->id)
                                     // ->where('confirmed', 'Y')
-                                    // ->where('available', 'Y')
-                                    ->get()->count();
+                                    // // ->where('available', 'Y')
+                                    // ->get()->count();
 
-                                    if ($confirme_crew == $trip->crewneeded) {
+                                    if ($check_crewcount == $trip->crewneeded) {
                                         $isReady = 'Ready';
                                     ?>
                                         <span class="active-btn">
@@ -294,7 +301,7 @@
                                                 }
 
                                                 ?>
-                                                <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a>
+                                                {{-- <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a> --}}
                                             @endif
                                         </div>
                                     </div>

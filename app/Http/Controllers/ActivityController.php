@@ -16,7 +16,7 @@ use DateTime;
 use Session;
 use URL;
 use Illuminate\Support\Facades\Hash;
-
+use function PHPUnit\Framework\isEmpty;
 class ActivityController extends Controller
 {
     //
@@ -468,8 +468,9 @@ class ActivityController extends Controller
         } else {
             return redirect()->back()->withErrors(['duration' => 'Invalid Time Formate']);
         }
-
-
+        if($request->crewneeded <=0){
+            return redirect()->back()->withErrors(['crewneedederror' => 'Crew Need Can Not Be 0']);
+        }
         try {
 
             DB::transaction(function () use ($request, $time) {
@@ -574,7 +575,7 @@ class ActivityController extends Controller
         //  dd($trips);
         if($trips && ($trips[0]['available'] == 'Y' || $trips[0]['confirmed'] == 'Y')){
             $InNotInArr['isAvailable'] = "I'm not available";
-            $InNotInArr['    '] = "I'm not available";
+            $InNotInArr['availStatuswww'] = "I'm not available";
 
         }else{
             //$InNotInArr['isAvailable'] = "N/A";

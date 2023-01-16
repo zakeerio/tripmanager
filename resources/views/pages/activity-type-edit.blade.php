@@ -10,7 +10,7 @@
         <div class="row activity_col">
             <div class="teck-btn justify-content-start">
 
-                <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/clander icon.png') }}" class="img-fluid"> Go Back</a>
+                <a href="{{ route('/activity-types') }}" class="btn btn-primary"><img src="{{ asset('assets/images/clander icon.png') }}" class="img-fluid"> Go Back</a>
             </div>
 
             <div class="col-md-12 dashboard-heading-desc upcoming_activities">
@@ -50,12 +50,12 @@
                         <div class="col-xl-6 col-lg-6">
                             <label for="document-name"> Document Name</label>
 
-                            <?php 
+                            <?php
 
                                 $cat_name = isset($cat[0]->type_name)? $cat[0]->type_name:'';
 
-                              
-                            
+
+
                             ?>
                             <input type="name" class="form-control" name="type_name" id="doc_name" value="{{ $cat_name}}">
                             <input type="hidden" name="update_id" value="{{$cat[0]->id}}">
@@ -73,7 +73,7 @@
                     </div>
                 </form>
 
-            
+
             </div>
         </div>
 

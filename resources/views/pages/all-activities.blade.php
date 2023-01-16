@@ -11,7 +11,7 @@
 
                 <div class="teck-btn justify-content-start">
 
-                    <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a>
+                    {{-- <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a> --}}
                 </div>
 
                 @if (Session::has('status'))
@@ -67,7 +67,7 @@
 
                 <div class="col-md-12">
                     <div class="teck-table">
-                        <table class="rwd-table" @if ($trips->count() >  0 ) id="datatables" @endif >
+                        <table class="rwd-table" >
 
                             <thead>
                                 <tr>
@@ -90,7 +90,9 @@
                                 $crewneeded = ($trip->crewneeded == null ) ? 0 : $trip->crewneeded;
                                 $tripcrewscount = ($trip->tripcrews->count() <= 0 ) ? '0' : $trip->tripcrews->count();
 
-                                    $check_crewcount = ($crewneeded < $tripcrewscount) ? true : false; // echo $check_crewcount."<br>";
+                                    // $check_crewcount = ($crewneeded < $tripcrewscount) ? true : false; // echo $check_crewcount."<br>";
+
+                                    $check_crewcount = 0; // echo $check_crewcount."<br>";
 
 
                                             @endphp
@@ -107,9 +109,10 @@
                                                     // print_r($boat->activitypicture);
                                                     // exit;
                                                     if (!empty($boat) && isset($boat->activityname) && file_exists(public_path() . '/assets/activity-images' . '/' . $boat->activitypicture)) {
+                                                        $backgroundColor =  ($boat->rgbcolor) ? $boat->rgbcolor : "#38e25d";
                                                     ?>
 
-                                                        <img src="{{asset('assets/activity-images').'/'.$boat->activitypicture}}" class="img-fluid" alt="">
+                                                        <img src="{{asset('assets/activity-images').'/'.$boat->activitypicture}}" class="img-fluid" alt="142122" style="box-shadow:0 0 0 4px {{ $backgroundColor }}">
                                                     <?php
                                                     } else {
                                                     ?>
@@ -152,7 +155,10 @@
                                                 @endphp
 
 
-                                                @if($crew_name && $tripcrewitem->isskipper!='Y')
+                                                @if($crew_name && $tripcrewitem->confirmed=='Y')
+                                                    @php
+                                                        $check_crewcount++;
+                                                    @endphp
                                                     {{ $tripcrewitem->crewcode }},
 
                                                 @endif
@@ -180,12 +186,14 @@
                                             @else
 
                                                 @php
-                                                    $confirme_crew = DB::table('tripcrews')
-                                                    ->where('tripnumber', $trip->id)
-                                                    // ->join('crews', 'crews.')
+                                                    // $confirme_crew = DB::table('tripcrews')
+                                                    // ->where('tripnumber', $trip->id)
+                                                    // ->join('crews', 'crews.initials', 'tripcrews.crewcode')
+
                                                     // ->where('confirmed', 'Y')
-                                                    // ->where('available', 'Y')
-                                                    ->get()->count();
+                                                    // ->distinct('crews.initials')
+                                                    // // ->where('available', 'Y')
+                                                    // ->get()->count();
 
                                                     @endphp
 
@@ -230,34 +238,39 @@
                                                         @if(Session::get('role')=='crewmember')
 
 
-                                                            <?php
+                                                        <?php
 
-                                                            $initials = Session::get('initials');
+                                                        $initials = Session::get('initials');
 
-                                                            $check = \App\Models\Tripcrew::where(['crewcode' => $initials, 'tripnumber' => $trip->id])->first();
+                                                        $check = \App\Models\Tripcrew::where(['crewcode' => $initials, 'tripnumber' => $trip->id])->first();
 
-                                                            if (!empty($check)) {
+                                                        if (!empty($check)) {
 
-                                                                if ($check->available == 'Y' || $check->confirmed == 'Y') {
-                                                                    $isAvailable = "I'm not available";
-                                                                    $route = route('all-activities-available-unavailable', $trip->id);
-                                                                } else {
-                                                                    $isAvailable = "I'm available";
-                                                                    $route = route('all-activities-available-unavailable', $trip->id);
-                                                                }
-                                                            }else{
+                                                            if ($check->available == 'Y') {
+                                                                $isAvailable = "I'm not available";
+                                                                $route = route('all-activities-available-unavailable', $trip->id);
+                                                            } else {
                                                                 $isAvailable = "I'm available";
                                                                 $route = route('all-activities-available-unavailable', $trip->id);
                                                             }
+                                                        }else{
+                                                            $isAvailable = "I'm available";
+                                                            $route = route('all-activities-available-unavailable', $trip->id);
+                                                        }
 
 
-                                                            ?>
+                                                        ?>
 
-                                                            <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a>
+                                                        <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a>
                                                         @else
 
-                                                            <a class="dropdown-item" href="{{ route('all-activities-edit',[$trip->id,$isReady]) }}">Edit Activity</a>
-                                                            <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete Activity</a>
+                                                        @if($trip->archived ==NULL)
+                                                        <a class="dropdown-item" href="{{ route('all-activities-edit',[$trip->id,$isReady]) }}">Edit Activity</a>
+                                                        @else
+                                                        <a class="dropdown-item" href="#">Not Editable</a>
+                                                        @endif
+
+                                                        <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete Activity</a>
                                                         @endif
 
                                                     </div>

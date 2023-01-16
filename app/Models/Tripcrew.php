@@ -8,6 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Tripcrew extends Model
 {
     use HasFactory;
+    protected $fillable =[
+        'recordnumber',
+        'crewcode',
+        'available',
+        'confirmed',
+        'isskipper',
+        'tripnumber',
+        'notes',
+
+    ];
 
     public function trip()
     {

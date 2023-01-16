@@ -58,8 +58,24 @@
         <p>Please amend any details below and click save changes to submit</p>
         <div class="teck-btn justify-content-start">
 
-            <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a>
+            <a href="{{ route('all-activities') }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a>
         </div>
+
+        @if (Session::has('status'))
+
+        @if(Session::get('status'))
+        <script>
+            var msg = "{{Session::get('msg')}}";
+            ShowToast(msg, 'success');
+        </script>
+        @else
+        <script>
+            var msg = "{{Session::get('msg')}}";
+            ShowToast(msg, 'error');
+        </script>
+        @endif
+
+        @endif
 
     </div>
 
@@ -194,10 +210,10 @@
                         <p><strong>{{ $activity->crewnotes }}</strong></p>
                     </div>
 
-                    <div class="form-group col-xl-6 col-lg-14">
+                    {{-- <div class="form-group col-xl-6 col-lg-14">
                         <label for="NotesCrew">Availablity Status</label>
                         <p><strong> {{(!empty($InNotIn['availStatus'])?$InNotIn['availStatus']:'N/A')}}</strong></p>
-                    </div>
+                    </div> --}}
 
             </div>
             <br>
@@ -323,7 +339,9 @@
             <div class="teck-btn mt-4 pl-3">
                 <div class="teck-btn-view-activites justify-content-end">
 
-                    <a href="{{$InNotIn['route']}}" class="btn btn-primary">{{(!empty($InNotIn['isAvailable'])?$InNotIn['isAvailable']:'N/A')}}</a>
+                    {{-- <a href="{{$InNotIn['route']}}" class="btn btn-primary">{{(!empty($InNotIn['isAvailable'])?$InNotIn['isAvailable']:'N/A')}}</a> --}}
+                    <a href="{{$InNotIn['route']}}" class="btn btn-primary">{{$InNotIn['isAvailable']}}</a>
+
                 </div>
                 <br>
                 {{-- <button type="submit" class="btn btn-primary" > <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Update Activity</button> --}}
@@ -338,3 +356,47 @@
 </div>
 
 @stop
+
+<script>
+    function ShowToast(msg, type) {
+
+
+        if (type == 'error') {
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            Toast.fire({
+                icon: 'error',
+                title: msg
+            })
+
+        } else if (type == 'success') {
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: msg
+            })
+        }
+    }
+</script>

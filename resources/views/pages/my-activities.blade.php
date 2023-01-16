@@ -9,10 +9,10 @@
                 <p>This is a list of all the scheduled activities in the Activity Manager system..</p>
 
 
-                <div class="teck-btn justify-content-start">
+                {{-- <div class="teck-btn justify-content-start">
 
                     <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a>
-                </div>
+                </div> --}}
 
             </div>
 
@@ -64,6 +64,7 @@
 
                             @forelse ($trips as $trip )
 
+
                             <tr class="">
 
                                 <td width="300">
@@ -76,9 +77,10 @@
                                         // print_r($boat->activitypicture);
                                         // exit;
                                         if (!empty($boat) && isset($boat->activityname) && file_exists(public_path() . '/assets/activity-images' . '/' . $boat->activitypicture)) {
+                                            $backgroundColor =  ($boat->rgbcolor) ? $boat->rgbcolor : "#38e25d";
                                         ?>
 
-                                            <img src="{{asset('assets/activity-images').'/'.$boat->activitypicture}}" class="img-fluid" alt="">
+                                            <img src="{{asset('assets/activity-images').'/'.$boat->activitypicture}}" class="img-fluid" alt="142122" style="box-shadow:0 0 0 4px {{ $backgroundColor }}">
                                         <?php
                                         } else {
                                         ?>
@@ -122,7 +124,10 @@
                                     $i = 0;
                                     $initials = Session::get('initials');
 
-                                    $members = \App\Models\Tripcrew::where(['tripnumber' => $trip->id])->get();
+                                    $members = \App\Models\Tripcrew::where(['tripnumber' => $trip->id, 'confirmed' => 'Y'])->get();
+
+                                    $check_crewcount = 0; // echo $check_crewcount."<br>";
+
 
                                     if (!empty($members)) {
 
@@ -131,6 +136,7 @@
 
                                             if($member){
                                                 if ($m->isskipper != 'Y' && $m->isskipper == '') {
+                                                    $check_crewcount++;
                                                     echo $m->crewcode . ",";
                                                 }
                                                 $i++;
@@ -155,11 +161,12 @@
                                     $isReady = NULL;
                                     $confirme_crew = DB::table('tripcrews')
                                         ->where('tripnumber', $trip->id)
+                                        ->join('crews', 'crews.initials', 'tripcrews.crewcode')
                                          ->where('confirmed', 'Y')
                                         // ->where('available', 'Y')
                                         ->get()->count();
 
-                                    if ($confirme_crew == $trip->crewneeded) {
+                                    if ($check_crewcount == $trip->crewneeded) {
 
                                         $isReady = 'Ready';
                                     ?>

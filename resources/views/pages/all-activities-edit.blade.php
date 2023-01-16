@@ -70,7 +70,7 @@
         <p>Please amend any details below and click save changes to submit</p>
         <div class="teck-btn justify-content-start">
 
-            <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a>
+            <a href="{{ route('all-activities')  }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a>
         </div>
 
     </div>
@@ -316,7 +316,7 @@
                         <div class="col-sm-4">
                             <label for="NotesCrew" class="label">Un Available Crew</label>
 
-                            <div id="div1" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="unavailable[]">
+                            <div id="div1" ondrop="drop(event,this)" ondragover="allowDrop(event,this)" content="unavailable[]">
                                 <?php
 
 
@@ -380,7 +380,7 @@
         });
         // alert("Total Input Count=" + $('#container').find('input[type="text"]').length + "//Filled Inputs Count=" + count);
         console.log(confirm_count , crewcount);
-        if (confirm_count == crewcount) {
+        if (confirm_count >= crewcount) {
             $("#confirm_msg").removeClass('d-none');
 
             document.getElementById('confirm_msg').innerHTML='Limit Reached Of '+crewcount;

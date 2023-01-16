@@ -314,10 +314,10 @@ class CrewController extends Controller
             $optin = ($request->optin == "on") ? "Y" : '';
             $cba = ($request->cba == "on") ? "Y" : '';
             $iwa = ($request->iwa == "on") ? "Y" : '';
-
+            $keyholder = ($request->keyholder == "on") ? "Y" : '';
             //  dd($request->rya == "on");
             // $privilege = $request->privilege;
-            $keyholder = $request->keyholder;
+
             $traveltime = $request->traveltime;
 
             $fullname = $request->fullname;
@@ -404,6 +404,7 @@ class CrewController extends Controller
             // dd($crew_data);
 
             $update = Crew::WHERE('id', $crewid)->UPDATE($crew_data);
+            $update_role = User::WHERE('id',$request->user_id)->UPDATE(['role_id'=>$request->role_id]);
 
            //dd($update);
 

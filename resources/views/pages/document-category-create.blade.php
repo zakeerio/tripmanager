@@ -10,7 +10,7 @@
         <div class="row activity_col">
             <div class="teck-btn justify-content-start">
 
-                <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/clander icon.png') }}" class="img-fluid"> Go Back</a>
+                <a href="{{ route('/documents') }}" class="btn btn-primary"><img src="{{ asset('assets/images/clander icon.png') }}" class="img-fluid"> Go Back</a>
             </div>
 
             <div class="col-md-12 dashboard-heading-desc upcoming_activities">
