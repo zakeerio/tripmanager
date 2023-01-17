@@ -29,7 +29,11 @@
                         }
                     @endphp
 
-                    <a href="{{ route('all-activities') }}{{ $querystring }}">{{ $hidelabel }}</a>
+                    {{-- Show hide completed button --}}
+
+                    @if(Session::get('role') != 'crewmember')
+                        <a href="{{ route('all-activities') }}{{ $querystring }}">{{ $hidelabel }}</a>
+                    @endif
 
 
                     {{-- <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a> --}}
