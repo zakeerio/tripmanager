@@ -10,6 +10,27 @@
                 <p>This is a list of all the scheduled activities in the Activity Manager system..</p>
 
                 <div class="teck-btn justify-content-start">
+                    @php
+                        $check_filter = Request::get('filter');
+
+                        $hidecompleted = Request::get('completed');
+
+
+                        if(empty($hidecompleted)){
+                            $hidecompleted_val = "?completed=hide";
+                            $filter =  isset($check_filter) ? "&filter=".$check_filter : '';
+                            $querystring = $hidecompleted_val.$filter;
+                            $hidelabel = "Hide Completed";
+                        } else {
+                            $filter =  isset($check_filter) ? "?filter=".$check_filter : '';
+                            $querystring = $filter;
+                            $hidelabel = "Show Completed";
+
+                        }
+                    @endphp
+
+                    <a href="{{ route('all-activities') }}{{ $querystring }}">{{ $hidelabel }}</a>
+
 
                     {{-- <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a> --}}
                 </div>
@@ -36,9 +57,16 @@
                     <div class="teck-btn justify-content-start bg-white">
                         <a href="#!"><img src="{{ asset('assets/images/Activity-Items.png') }}" class="btn-icon-2" alt="">Filter by activity item </a>
 
+                        @php
+                            $check_completed = Request::get('completed');
+                            $hidecompleted_cat =  isset($check_completed) ? "&completed=".$check_completed : '';
+                            $querystring_cat = $hidecompleted_cat;
+
+                        @endphp
+
                         <ul class="teck-dropdown">
                             @forelse ($activities_filter as $activity )
-                                <li><a href="{{ route('all-activities') }}?filter={{ $activity->activityname }}">{{ $activity->activityname }}</a></li>
+                                <li><a href="{{ route('all-activities') }}?filter={{ $activity->activityname }}{{ $querystring_cat }}">{{ $activity->activityname }}</a></li>
                             @empty
                                 <li>Not found!</li>
                             @endforelse
@@ -185,19 +213,6 @@
 
                                             @else
 
-                                                @php
-                                                    // $confirme_crew = DB::table('tripcrews')
-                                                    // ->where('tripnumber', $trip->id)
-                                                    // ->join('crews', 'crews.initials', 'tripcrews.crewcode')
-
-                                                    // ->where('confirmed', 'Y')
-                                                    // ->distinct('crews.initials')
-                                                    // // ->where('available', 'Y')
-                                                    // ->get()->count();
-
-                                                    @endphp
-
-
                                                     @if(($check_crewcount >= $trip->crewneeded ) ? 'teck-danger' : "" )
 
                                                         <td width="200" data-th="Net Amount">
@@ -217,11 +232,6 @@
                                                 @endif
 
                                             @endif
-
-
-
-
-
 
 
 
@@ -264,10 +274,10 @@
                                                         <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a>
                                                         @else
 
-                                                        @if($trip->archived ==NULL)
-                                                        <a class="dropdown-item" href="{{ route('all-activities-edit',[$trip->id,$isReady]) }}">Edit Activity</a>
+                                                        @if($trip->archived ==NULL || $trip->archived =="")
+                                                            <a class="dropdown-item" href="{{ route('all-activities-edit',[$trip->id,$isReady]) }}">Edit Activity</a>
                                                         @else
-                                                        <a class="dropdown-item" href="#">Not Editable</a>
+                                                            <a class="dropdown-item" href="#">Not Editable</a>
                                                         @endif
 
                                                         <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete Activity</a>

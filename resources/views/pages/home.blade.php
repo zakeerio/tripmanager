@@ -130,17 +130,6 @@
 
                             @forelse ($upcoming_activites as $trip )
 
-                            <?php
-
-                            // $confirme_crew = DB::table('tripcrews')
-                            //     ->where('tripnumber', $trip->id)
-                            //     // ->where('confirmed', 'Y')
-                            //     // ->where('available', 'Y')
-                            //     ->get()->count();
-
-
-
-                            ?>
 
                             <tr class="">
 
@@ -228,39 +217,41 @@
                                 </td>
 
 
-                                <td width="200">
-
-
-                                    <?php
-
+                                @php
                                     $isReady = NULL;
-                                    // $confirme_crew = DB::table('tripcrews')
-                                    // ->join('crews', 'crews.initials', 'tripcrews.crewcode')
-                                    // ->where('tripnumber', $trip->id)
-                                    // ->where('confirmed', 'Y')
-                                    // // ->where('available', 'Y')
-                                    // ->get()->count();
+                                @endphp
 
-                                    if ($check_crewcount >= $trip->crewneeded) {
+                                @if($trip->archived == "Y")
+
+                                    @php
+                                        $isReady = 'completed';
+                                    @endphp
+
+                                    <td width="200" data-th="Net Amount">
+                                        <span class="active-btn"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Completed</span>
+                                    </td>
+
+                                @else
+
+                                        @if(($check_crewcount >= $trip->crewneeded ) ? 'teck-danger' : "" )
+
+                                            <td width="200" data-th="Net Amount">
+                                                <span class="active-btn"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Ready</span>
+                                            </td>
+                                        @php
                                         $isReady = 'Ready';
-                                    ?>
-                                        <span class="active-btn">
-                                            <img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Ready</span>
-
-                                    <?php
-
-
-                                    } else {
+                                        @endphp
+                                    @else
+                                    @php
                                         $isReady = 'Needed';
-                                    ?>
+                                        @endphp
+                                        <td width="240" data-th="Net Amount" class="crew_btn">
+                                            <span class="active-btn-2"><img src="{{ asset('assets/images/Button-Crew-Needed.png') }}" class="alrt-image" alt=""> Crew Needed</span>
+                                        </td>
 
-                                        <span class="active-btn-2"><img src="{{ asset('assets/images/Button-Crew-Needed.png') }}" class="alrt-image" alt=""> Crew Needed</span>
+                                    @endif
 
-                                    <?php
-                                    }
-
-                                    ?>
-                                </td>
+                                @endif
                                 <td class="action">
 
                                     <div class="dropdown">
@@ -275,7 +266,14 @@
 
                                             @if(Session::get('role') !='crewmember')
                                                 <a class="dropdown-item" href="{{ route('all-activities-view', [$trip->id,$isReady]) }}">View Activity</a>
-                                                <a class="dropdown-item" href="{{ route('all-activities-edit', [$trip->id,$isReady]) }}">Edit Activity</a>
+
+                                                @if($trip->archived ==NULL || $trip->archived =="")
+                                                    <a class="dropdown-item" href="{{ route('all-activities-edit',[$trip->id,$isReady]) }}">Edit Activity</a>
+                                                @else
+                                                    <a class="dropdown-item" href="#">Not Editable</a>
+                                                @endif
+
+                                                {{-- <a class="dropdown-item" href="{{ route('all-activities-edit', [$trip->id,$isReady]) }}">Edit Activity</a> --}}
                                                 <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete Activity</a>
                                             @else
                                                 <a class="dropdown-item" href="{{ route('all-activities-view', [$trip->id,$isReady]) }}">View Activity</a>

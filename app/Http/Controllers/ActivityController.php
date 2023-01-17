@@ -35,21 +35,43 @@ class ActivityController extends Controller
 
 
 
+
+
         if(isset($request->filter) && $request->filter !="" ){
             $activitycheck = ActivityItem::where('activityname',$request->filter)->count();
 
             if($activitycheck > 0){
                 if (Session::get('role') == 'crewmember') {
-                    $trips = Trip::orderBy('departuredate', 'DESC')->where('archived', "=",  NULL)->where('boatname',$request->filter)->paginate(50);
+                    $trips = Trip::orderBy('departuredate', 'DESC')->where('archived', "=",  NULL)->orWhere('archived', "=",  "")->where('boatname',$request->filter)->paginate(50);
                 } else {
-                    $trips = Trip::orderBy('departuredate', 'DESC')->where('boatname',$request->filter)->paginate(50);
+
+                    if(isset($request->completed) && $request->completed == 'hide' ){
+                        $trips = Trip::orderBy('departuredate', 'DESC')
+                        ->where('archived', "!=",  'Y')
+                        ->orWhere('archived', "=",  NULL)
+                        ->where('boatname',$request->filter)->paginate(50);
+                    } else {
+                        $trips = Trip::orderBy('departuredate', 'DESC')->where('boatname',$request->filter)->paginate(50);
+                    }
                 }
             } else {
                 if (Session::get('role') == 'crewmember') {
 
-                    $trips = Trip::orderBy('departuredate', 'DESC')->where('archived', "=", NULL)->paginate(50);
+                    $trips = Trip::orderBy('departuredate', 'DESC')->where('archived', "=", NULL)->orWhere('archived', "=",  "")->paginate(50);
                 } else {
-                    $trips = Trip::orderBy('departuredate', 'DESC')->paginate(50);
+
+                    if(isset($request->completed) && $request->completed == 'hide' ){
+                        // $trips = Trip::orderBy('departuredate', 'DESC')->paginate(50);
+                        $trips = Trip::orderBy('departuredate', 'DESC')
+                        ->w->where('archived', "!=",  'Y')
+                        ->orWhere('archived', "=",  NULL)
+                        ->paginate(50);
+                    } else {
+                        $trips = Trip::orderBy('departuredate', 'DESC')->paginate(50);
+
+                    }
+
+                    // $trips = Trip::orderBy('departuredate', 'DESC')->paginate(50);
 
                 }
             }
@@ -62,8 +84,19 @@ class ActivityController extends Controller
 
 
             } else {
-                $trips = Trip::orderBy('departuredate', 'DESC')->paginate(50);
 
+                if(isset($request->completed) && $request->completed == 'hide' ){
+                    // $trips = Trip::orderBy('departuredate', 'DESC')->paginate(50);
+                    $trips = Trip::orderBy('departuredate', 'DESC')
+                    ->where('archived', "!=",  'Y')
+                    ->orWhere('archived', "=",  NULL)
+                    ->paginate(50);
+                    // ->toSql();
+                    // dd($trips);
+                } else {
+                    $trips = Trip::orderBy('departuredate', 'DESC')->paginate(50);
+
+                }
 
             }
         }
