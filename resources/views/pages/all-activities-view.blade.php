@@ -277,7 +277,7 @@
                     ?>
 
                     <div class="col-sm-4">
-                        <label for="NotesCrew" class="confirm_label">Confirmed Crew</label>
+                        <label class="confirm_label">Confirmed Crew</label>
                         <div id="div2" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="confiremd[]">
                             <?php
 
@@ -294,7 +294,7 @@
                     </div>
 
                     <div class="col-sm-4">
-                        <label for="NotesCrew" class="available_label">Available Crew</label>
+                        <label class="available_label">Available Crew</label>
                         <div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="available[]">
                             <?php
 
@@ -312,7 +312,7 @@
 
 
                     <div class="col-sm-4">
-                        <label for="NotesCrew" class="unavailable_label">Un Available Crew</label>
+                        <label class="unavailable_label">Un Available Crew</label>
 
                         <div id="div1" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="unavailable[]">
                             <?php
