@@ -198,7 +198,7 @@
                                                     @endphp
 
 
-                                                    @if(($check_crewcount == $trip->crewneeded ) ? 'teck-danger' : "" )
+                                                    @if(($check_crewcount >= $trip->crewneeded ) ? 'teck-danger' : "" )
 
                                                         <td width="200" data-th="Net Amount">
                                                             <span class="active-btn"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Ready</span>

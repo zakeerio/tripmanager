@@ -337,6 +337,8 @@
                 </div>
             @endif
             <div class="teck-btn mt-4 pl-3">
+            @if(Session::get('role') == 'crewmember')
+
                 <div class="teck-btn-view-activites justify-content-end">
 
                     {{-- <a href="{{$InNotIn['route']}}" class="btn btn-primary">{{(!empty($InNotIn['isAvailable'])?$InNotIn['isAvailable']:'N/A')}}</a> --}}
@@ -344,6 +346,7 @@
 
                 </div>
                 <br>
+            @endif
                 {{-- <button type="submit" class="btn btn-primary" > <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Update Activity</button> --}}
             </div>
             </form>

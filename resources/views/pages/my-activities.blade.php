@@ -166,7 +166,7 @@
                                         // ->where('available', 'Y')
                                         ->get()->count();
 
-                                    if ($check_crewcount == $trip->crewneeded) {
+                                    if ($check_crewcount >= $trip->crewneeded) {
 
                                         $isReady = 'Ready';
                                     ?>
