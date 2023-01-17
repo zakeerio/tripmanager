@@ -211,7 +211,7 @@
                         </div>
                         <div class="form-group col-xl-4 col-lg-12">
                             <label for="NumberCrewNeeded">NUMBER OF CREW NEEDED</label>
-                            <input type="text" name="crewneeded" class="form-control" id="NumberCrewNeeded">
+                            <input type="number" name="crewneeded" class="form-control" min="1" id="NumberCrewNeeded">
                         </div>
 
                         <div class="form-group col-md-12">

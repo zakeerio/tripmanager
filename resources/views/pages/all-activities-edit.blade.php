@@ -194,7 +194,7 @@
                         </div>
                         <div class="form-group col-xl-4 col-lg-12">
                             <label for="NumberCrewNeeded">NUMBER OF CREW NEEDED</label>
-                            <input type="text" name="crewneeded" class="form-control" id="NumberCrewNeeded" value="{{ $activity->crewneeded }}">
+                            <input type="number" name="crewneeded" min="1" class="form-control" id="NumberCrewNeeded" value="{{ $activity->crewneeded }}">
                         </div>
                         <div class="form-group col-xl-5 col-lg-13">
                             <label for="TripCost">TRIP COST(£)</label>
