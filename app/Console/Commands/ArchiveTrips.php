@@ -45,7 +45,7 @@ class ArchiveTrips extends Command
         // return 0;
         DB::table("trips")->where('departuredate', '<' , date('Y-m-d'))->update(['archived' => 'Y']);
 
-        // Log::info("Worked here");
+        Log::info("Worked here", date('Y-M-D H:i:s'));
 
     }
 }
