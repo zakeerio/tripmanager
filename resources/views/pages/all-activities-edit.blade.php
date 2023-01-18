@@ -279,7 +279,7 @@
 
                         <div class="col-sm-4">
                             <label class="confirm_label">Confirmed Crew</label>
-                            <div id="div2" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="confiremd[]">
+                            <div id="div2" ondrop="drop(event,this)" ondragover="allowDrop(event)" target="confirmed" content="confiremd[]">
                                 <?php
 
                                 if (!empty($confirmed)) {
@@ -297,7 +297,7 @@
 
                         <div class="col-sm-4">
                             <label class="available_label">Available Crew</label>
-                            <div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="available[]">
+                            <div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)" target="available" content="available[]">
                                 <?php
 
                                 if (!empty($available)) {
@@ -316,7 +316,7 @@
                         <div class="col-sm-4">
                             <label class="unavailable_label">Un Available Crew</label>
 
-                            <div id="div1" ondrop="drop(event,this)" ondragover="allowDrop(event,this)" content="unavailable[]">
+                            <div id="div1" ondrop="drop(event,this)" ondragover="allowDrop(event,this)" target="unavailable" content="unavailable[]">
                                 <?php
 
 
@@ -370,21 +370,23 @@
         ev.preventDefault();
         console.log('drag drop');
         var data = ev.dataTransfer.getData("text");
-        ev.target.appendChild(document.getElementById(data));
-        console.log(data);
-        document.getElementById(data).setAttribute('name', th.getAttribute('content'))
+
+        // get Current drop target to identify if this is confirmed it should restrict dropping
+        var targetval = th.getAttribute('target');
+        // console.log(data);
+
 
 
         var confirm_count = 0;
         $('#div2').find('input[type="text"]').each(function() {
 
-            confirm_count += 1
+            confirm_count += 1;
             // alert("Filled Value=" + $(this).val());
 
         });
         // alert("Total Input Count=" + $('#container').find('input[type="text"]').length + "//Filled Inputs Count=" + count);
         console.log(confirm_count , crewcount);
-        if (confirm_count >= crewcount) {
+        if (confirm_count >= crewcount && targetval == 'confirmed') {
             $("#confirm_msg").removeClass('d-none');
 
             document.getElementById('confirm_msg').innerHTML='Limit Reached Of '+crewcount;
@@ -395,6 +397,9 @@
 
             document.getElementById('div2').setAttribute('ondrop', 'drop(event,this)')
             document.getElementById('confirm_msg').innerHTML='';
+
+            ev.target.appendChild(document.getElementById(data));
+            document.getElementById(data).setAttribute('name', th.getAttribute('content'));
         }
     }
 
