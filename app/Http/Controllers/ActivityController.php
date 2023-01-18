@@ -885,7 +885,7 @@ class ActivityController extends Controller
             // ->where('tripcrews.isskipper', '!=', "Y")
             // ->where('confirmed', '=', 'Y')
             // ->groupBy('tripnumber')
-            ->orderBy('trips.id', 'DESC')
+            ->orderBy('trips.departuredate', 'DESC')
             ->paginate(50);
             // ->get();
             // ->toSql();
@@ -904,7 +904,7 @@ class ActivityController extends Controller
             // ->where('tripcrews.isskipper', '!=', "Y")
             // ->where('confirmed', '=', 'Y')
             // ->groupBy('tripnumber')
-            ->orderBy('trips.id', 'DESC')
+            ->orderBy('trips.departuredate', 'DESC')
             ->paginate(50);
             // ->get();
             // ->toSql();
