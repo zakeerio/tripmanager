@@ -38,10 +38,15 @@ class ActivityTypeController extends Controller
      */
     public function store(Request $request)
     {
+
+        $this->validate(request(), [
+            'type_name' => 'required'
+        ]);
+
         $add = ActivityType::CREATE(['type_name' => $request->type_name]);
 
         if (isset($add->id) && $add->id != 0) {
-            //dd($add->id);   
+            //dd($add->id);
             return redirect()->back()->with(['status' => true, 'msg' => 'Success ! Type Added']);
         } else {
             return redirect()->back()->with(['status' => false, 'msg' => 'Failed ! Type Adding Failed']);
@@ -86,6 +91,9 @@ class ActivityTypeController extends Controller
      */
     public function update(Request $request, ActivityType $activityType)
     {
+        $this->validate(request(), [
+            'type_name' => 'required'
+        ]);
         if (!isset($request->type_name)) {
             return redirect()->back()->with(['status' => false, 'msg' => 'Error ! Type Name Can Not Be Empty']);
         }

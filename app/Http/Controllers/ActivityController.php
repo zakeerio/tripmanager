@@ -340,9 +340,11 @@ class ActivityController extends Controller
             ->orderBy('departuredate')
             // ->orderBy('id', 'DESC')
             // ->distinct()
-            ->select('trips.*')->paginate(50);
+            ->select('trips.*')
+            ->get();
+            // ->paginate(50);
             // ->select('trips.*')->toSql();
-
+            dd($upcoming_activites->toArray());
 
 
 

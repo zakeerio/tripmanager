@@ -128,6 +128,7 @@ class CrewController extends Controller
         $memnumber = $request->memnumber;
         $firstaid = ($request->firstaid == "on") ? "Y" : '';
         $keyholder = $request->keyholder;
+        // $keyholder = ($request->keyholder == "on") ? "Y" : '';
         $skipper = ($request->skipper == "on") ? "Y" : '';
         // echo $request->optin;
         $optin = ($request->optin == "on") ? "Y" : '';
@@ -490,6 +491,7 @@ class CrewController extends Controller
             // dd($request->faexpire);
 
             $firstaid = ($request->firstaid == "on") ? "Y" : '';
+            // $keyholder = ($request->keyholder == "on") ? "Y" : '';
             $keyholder = $request->keyholder;
             $skipper = ($request->skipper == "on") ? "Y" : '';
 
@@ -500,7 +502,6 @@ class CrewController extends Controller
             $optin = ($request->optin == "on") ? "Y" : '';
 
             // $privilege = $request->privilege;
-            $keyholder = $request->keyholder;
             $traveltime = $request->traveltime;
             $fullname = $request->name;
 

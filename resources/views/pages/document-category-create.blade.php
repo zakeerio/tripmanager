@@ -10,7 +10,7 @@
         <div class="row activity_col">
             <div class="teck-btn justify-content-start">
 
-                <a href="{{ route('/documents') }}" class="btn btn-primary"><img src="{{ asset('assets/images/clander icon.png') }}" class="img-fluid"> Go Back</a>
+                <a href="{{ route('/documents') }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a>
             </div>
 
             <div class="col-md-12 dashboard-heading-desc upcoming_activities">
@@ -55,7 +55,7 @@
                         <div class=" col-xl-6 col-lg-6">
                             <label for="document-name"> </label>
                             <div class="teck-btn" style="margin-top:5px;">
-                                <button type="submit" class="btn btn-primary"> <img src="http://127.0.0.1:8000/assets/images/save.svg" class="img-fluid"> Create
+                                <button type="submit" class="btn btn-primary"> <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Create
                                     Category</button>
                             </div>
 

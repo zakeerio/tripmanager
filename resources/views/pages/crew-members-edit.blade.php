@@ -216,6 +216,10 @@
                                             <input class="form-check-input" type="checkbox" id="iwa" name="iwa" {{ !empty($crew_member->iwa) ? 'checked' : '' }}>
                                             <label class="form-check-label" for="iwa">IWA</label>
                                         </div>
+                                        {{-- <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="keyholder" name="keyholder" {{ !empty($crew_member->keyholder) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="keyholder">Key Holder</label>
+                                        </div> --}}
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="skipper" name="skipper" {{ !empty($crew_member->skipper) ? 'checked' : '' }}>
                                             <label class="form-check-label" for="skipper">Skipper</label>
@@ -232,10 +236,10 @@
                                 <div class="form-group col-xl-8 col-lg-12">
                                     <div class="form-row">
 
-                                        <div class="form-group col-md-6">
+                                        {{-- <div class="form-group col-md-6">
                                             <label for="privilege">Privilege</label>
                                             <input type="number" class="form-control" name="privilege" id="privilege" value="{{ $crew_member->privilege }}">
-                                        </div>
+                                        </div> --}}
 
 
                                         <div class="form-check">

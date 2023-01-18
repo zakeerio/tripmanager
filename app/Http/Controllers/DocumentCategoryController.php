@@ -36,9 +36,9 @@ class DocumentCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        // $this->validate(request(), [
-        //     'doc_name' => 'required',
-        // ]);
+        $this->validate(request(), [
+            'doc_name' => 'required',
+        ]);
 
         $add = DocumentCategory::CREATE(['name' => $request->doc_name]);
 
@@ -90,6 +90,11 @@ class DocumentCategoryController extends Controller
     public function update(Request $request, DocumentCategory $documentCategory)
     {
         // dd($request->all());
+
+        $this->validate(request(), [
+            'doc_name' => 'required',
+        ]);
+
 
         if (!isset($request->doc_name)) {
             return redirect()->back()->with(['status' => false, 'msg' => 'Error ! Category Name Can Not Be Empty']);

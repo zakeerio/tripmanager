@@ -10,7 +10,7 @@
         <div class="row activity_col">
             <div class="teck-btn justify-content-start">
 
-                <a href="{{ route('/activity-types') }}" class="btn btn-primary"><img src="{{ asset('assets/images/clander icon.png') }}" class="img-fluid"> Go Back</a>
+                <a href="{{ route('/activity-types') }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid"  style="width:26px; height:28px"> Go Back</a>
             </div>
 
             <div class="col-md-12 dashboard-heading-desc upcoming_activities">
@@ -48,23 +48,23 @@
                     @csrf
                     <div class="row">
                         <div class="col-xl-6 col-lg-6">
-                            <label for="document-name"> Document Name</label>
+                            <label for="type_name"> Document Name</label>
 
                             <?php
-
                                 $cat_name = isset($cat[0]->type_name)? $cat[0]->type_name:'';
-
-
-
                             ?>
-                            <input type="name" class="form-control" name="type_name" id="doc_name" value="{{ $cat_name}}">
+                            @if($errors->any())
+                            <p style="color:red ;">{{$errors->first('type_name') }}</p>
+
+                            @endif
+                            <input type="name" class="form-control" name="type_name" id="type_name" value="{{ $cat_name}}">
                             <input type="hidden" name="update_id" value="{{$cat[0]->id}}">
                         </div>
 
                         <div class=" col-xl-6 col-lg-6">
                             <label for="document-name"> </label>
                             <div class="teck-btn" style="margin-top:5px;">
-                                <button type="submit" class="btn btn-primary"> <img src="http://127.0.0.1:8000/assets/images/save.svg" class="img-fluid">Update
+                                <button type="submit" class="btn btn-primary"> <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid">Update
                                    Type</button>
                             </div>
 
