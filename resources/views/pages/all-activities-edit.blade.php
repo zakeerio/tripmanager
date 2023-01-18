@@ -70,7 +70,7 @@
         <p>Please amend any details below and click save changes to submit</p>
         <div class="teck-btn justify-content-start">
 
-            <a href="{{ route('all-activities')  }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a>
+            <a href="{{ route('all-activities')  }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:20px;"> Go Back</a>
         </div>
 
     </div>
@@ -337,10 +337,13 @@
                         </div>
                     </div>
                     <div id="confirm_msg" class="alert alert-danger d-none mt-4"></div>
+
+                    <div class="teck-btn mt-4">
+                        <button type="submit" class="btn btn-primary"> <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Update Activity</button>
+                    </div>
             </div>
-            <div class="teck-btn">
-                <button type="submit" class="btn btn-primary"> <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Update Activity</button>
-            </div>
+
+
             </form>
 
 
@@ -365,6 +368,7 @@
 
     function drop(ev, th) {
         ev.preventDefault();
+        console.log('drag drop');
         var data = ev.dataTransfer.getData("text");
         ev.target.appendChild(document.getElementById(data));
         console.log(data);

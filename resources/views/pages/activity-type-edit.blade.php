@@ -10,7 +10,7 @@
         <div class="row activity_col">
             <div class="teck-btn justify-content-start">
 
-                <a href="{{ route('/activity-types') }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid"  style="width:26px; height:28px"> Go Back</a>
+                <a href="{{ route('/activity-types') }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid"  style="width:20px;"> Go Back</a>
             </div>
 
             <div class="col-md-12 dashboard-heading-desc upcoming_activities">

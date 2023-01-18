@@ -10,7 +10,7 @@
         <p class="sub-pages-text">Please fill out the information below to create a new crew memb.</p>
         <div class="teck-btn justify-content-start">
 
-            <a href="{{ route('crew-members') }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:26px; height:28px"> Go Back</a>
+            <a href="{{ route('crew-members') }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:20px;"> Go Back</a>
         </div>
         @if(Session::get('status'))
 
