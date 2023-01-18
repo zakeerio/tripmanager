@@ -128,9 +128,7 @@
                         <p class="col-12-descrapction">These details will be visible throughout the Activity Manager
                             system.</p>
 
-                            @if($errors->any())
-                            <b style="color:Red">{{$errors->first('duration')}} ! Enter duration in decimal hours (2.5) rather than 2:30</b>
-                            @endif
+
 
                     </div>
 
@@ -139,8 +137,6 @@
 
 
             <div class="col-md-12">
-
-
 
                 <form class="teck-form" method="post" action="{{ route('all-activites-add') }}">
                     @csrf
@@ -151,8 +147,9 @@
                         </div>
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityItem">SELECT ACTIVITY ITEM</label>
+
                             <select id="ActivityItem" name="boatname" class="form-control">
-                                <option value="">__SELECT__</option>
+                                <option value="">--SELECT--</option>
                                 <?php
 
 
@@ -162,7 +159,7 @@
 
                                     foreach ($boats as $b) {
                                 ?>
-                                        <option value="{{$b->activityname}}">{{$b->activityname}}</option>
+                                        <option {{ (old('boatname') == $b->activityname) ? 'selected' : '' }}  value="{{$b->activityname}}">{{$b->activityname}}</option>
                                     <?php
                                     }
                                 } else {
@@ -173,11 +170,18 @@
 
                                 ?>
                             </select>
+                            @if($errors->any())
+                            <p style="color:Red">{{$errors->first('boatname')}}</p>
+                            @endif
 
                         </div>
                         <div class="form-group col-xl-4 col-lg-12">
                             <label for="ActivityDate">ACTIVITY DATE</label>
-                            <input type="date" name="departuredate" class="form-control" id="ActivityDate">
+
+                            <input type="date" name="departuredate" value="{{ old('departuredate') }}" class="form-control" id="ActivityDate">
+                            @if($errors->any())
+                            <p style="color:Red">{{$errors->first('departuredate')}}</p>
+                            @endif
                         </div>
                     </div>
 
@@ -186,16 +190,28 @@
                     <div class="form-row">
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityTime">ACTIVITY TIME</label>
-                            <input type="time" name="departuretime" class="form-control" id="ActivityTime">
+
+                            <input type="time" name="departuretime" value="{{ old('departuretime') }}" class="form-control" id="ActivityTime">
+                            @if($errors->any())
+                            <p style="color:Red">{{$errors->first('departuretime')}}</p>
+                            @endif
                         </div>
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityDuration">ACTIVITY DURATION</label>
 
-                            <input type="text" name="duration" class="form-control" id="ActivityDuration" placeholder="Enter duration in decimal hours (2.5) rather than 2:30">
+                            <input type="text" name="duration" value="{{ old('duration') }}" class="form-control" id="ActivityDuration" placeholder="Enter duration in decimal hours (2.5) rather than 2:30">
+                            @if($errors->any())
+                            <p style="color:Red">{{$errors->first('duration') ? $errors->first('duration').' ! Enter duration in decimal hours (2.5) rather than 2:30' : ' '}}</p>
+                            @endif
                         </div>
                         <div class="form-group col-xl-4 col-lg-12">
+
                             <label for="BriefDescription">BRIEF DESCRIPTION</label>
-                            <input type="text" name="destination" class="form-control" id="BriefDescription">
+
+                            <input type="text" name="destination" value="{{ old('destination') }}" class="form-control" id="BriefDescription">
+                            @if($errors->any())
+                            <p style="color:Red">{{ ($errors->first('destination')) ? "Brief Description should not be empty" : '' }}</p>
+                            @endif
                         </div>
                     </div>
 
@@ -205,30 +221,48 @@
                         <div class="col-lg-12 col-md-12 upcoming_activities">
                             <h4>Crew Information</h4>
                             <p class="col-12-descrapction">This information is regarding the crew of this activity.</p>
-                            @if($errors->any())
-                            <b style="color:Red">{{$errors->first('crewneeded')}}  Crew Need Can Not Be 0</b>
-                            @endif
+
                         </div>
                         <div class="form-group col-xl-4 col-lg-12">
                             <label for="NumberCrewNeeded">NUMBER OF CREW NEEDED</label>
-                            <input type="number" name="crewneeded" class="form-control" min="1" id="NumberCrewNeeded">
+
+                            <input type="number" name="crewneeded" value="{{ old('crewneeded') }}" class="form-control" min="1" id="NumberCrewNeeded">
+                            @if($errors->any())
+                            <p style="color:Red">{{$errors->first('crewneeded') ? $errors->first('crewneeded')." Crew Need Can Not Be 0" : '' }}  </p>
+                            @endif
                         </div>
 
                         <div class="form-group col-md-12">
                             <label for="NotesCrew">NOTES FOR CREW</label>
-                            <textarea class="form-control" id="NotesCrew" name="crewnotes" rows="5"></textarea>
+
+                            <textarea class="form-control" id="NotesCrew" name="crewnotes" rows="5">{{ old('crewnotes') }}</textarea>
+                            @if($errors->any())
+                            <p style="color:Red">{{$errors->first('crewnotes')}}</p>
+                            @endif
                         </div>
                         <div class="form-group col-xl-5 col-lg-13">
                             <label for="TripCost">TRIP COST(£)</label>
-                            <input type="number" name="tripcost" class="form-control" id="TripCost" value="0" size="6">
+
+                            <input type="number" min="0" name="tripcost" class="form-control" id="TripCost" value="{{ old('tripcost') }}" size="6">
+                            @if($errors->any())
+                            <p style="color:Red">{{$errors->first('tripcost')}}</p>
+                            @endif
                         </div>
                         <div class="form-group col-xl-6 col-lg-14">
                             <label for="BalanceDue">BALANCE DUE (£)</label>
-                            <input type="number" name="tripbalance" class="form-control" id="BalanceDue" value="0" size="6">
+
+                            <input type="number" name="tripbalance" value="{{ old('tripbalance') }}" class="form-control" id="BalanceDue" size="6">
+                            @if($errors->any())
+                            <p style="color:Red">{{$errors->first('tripbalance')}}</p>
+                            @endif
                         </div>
                         <div class="form-group col-xl-7 col-lg-15">
                             <label for="PassengerCout">PASSENGER COUNT</label>
-                            <input type="number" name="passengers" class="form-control" id="PassengerCout" value="0" size="3">
+
+                            <input type="number" name="passengers" value="{{ old('passengers') }}" class="form-control" id="PassengerCout" size="3">
+                            @if($errors->any())
+                            <p style="color:Red">{{$errors->first('passengers')}}</p>
+                            @endif
                         </div>
                     </div>
 
@@ -269,9 +303,9 @@
                                         // print_r($c['id']);
                                         if (isset($c['initials'])) {
                                             //  echo $crew_name[0] . "<br>";
-                                ?>
+                                            ?>
                                             <input type="text" class="form-control" id="drag<?php echo $c['id'] ?>" draggable="true" ondragstart="drag(event)" name="unavailable[]" value="<?php echo $c['initials'] . ': ' . $c['fullname'] ?>" read_only>
-                                <?php
+                                            <?php
                                         }
                                     }
                                 }

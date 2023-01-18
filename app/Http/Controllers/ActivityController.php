@@ -490,6 +490,18 @@ class ActivityController extends Controller
 
     public function add(Request $request)
     {
+        $this->validate(request(), [
+            'boatname'                 => 'required',
+            'departuredate'            => 'required',
+            'departuretime'            => 'required',
+            'duration'                 => 'required',
+            'destination'              => 'required',
+            'crewneeded'               => 'required',
+            'crewnotes'                => 'required',
+            'balance'                  => 'required',
+            'cost'                     => 'required',
+        ]);
+
 
         //dd($request->all());
 
