@@ -122,7 +122,7 @@ class ActivityTypeController extends Controller
             return redirect()->back()->with(['status' => false, 'msg' => 'This Contains Data']);
         } else {
             $delete =  ActivityType::where('id', $id)->delete();
-            return redirect()->back()->with(['status' => true, 'msg' => 'Success ! Deleted ']);
+            return redirect()->back()->with(['status' => true, 'msg' => 'Success ! Deleted Activity type. ']);
         }
     }
 }

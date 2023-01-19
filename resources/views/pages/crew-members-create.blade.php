@@ -94,7 +94,7 @@
 
                                             foreach ($boats as $b) {
                                         ?>
-                                                <option value="{{$b->activityname}}" {{ isset(old('boatpreference') && old('boatpreference') == $b->activityname) ? 'selected' : '' }} >{{$b->activityname}}</option>
+                                                <option value="{{$b->activityname}}" {{ ((old('boatpreference')) && old('boatpreference') == $b->activityname) ? 'selected' : '' }} >{{$b->activityname}}</option>
                                             <?php
                                             }
                                         } else {
@@ -141,9 +141,7 @@
                                                 $roles = \App\Models\Role::get();
                                                 @endphp
                                                 @forelse ($roles as $role)
-                                                <option value="{{$b->activityname}}" >{{$b->activityname}}</option>
-
-                                                                                                                                                                                                                                    <option value="{{ $role->id }}" {{ isset(old('role_id') && old('role_id') == $role->id) ? 'selected' : '' }} >
+                                                <option value="{{ $role->id }}" {{ ((old('role_id') && old('role_id') == $role->id)) ? 'selected' : '' }} >
                                                     {{ $role->name }}
                                                 </option>
 

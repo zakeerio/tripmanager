@@ -57,8 +57,8 @@
                         </div>
 
                         <div class=" col-xl-6 col-lg-6">
-                            <label for="document-name"> </label>
-                            <div class="teck-btn" style="margin-top:5px;">
+                            <label for="document-name">&nbsp; </label>
+                            <div class="teck-btn justify-content-left" style="justify-content: left;">
                                 <button type="submit" class="btn btn-primary"> <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Create
                                     Type</button>
                             </div>
@@ -98,7 +98,7 @@
                                                 <tr>
                                                     <td>{{$d->type_name}}</td>
                                                     <td>{{$d->created_at}}</td>
-                                                    <td class="action">
+                                                    <td class="action" width="150">
 
                                                         <div class="dropdown">
                                                             <button class="btn" type="button" id="BtnAction" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
