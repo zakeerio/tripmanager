@@ -477,8 +477,8 @@
         });
 
 
-        if(crewneeded > activity_seelcted_val || crewneeded > confirm_count){
-            $(".crew-exceed").removeClass('d-none').html('Crew Members not allowed more then '+activity_seelcted_val+ " for activity type "+activity_seelcted_name);
+        if(crewneeded > activity_seelcted_val || crewneeded < confirm_count){
+            $(".crew-exceed").removeClass('d-none').html('Crew Members not allowed more then '+activity_seelcted_val+ " for activity type "+activity_seelcted_name+" and less then current Confirmed crew members");
             $(id).val($(id).attr('oldval'));
             // alert("exceeded-"+activity_seelcted_val+"--"+ crewneeded)
         } else {
