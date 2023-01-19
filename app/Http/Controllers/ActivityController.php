@@ -535,7 +535,7 @@ class ActivityController extends Controller
                     'crewneeded'               => $request->crewneeded,
                     'crewnotes'                => $request->crewnotes,
                     'balance'              => $request->tripbalance,
-                    'tripcost'                 => $request->tripcost,
+                    'cost'                 => $request->tripcost,
                     'passengers'               => $request->passengers,
                     'sent_notice'              => 'Y'
                 ]);

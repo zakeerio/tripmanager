@@ -50,7 +50,7 @@
                         <div class="col-xl-6 col-lg-6">
                             <label for="document-name">Activity Type Name</label>
 
-                            <input type="name" class="form-control" name="type_name" id="type_name" value="">
+                            <input type="name" class="form-control" name="type_name" id="type_name" value="{{ old('type_name')}}">
                             @if($errors->any())
                             <p style="color:red ;">{{$errors->first('type_name') }}</p>
                             @endif
@@ -81,15 +81,12 @@
                                             <th class="th-heading">Activity Type Name</th>
                                             <th class="th-heading">Created At</th>
                                             <th class="th-heading-brief">Action</th>
-
                                         </tr>
                                     </thead>
 
                                     <tbody>
 
                                         <?php
-
-
 
                                         // print_r($docx);
                                         // exit;

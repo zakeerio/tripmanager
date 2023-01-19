@@ -56,25 +56,25 @@
                             <div class="form-row">
                                 <div class="form-group col-xl-4 col-lg-6">
                                     <label for="Name">NAME</label>
-                                    <input type="text" class="form-control" id="Name" name="name" required>
+                                    <input type="text" class="form-control" id="Name" name="name" value="{{ old('name') }}" required>
                                 </div>
 
                                 <div class="form-group col-xl-4 col-lg-6">
                                     <label for="email">EMAIL ADDRESS</label>
-                                    <input type="email" class="form-control" id="email" name="email" required>
+                                    <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
                                     <b> <span id="email_msg"></span></b>
                                 </div>
 
 
                                 <div class="form-group col-xl-4 col-lg-6">
                                     <label for="PrimaryNumber">PRIMARY NUMBER</label>
-                                    <input type="text" class="form-control" id="PrimaryNumber" name="mobile" required>
+                                    <input type="text" class="form-control" id="PrimaryNumber" name="mobile" value="{{ old('mobile') }}" required>
                                 </div>
 
 
                                 <div class="form-group col-xl-4 col-lg-6">
                                     <label for="SecondaryNumber">SECONDARY NUMBER</label>
-                                    <input type="text" class="form-control" name="secondarynumber" id="SecondaryNumber">
+                                    <input type="text" class="form-control" name="secondarynumber" value="{{ old('secondarynumber') }}" id="SecondaryNumber">
                                 </div>
 
                                 <div class="form-group col-xl-4 col-lg-12">
@@ -94,7 +94,7 @@
 
                                             foreach ($boats as $b) {
                                         ?>
-                                                <option value="{{$b->activityname}}">{{$b->activityname}}</option>
+                                                <option value="{{$b->activityname}}" {{ isset(old('boatpreference') && old('boatpreference') == $b->activityname) ? 'selected' : '' }} >{{$b->activityname}}</option>
                                             <?php
                                             }
                                         } else {
@@ -124,11 +124,11 @@
 
                                         <div class="form-group col-md-6">
                                             <label for="Initials">INITIALS</label>
-                                            <input type="text" class="form-control" id="initials" name="initials" required>
+                                            <input type="text" class="form-control" id="initials" name="initials" value="{{ old('initials') }}" required>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="Username">USERNAME</label>
-                                            <input type="text" class="form-control" id="username" name="username" required>
+                                            <input type="text" class="form-control" id="username" name="username" value="{{ old('username') }}" required>
                                             <b> <span id="username_msg"></span></b>
                                         </div>
 
@@ -141,8 +141,9 @@
                                                 $roles = \App\Models\Role::get();
                                                 @endphp
                                                 @forelse ($roles as $role)
-                                                <option value="{{ $role->id }}" {{-- {{ isset($crew_member->user) && $crew_member->user->role['id'] == $role->id ? 'selected' : '' }}> --}}
-                                                    >
+                                                <option value="{{$b->activityname}}" >{{$b->activityname}}</option>
+
+                                                <option value="{{ $role->id }}" {{ isset(old('role_id') && old('role_id') == $role->id) ? 'selected' : '' }} >
                                                     {{ $role->name }}
                                                 </option>
 
@@ -155,7 +156,7 @@
 
                                         <div class="form-group col-md-6">
                                             <label for="CctMembershipNumber">CCT MEMBERSHIP NUMBER</label>
-                                            <input type="number" class="form-control" id="CctMembershipNumber" name="memnumber">
+                                            <input type="number" class="form-control" id="CctMembershipNumber" name="memnumber" value="{{ old('memnumber') }}">
                                         </div>
 
 
@@ -165,34 +166,34 @@
                                     <div class="form-group col-md-12">
                                         <div><label>ADDITIONAL</label></div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" placeholder="First Aid" id="FirstAid" name="firstaid">
+                                            <input class="form-check-input" type="checkbox" placeholder="First Aid" id="FirstAid" name="firstaid" value="{{ old('firstaid') }}">
                                             <label class="form-check-label" for="FirstAid">First Aid</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" placeholder="CBA" id="CBA" name="cba">
+                                            <input class="form-check-input" type="checkbox" placeholder="CBA" id="CBA" name="cba" value="{{ old('cba') }}">
                                             <label class="form-check-label" for="CBA">CBA</label>
                                         </div>
 
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" placeholder="RYA" id="RYA" name="rya">
+                                            <input class="form-check-input" type="checkbox" placeholder="RYA" id="RYA" name="rya" value="{{ old('rya') }}">
                                             <label class="form-check-label" for="RYA">RYA</label>
                                         </div>
 
 
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" placeohlder="IWA" id="IWA" name="iwa">
+                                            <input class="form-check-input" type="checkbox" placeohlder="IWA" id="IWA" name="iwa" value="{{ old('iwa') }}">
                                             <label class="form-check-label" for="IWA">IWA</label>
                                         </div>
                                         {{-- <div class="form-check">
-                                            <input class="form-check-input" id="Keyholder" type="checkbox" placeholder="Key Holder" name="keyholder">
+                                            <input class="form-check-input" id="Keyholder" type="checkbox" placeholder="Key Holder" name="keyholder" value="{{ old('keyholder') }}">
                                             <label class="form-check-label" for="Keyholder">Key Holder</label>
                                         </div> --}}
                                         <div class="form-check">
-                                            <input class="form-check-input" id="Skipper" type="checkbox" placeholder="Skipper" name="skipper">
+                                            <input class="form-check-input" id="Skipper" type="checkbox" placeholder="Skipper" name="skipper" value="{{ old('skipper') }}">
                                             <label class="form-check-label" for="Skipper">Skipper</label>
                                         </div>
                                         <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="optin" id="optin">
+                                            <input type="checkbox" class="form-check-input" name="optin" value="{{ old('optin') }}" id="optin">
                                             <label for="optin">Opted in for Details</label>
                                         </div>
 
@@ -205,22 +206,22 @@
 
                                         {{-- <div class="form-group col-md-6">
                                             <label for="privilege">Privilege</label>
-                                            <input type="number" class="form-control" name="privilege" id="privilege" required>
+                                            <input type="number" class="form-control" name="privilege" value="{{ old('privilege') }}" id="privilege" required>
                                         </div> --}}
 
                                         <div class="form-group col-md-6">
                                             <label for="KeyHolder">Key Holder</label>
-                                            <input class="form-control" type="text" id="KeyHolder" name="keyholder" required>
+                                            <input class="form-control" type="text" id="KeyHolder" name="keyholder" value="{{ old('keyholder') }}" required>
                                         </div>
 
                                         <div class="form-group col-md-6">
                                             <label for="traveltime">Travel Time</label>
-                                            <input type="number" class="form-control" name="traveltime" id="traveltime" required>
+                                            <input type="number" class="form-control" name="traveltime" value="{{ old('traveltime') }}" id="traveltime" required>
                                         </div>
 
                                         <div class="form-group col-md-6">
                                             <label for="traveltime">First aid expiry</label>
-                                            <input type="date" class="form-control" name="faexpire" id="faexpire" required>
+                                            <input type="date" class="form-control" name="faexpire" value="{{ old('faexpire') }}" id="faexpire" required>
                                         </div>
                                     </div>
                                 </div>
@@ -238,12 +239,12 @@
 
                                         <div class="form-group col-md-6">
                                             <label for="TypeNewPassword">TYPE NEW PASSWORD</label>
-                                            <input type="password" class="form-control" autocomplete="off" name="password" id="TypeNewPassword" placeholder="********" required>
+                                            <input type="password" class="form-control" autocomplete="off" name="password" value="{{ old('password') }}" id="TypeNewPassword" placeholder="********" required>
                                         </div>
 
                                         <div class="form-group col-md-6">
                                             <label for="ReTypePassword">RE TYPE PASSWORD</label>
-                                            <input type="password" class="form-control" id="ReTypePassword" autocomplete="off" name="confirmpassword" required>
+                                            <input type="password" class="form-control" id="ReTypePassword" autocomplete="off" name="confirmpassword" value="{{ old('confirmpassword') }}" required>
                                         </div>
 
                                     </div>
@@ -261,7 +262,7 @@
                                 <img src="{{ asset('assets/images/profile-picture.png') }}" style="width: 220px; height: 220px;" class="img-fluid preview"/>
 
                                 <div class="teck-btn bg-white upload-btn">
-                                    <input type="file" name="profileImage" accept="image/*"  onchange="previewFile(this)" />
+                                    <input type="file" name="profileImage" value="{{ old('profileImage') }}" accept="image/*"  onchange="previewFile(this)" />
 
                                     <a href="#!"><img src="{{ asset('assets/images/camera.svg') }}" class="btn-icon-2" alt=""> Update Image </a>
                                 </div>

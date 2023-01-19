@@ -252,6 +252,7 @@
                             <label for="BalanceDue">BALANCE DUE (£)</label>
 
                             <input type="number" name="tripbalance" value="{{ old('tripbalance') }}" class="form-control" id="BalanceDue" size="6">
+
                             @if($errors->any())
                             <p style="color:Red">{{$errors->first('tripbalance')}}</p>
                             @endif

@@ -119,6 +119,33 @@ class CrewController extends Controller
     public function save_crew(Request $request)
     {
 
+        $this->validate(request(),  [
+            'name' => 'required',
+            'email' => 'required',
+            'secondarynumber' => 'required',
+            'boatpreference' => 'required',
+            'memnumber' => 'required',
+            'firstaid' => 'required',
+            'keyholder' => 'required',
+            'keyholder' => 'required',
+            'skipper' => 'required',
+            'optin' => 'required',
+            'optin' => 'required',
+            'iwa' => 'required',
+            'rya' => 'required',
+            'cba' => 'required',
+            'privilege' => 'required',
+            'traveltime' => 'required',
+            'role_id' => 'required',
+            'initials' => 'required',
+            'fullname' => 'required',
+            'mobile' => 'required',
+            'user_type' => 'required',
+            'password' => 'required',
+            'confirmpassword' => 'required',
+
+        ]);
+
         // dd($request->all());
 
         $name = $request->name;
@@ -250,13 +277,10 @@ class CrewController extends Controller
 
                 $messages[] =  "Something went wrong!";
 
-                return redirect()->back()->with('error', $messages);
+                return redirect()->back()->with('error', $messages)->withInput();
             }
         }
 
-        // echo "TEST";
-
-        // dd($request->all());
     }
 
 
