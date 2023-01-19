@@ -490,6 +490,8 @@ class ActivityController extends Controller
 
     public function add(Request $request)
     {
+        // dd($request->all());
+
         $this->validate(request(), [
             'boatname'                 => 'required',
             'departuredate'            => 'required',
@@ -498,12 +500,13 @@ class ActivityController extends Controller
             'destination'              => 'required',
             'crewneeded'               => 'required',
             'crewnotes'                => 'required',
-            'balance'                  => 'required',
-            'cost'                     => 'required',
+            'tripbalance'              => 'required',
+            'tripcost'                 => 'required',
+            'passengers'               => 'required',
+
         ]);
 
 
-        //dd($request->all());
 
         if (isset($request->duration) && str_contains($request->duration, '.')) {
             $time = $request->duration;
@@ -531,8 +534,8 @@ class ActivityController extends Controller
                     'destination'              => $request->destination,
                     'crewneeded'               => $request->crewneeded,
                     'crewnotes'                => $request->crewnotes,
-                    'balance'                  => $request->tripbalance,
-                    'cost'                     => $request->tripcost,
+                    'balance'              => $request->tripbalance,
+                    'tripcost'                 => $request->tripcost,
                     'passengers'               => $request->passengers,
                     'sent_notice'              => 'Y'
                 ]);
@@ -606,7 +609,7 @@ class ActivityController extends Controller
                 return redirect('/all-activities-create')->with(['status' => false, 'msg' => 'Error! Activity Failed']);
             }
         } catch (\Exception $e) {
-            // dd($e->getMessage());
+            dd($e->getMessage());
             return redirect('/all-activities-create')->with(['status' => false, 'msg' => 'Error! Activity Failed']);
         }
     }

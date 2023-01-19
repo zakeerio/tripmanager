@@ -68,13 +68,13 @@
 
                                 <div class="form-group col-xl-4 col-lg-6">
                                     <label for="PrimaryNumber">PRIMARY NUMBER</label>
-                                    <input type="number" class="form-control" id="PrimaryNumber" name="mobile" required>
+                                    <input type="text" class="form-control" id="PrimaryNumber" name="mobile" required>
                                 </div>
 
 
                                 <div class="form-group col-xl-4 col-lg-6">
                                     <label for="SecondaryNumber">SECONDARY NUMBER</label>
-                                    <input type="number" class="form-control" name="secondarynumber" id="SecondaryNumber">
+                                    <input type="text" class="form-control" name="secondarynumber" id="SecondaryNumber">
                                 </div>
 
                                 <div class="form-group col-xl-4 col-lg-12">
@@ -238,12 +238,12 @@
 
                                         <div class="form-group col-md-6">
                                             <label for="TypeNewPassword">TYPE NEW PASSWORD</label>
-                                            <input type="password" class="form-control" name="password" id="TypeNewPassword" placeholder="********" required>
+                                            <input type="password" class="form-control" autocomplete="off" name="password" id="TypeNewPassword" placeholder="********" required>
                                         </div>
 
                                         <div class="form-group col-md-6">
                                             <label for="ReTypePassword">RE TYPE PASSWORD</label>
-                                            <input type="password" class="form-control" id="ReTypePassword" name="confirmpassword" required>
+                                            <input type="password" class="form-control" id="ReTypePassword"  autocomplete="off"  name="confirmpassword" required>
                                         </div>
 
                                     </div>

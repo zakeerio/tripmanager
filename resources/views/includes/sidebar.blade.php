@@ -53,7 +53,7 @@
             <span>Activity Items</span>
         </a>
     </li>
-    <li class="menu-item {{ (Request::path() == 'activity-types') || (Request::path() == 'activity-items-create')  ?  'active' : '' }}">
+    <li class="menu-item {{ (Request::path() == 'activity-types') ?  'active' : '' }}">
         <a href="{{ route('/activity-types') }}">
             <img src="{{ asset('assets/images/Activity-Items.png') }}" class="img-fluid" alt="">
             <span>Activity Types</span>

@@ -49,11 +49,11 @@
                     <div class="row">
                         <div class="col-xl-6 col-lg-6">
                             <label for="document-name">Activity Type Name</label>
+
+                            <input type="name" class="form-control" name="type_name" id="type_name" value="">
                             @if($errors->any())
                             <p style="color:red ;">{{$errors->first('type_name') }}</p>
-
                             @endif
-                            <input type="name" class="form-control" name="type_name" id="type_name" value="">
                         </div>
 
                         <div class=" col-xl-6 col-lg-6">

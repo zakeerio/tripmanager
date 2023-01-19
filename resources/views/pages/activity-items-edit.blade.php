@@ -47,11 +47,12 @@
                                 <div class="form-group col-xl-4 col-lg-6">
 
                                     <label for="ActivityName">ACTIVITY NAME</label>
+
+                                    <input type="text" class="form-control" id="ActivityName" name="activityname" value="{{$items->activityname}}">
                                     @if($errors->any())
                                     <p style="color:red ;">{{$errors->first('activityname') }}</p>
 
                                     @endif
-                                    <input type="text" class="form-control" id="ActivityName" name="activityname" value="{{$items->activityname}}">
 
                                 </div>
 
@@ -59,9 +60,7 @@
 
                                     <label for="ActivityType">ACTIVITY TYPE</label>
 
-                                    @if($errors->any())
-                                    <p style="color:red ;">{{$errors->first('activitytype') }}</p>
-                                    @endif
+
 
 
                                     <select id="ActivityType" class="form-control" name="activitytype">
@@ -73,6 +72,9 @@
                                         @endforeach
 
                                     </select>
+                                    @if($errors->any())
+                                    <p style="color:red ;">{{$errors->first('activitytype') }}</p>
+                                    @endif
 
                                 </div>
 
@@ -80,11 +82,12 @@
 
                                     <label for="ActivityCapacity">ACTIVITY CAPACITY</label>
 
+
+
+                                    <input type="number" class="form-control" name="activitycapacity" value="{{$items->activitycapacity}}">
                                     @if($errors->any())
                                     <p style="color:red ;">{{$errors->first('activitycapacity') }}</p>
                                     @endif
-
-                                    <input type="number" class="form-control" name="activitycapacity" value="{{$items->activitycapacity}}">
 
                                 </div>
 
@@ -92,25 +95,25 @@
 
                                     <label for="MinimumCrewRequired">MINIMUM CREW REQUIRED</label>
 
+                                    <input type="number" class="form-control" id="minimumcrew" name="minimumcrew" value="{{$items->minimumcrew}}">
                                     @if($errors->any())
                                     <p style="color:red ;">{{$errors->first('minimumcrew') }}</p>
                                     @endif
-                                    <input type="number" class="form-control" id="minimumcrew" name="minimumcrew" value="{{$items->minimumcrew}}">
 
                                 </div>
 
                                 <div class="form-group col-xl-4 col-lg-12">
 
                                     <label for="ColourTag">COLOUR TAG</label>
-                                    @if($errors->any())
-                                    <p style="color:red ;">{{$errors->first('rgbcolor') }}</p>
-                                    @endif
-
                                     <div class="d-flex justify-content-center">
                                         <input type="color" id="colorpicker" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" value="{{$items->rgbcolor}}">
 
                                         <input type="text" class="form-control" name="rgbcolor" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" value="{{ $items->rgbcolor }}" id="hexcolor">
                                     </div>
+                                    @if($errors->any())
+                                    <p style="color:red ;">{{$errors->first('rgbcolor') }}</p>
+                                    @endif
+
 
                                 </div>
 
@@ -126,9 +129,6 @@
 
                                 <label>ACTIVITY PICTURE</label>
 
-                                @if($errors->any)
-                                <p style="color:red"> {{ $errors->first('image') }}</p>
-                                @endif
 
                                 <?php
                                 if (isset($items->activitypicture) && file_exists(public_path() . '/assets/activity-images' . '/' . $items->activitypicture)) {
@@ -143,6 +143,9 @@
                                 <?php
                                 }
                                 ?>
+                                @if($errors->any)
+                                <p style="color:red"> {{ $errors->first('image') }}</p>
+                                @endif
 
 
                                 <div class="teck-btn bg-white upload-btn">
