@@ -58,7 +58,7 @@
 
             <div class="col-xl-4 col-lg-12 teck-btn-pag-2">
                 <div class="btn-filter">
-                    <div class="teck-btn justify-content-start bg-white">
+                    <div class="teck-btn filterbutton justify-content-start bg-white">
                         <a href="#!"><img src="{{ asset('assets/images/Activity-Items.png') }}" class="btn-icon-2" alt="">Filter by activity item </a>
 
                         @php

@@ -18,7 +18,7 @@
         <script>
             var msg = "{{Session::get('msg')}}";
             ShowToast(msg, 'success');
-        </script>AQ
+        </script>
         @else
         <script>
             var msg = "{{Session::get('msg')}}";
@@ -143,7 +143,7 @@
                                                 @forelse ($roles as $role)
                                                 <option value="{{$b->activityname}}" >{{$b->activityname}}</option>
 
-                                                <option value="{{ $role->id }}" {{ isset(old('role_id') && old('role_id') == $role->id) ? 'selected' : '' }} >
+                                                                                                                                                                                                                                    <option value="{{ $role->id }}" {{ isset(old('role_id') && old('role_id') == $role->id) ? 'selected' : '' }} >
                                                     {{ $role->name }}
                                                 </option>
 
