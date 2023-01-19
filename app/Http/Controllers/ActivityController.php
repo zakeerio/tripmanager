@@ -603,13 +603,13 @@ class ActivityController extends Controller
 
             if (isset($this->tripnumber) && $this->check1 && $this->check2 && $this->check3) {
 
-                return redirect('/all-activities-create')->with(['status' => true, 'msg' => 'Success! Activity Created']);
+                return redirect('/all-activities')->with(['status' => true, 'msg' => 'Success! Activity Created']);
             } else {
                 //dd($request->all());
                 return redirect('/all-activities-create')->with(['status' => false, 'msg' => 'Error! Activity Failed']);
             }
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            // dd($e->getMessage());
             return redirect('/all-activities-create')->with(['status' => false, 'msg' => 'Error! Activity Failed']);
         }
     }
