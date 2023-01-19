@@ -789,11 +789,11 @@ class ActivityController extends Controller
 
 
 
-            //  dd( $this->check2);
+            //  dd( $this->check2, $this->check1, $this->check3);
             //  dd($request->confiremd);
             if (!empty($request->confiremd)) {
 
-                dd($request->confiremd);
+                // dd($request->confiremd);
 
                 for ($i = 0; $i < count($request->confiremd); $i++) {
                     if (isset($request->confiremd[$i])) {
@@ -837,7 +837,7 @@ class ActivityController extends Controller
                 return redirect()->back()->with(['status' => false, 'msg' => 'Error ! Actity Update Failed'])->withInput();
             }
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            // dd($e->getMessage());
             return redirect()->back()->with(['status' => false, 'msg' => 'Error ! Actity Update Failed'])->withInput();
         }
     }
