@@ -467,7 +467,17 @@
         var crewneeded = parseInt($(id).val());
         var activity_seelcted_val = parseInt($('#ActivityItem').find('option:selected').attr('data-id'));
         var activity_seelcted_name = $('#ActivityItem').find('option:selected').text();
-        if(crewneeded > activity_seelcted_val){
+
+        var confirm_count = 0;
+        $('#div2').find('input[type="text"]').each(function() {
+
+            confirm_count += 1;
+            // alert("Filled Value=" + $(this).val());
+
+        });
+
+
+        if(crewneeded > activity_seelcted_val || crewneeded > confirm_count){
             $(".crew-exceed").removeClass('d-none').html('Crew Members not allowed more then '+activity_seelcted_val+ " for activity type "+activity_seelcted_name);
             $(id).val($(id).attr('oldval'));
             // alert("exceeded-"+activity_seelcted_val+"--"+ crewneeded)
