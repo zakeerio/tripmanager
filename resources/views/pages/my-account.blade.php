@@ -395,7 +395,7 @@
 
                                 } else {
                                 ?>
-                                    <img src="{{ asset('assets/images/profile-picture.png') }}" class="img-fluid preview" />
+                                    <img src="{{ asset('assets/images/profile-picture.png') }}" style="width: 220px; height: 220px;" class="img-fluid preview" />
                                 <?php
                                 }
 
@@ -500,6 +500,7 @@
 
 
     // mehthod 1    onclick="previewFile(this);"
+
 
     function previewFile(input) {
         var file = $("input[type=file]").get(0).files[0];

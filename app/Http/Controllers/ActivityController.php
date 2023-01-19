@@ -606,11 +606,11 @@ class ActivityController extends Controller
                 return redirect('/all-activities')->with(['status' => true, 'msg' => 'Success! Activity Created']);
             } else {
                 //dd($request->all());
-                return redirect('/all-activities-create')->with(['status' => false, 'msg' => 'Error! Activity Failed']);
+                return redirect('/all-activities-create')->with(['status' => false, 'msg' => 'Error! Activity Failed'])->withInput();
             }
         } catch (\Exception $e) {
             // dd($e->getMessage());
-            return redirect('/all-activities-create')->with(['status' => false, 'msg' => 'Error! Activity Failed']);
+            return redirect('/all-activities-create')->with(['status' => false, 'msg' => 'Error! Activity Failed'])->withInput();
         }
     }
     public function view($id, $status)
@@ -834,11 +834,11 @@ class ActivityController extends Controller
 
                 return redirect('/all-activities')->with(['status' => true, 'msg' => 'Success ! Activty Updated']);
             } else {
-                return redirect('/all-activities')->with(['status' => false, 'msg' => 'Error ! Actity Update Failed']);
+                return redirect()->back()->with(['status' => false, 'msg' => 'Error ! Actity Update Failed'])->withInput();
             }
         } catch (\Exception $e) {
             // dd($e->getMessage());
-            return redirect('/all-activities')->with(['status' => false, 'msg' => 'Error ! Actity Update Failed']);
+            return redirect()->back()->with(['status' => false, 'msg' => 'Error ! Actity Update Failed'])->withInput();
         }
     }
 

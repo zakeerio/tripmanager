@@ -314,7 +314,7 @@
                                 <?php
                                 } else {
                                 ?>
-                                    <img src="{{ asset('assets/images/profile-picture.png') }}" class="preview" />
+                                    <img src="{{ asset('assets/images/profile-picture.png') }}" style="width: 220px; height: 220px;" class="img-fluid preview"/>
                                 <?php
                                 }
 
@@ -344,6 +344,7 @@
 
 @stop
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
 <script>
     function previewFile(input) {

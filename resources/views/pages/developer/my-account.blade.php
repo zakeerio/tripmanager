@@ -329,7 +329,7 @@
 
                                     <label>PROFILE PICTURE</label>
 
-                                    <img src="{{ asset('assets/images/profile-picture.png') }}" />
+                                    <img src="{{ asset('assets/images/profile-picture.png') }}" style="width: 220px; height: 220px;" class="img-fluid preview" />
 
                                     <div class="teck-btn bg-white upload-btn">
 

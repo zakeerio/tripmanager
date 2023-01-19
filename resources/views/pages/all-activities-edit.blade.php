@@ -124,19 +124,19 @@
                 <form class="teck-form" method="post" action="{{ route('all-activites-update') }}">
                     @csrf
 
-                    <input type="hidden" name="id" class="form-control" id="" value="{{ $activity->id }}">
+                    <input type="hidden" name="id" class="form-control" required id="" value="{{ $activity->id }}">
 
                     <div class="form-row">
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityNumber">ACTIVITY NUMBER</label>
-                            <input type="text" name="tripnumber" class="form-control" id="ActivityNumber" value="{{ $activity->id }}" disabled>
+                            <input type="text" name="tripnumber" class="form-control" required id="ActivityNumber" value="{{ $activity->id }}" disabled>
                         </div>
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityItem">SELECT ACTIVITY ITEM</label>
 
 
 
-                            <select id="ActivityItem" name="boatname" class="form-control">
+                            <select id="ActivityItem" name="boatname" class="form-control" required>
                                 <option value="">__SELECT__</option>
                                 <?php
 
@@ -163,7 +163,7 @@
                         </div>
                         <div class="form-group col-xl-4 col-lg-12">
                             <label for="ActivityDate">ACTIVITY DATE</label>
-                            <input type="date" name="departuredate" class="form-control" id="ActivityDate" value="{{ $activity->departuredate }}">
+                            <input type="date" name="departuredate" class="form-control" required id="ActivityDate" value="{{ $activity->departuredate }}">
 
                         </div>
                     </div>
@@ -173,15 +173,15 @@
                     <div class="form-row">
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityTime">ACTIVITY TIME</label>
-                            <input type="time" name="departuretime" class="form-control" id="ActivityTime" value="{{ $activity->departuretime }}">
+                            <input type="time" name="departuretime" class="form-control" required id="ActivityTime" value="{{ $activity->departuretime }}">
                         </div>
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityDuration">ACTIVITY DURATION</label>
-                            <input type="text" name="duration" class="form-control" id="ActivityDuration" placeholder="Enter duration in decimal hours (2.5) rather than 2:30" value="{{ $activity->duration }}">
+                            <input type="text" name="duration" class="form-control" required id="ActivityDuration" placeholder="Enter duration in decimal hours (2.5) rather than 2:30" value="{{ $activity->duration }}">
                         </div>
                         <div class="form-group col-xl-4 col-lg-12">
                             <label for="BriefDescription">BRIEF DESCRIPTION</label>
-                            <input type="text" name="destination" class="form-control" id="BriefDescription" value="{{ $activity->destination }}">
+                            <input type="text" name="destination" class="form-control" required id="BriefDescription" value="{{ $activity->destination }}">
                         </div>
                     </div>
 
@@ -194,25 +194,25 @@
                         </div>
                         <div class="form-group col-xl-4 col-lg-12">
                             <label for="NumberCrewNeeded">NUMBER OF CREW NEEDED</label>
-                            <input type="number" name="crewneeded" min="1" class="form-control" id="NumberCrewNeeded" value="{{ $activity->crewneeded }}">
+                            <input type="number" name="crewneeded" min="1" class="form-control" required id="NumberCrewNeeded" value="{{ $activity->crewneeded }}">
                         </div>
                         <div class="form-group col-xl-5 col-lg-13">
                             <label for="TripCost">TRIP COST(£)</label>
-                            <input type="number" name="tripcost" class="form-control" id="TripCost" value="{{ $activity->cost }}">
+                            <input type="number" name="tripcost" class="form-control" required id="TripCost" value="{{ $activity->cost }}">
                         </div>
                         <div class="form-group col-xl-6 col-lg-14">
                             <label for="BalanceDue">BALANCE DUE(£)</label>
-                            <input type="number" name="tripbalance" class="form-control" id="BalanceDue" value="{{ $activity->balance }}">
+                            <input type="number" name="tripbalance" class="form-control" required id="BalanceDue" value="{{ $activity->balance }}">
                         </div>
                         <div class="form-group col-xl-7 col-lg-15">
                             <label for="PassengerCout">PASSENGER COUNT</label>
-                            <input type="number" name="passengers" class="form-control" id="PassengerCout" value="{{ $activity->passengers }}">
+                            <input type="number" name="passengers" class="form-control" required id="PassengerCout" value="{{ $activity->passengers }}">
                         </div>
                     </div>
 
                     <div class="row col-md-12">
                         <label for="NotesCrew">NOTES FOR CREW</label>
-                        <textarea class="form-control" id="NotesCrew" rows="5" name="NotesCrew">{{ $activity->crewnotes}}</textarea>
+                        <textarea class="form-control" required id="NotesCrew" rows="5" name="NotesCrew">{{ $activity->crewnotes}}</textarea>
                     </div>
 
 

@@ -259,10 +259,10 @@
                             <div class="form-group col-xl-4 col-lg-12">
                                 <div class="profile-picture">
                                     <label>PROFILE PICTURE</label>
-                                    <img src="{{ asset('assets/images/profile-picture.png') }}" />
+                                    <img src="{{ asset('assets/images/profile-picture.png') }}" style="width: 220px; height: 220px;" class="img-fluid preview" />
 
                                     <div class="teck-btn bg-white upload-btn">
-                                        <input type="file" name="profileImage" />
+                                        <input type="file" name="profileImage" accept="image/*"  onchange="previewFile(this)" />
                                         <a href="#!"><img src="{{ asset('assets/images/camera.svg') }}"
                                                 class="btn-icon-2" alt=""> Update Image </a>
                                     </div>
