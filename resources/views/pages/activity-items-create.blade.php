@@ -14,6 +14,22 @@
             <a href="{{ route('activity-items') }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:20px;"> Go Back</a>
         </div>
 
+        @if(Session::get('status'))
+
+            @if(Session::get('status'))
+            <script>
+                var msg = "{{Session::get('msg')}}";
+                ShowToast(msg, 'success');
+            </script>
+            @else
+            <script>
+                var msg = "{{Session::get('msg')}}";
+                ShowToast(msg, 'error');
+            </script>
+            @endif
+
+        @endif
+
     </div>
 
     <div class="col-md-12 activies_table">
@@ -68,7 +84,13 @@
                                         <option disabled >Please Select...</option>
 
                                         @foreach ($activitytypes as $activitytype )
-                                            <option value="{{ $activitytype->type_name }}"  {{ isset(old('activityname') && old('activityname') == $activitytype->type_name ) ? "selected" : '' }} >{{ $activitytype->type_name }}</option>
+                                            <option value="{{ $activitytype->type_name }}"
+                                                {{ (old('activitytype') &&  old('activitytype') == $activitytype->type_name ) ? "selected" : '' }}
+                                            >
+                                                {{  $activitytype->type_name }}
+                                            </option>
+
+
                                         @endforeach
 
                                     </select>
@@ -130,11 +152,11 @@
 
                                 <label>ACTIVITY PICTURE</label>
 
-                                <img src="{{ asset('assets/images/profile-picture.svg') }}" />
+                                <img src="{{ asset('assets/images/profile-picture.png') }}" style="width: 220px; height: 220px;" class="img-fluid preview"/>
 
                                 <div class="teck-btn bg-white upload-btn">
 
-                                    <input type="file" name="activitypicture" />
+                                    <input type="file" name="activitypicture" accept="image/*" onchange="previewFile(this)" />
 
                                     <a href="#!"><img src="{{ asset('assets/images/camera.svg') }}" class="btn-icon-2" alt=""> Update Image </a>
 
@@ -169,4 +191,67 @@
 </div>
 @stop
 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+    function ShowToast(msg, type) {
+
+
+        if (type == 'error') {
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            Toast.fire({
+                icon: 'error',
+                title: msg
+            })
+
+        } else if (type == 'success') {
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: msg
+            })
+        }
+    }
+
+
+    // mehthod 1    onclick="previewFile(this);"
+
+
+    function previewFile(input) {
+        var file = $("input[type=file]").get(0).files[0];
+
+        if (file) {
+            var reader = new FileReader();
+
+            reader.onload = function() {
+                $(".preview").attr("src", reader.result);
+            }
+
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
 

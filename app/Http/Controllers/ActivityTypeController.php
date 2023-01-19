@@ -94,13 +94,14 @@ class ActivityTypeController extends Controller
         $this->validate(request(), [
             'type_name' => 'required'
         ]);
+
         if (!isset($request->type_name)) {
             return redirect()->back()->with(['status' => false, 'msg' => 'Error ! Type Name Can Not Be Empty']);
         }
         $update = ActivityType::where('id', $request->update_id)->update(['type_name' => $request->type_name]);
 
         if ($update) {
-            return redirect()->back()->with(['status' => true, 'msg' => 'Success ! Type Name Update']);
+            return redirect('/activity-types')->with(['status' => true, 'msg' => 'Success ! Type Name Update']);
         } else {
             return redirect()->back()->with(['status' => false, 'msg' => 'Error ! Someting Went Wrong']);
         }

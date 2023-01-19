@@ -116,7 +116,7 @@ class ActivityItemController extends Controller
         if (isset($result->id)) {
             return redirect('/activity-items')->with(['status' => true, 'msg' => 'Success ! Activity Added']);
         } else {
-            return redirect('/activity-items')->with(['status' => false, 'msg' => 'Erorr ! Activity Failed']);
+            return redirect()->back()->with(['status' => false, 'msg' => 'Erorr ! Activity Failed']);
         }
     }
 

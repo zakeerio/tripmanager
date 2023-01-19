@@ -27,6 +27,22 @@
                         <h4>Activity Information</h4>
                         <p class="col-12-descrapction">These details are used within the Activity Manager.</p>
                     </div>
+
+                    @if(Session::get('status'))
+
+                    @if(Session::get('status'))
+                    <script>
+                        var msg = "{{Session::get('msg')}}";
+                        ShowToast(msg, 'success');
+                    </script>
+                    @else
+                    <script>
+                        var msg = "{{Session::get('msg')}}";
+                        ShowToast(msg, 'error');
+                    </script>
+                    @endif
+
+                    @endif
                 </div>
 
             </div>
@@ -133,7 +149,7 @@
                                 <?php
                                 if (isset($items->activitypicture) && file_exists(public_path() . '/assets/activity-images' . '/' . $items->activitypicture)) {
                                 ?>
-                                    <img src="{{asset('assets/activity-images').'/'.$items->activitypicture}}" class="img-fluid" alt="">
+                                    <img src="{{asset('assets/activity-images').'/'.$items->activitypicture}}"  style="width: 220px; height: 220px;" class="img-fluid preview" alt="">
                                 <?php
                                 } else {
                                 ?>
@@ -147,10 +163,9 @@
                                 <p style="color:red"> {{ $errors->first('image') }}</p>
                                 @endif
 
-
                                 <div class="teck-btn bg-white upload-btn">
 
-                                    <input type="file" name="activitypicture"  accept="image/*" />
+                                    <input type="file" name="activitypicture"  accept="image/*" onchange="previewFile(this)" />
 
                                     <a href="#!"><img src="{{ asset('assets/images/camera.svg') }}" class="btn-icon-2" alt=""> Update Image </a>
 
@@ -180,3 +195,67 @@
 </div>
 
 @stop
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+    function ShowToast(msg, type) {
+
+
+        if (type == 'error') {
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            Toast.fire({
+                icon: 'error',
+                title: msg
+            })
+
+        } else if (type == 'success') {
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: msg
+            })
+        }
+    }
+
+
+    // mehthod 1    onclick="previewFile(this);"
+
+
+    function previewFile(input) {
+        var file = $("input[type=file]").get(0).files[0];
+
+        if (file) {
+            var reader = new FileReader();
+
+            reader.onload = function() {
+                $(".preview").attr("src", reader.result);
+            }
+
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+
