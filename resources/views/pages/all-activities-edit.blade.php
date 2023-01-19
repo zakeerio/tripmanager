@@ -94,8 +94,6 @@
                         <div class="" style="max-width: 190px;">
                         @php
 
-
-
                             use Illuminate\Validation\Rules\Unique;
                             @endphp
 
@@ -130,13 +128,17 @@
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityNumber">ACTIVITY NUMBER</label>
                             <input type="text" name="tripnumber" class="form-control" required id="ActivityNumber" value="{{ $activity->id }}" disabled>
+
+                            @if($errors->any())
+                            <p style="color:Red">{{$errors->first('tripnumber')}}</p>
+                            @endif
                         </div>
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityItem">SELECT ACTIVITY ITEM</label>
 
-
-
                             <select id="ActivityItem" name="boatname" class="form-control" required>
+
+
                                 <option value="">__SELECT__</option>
                                 <?php
 
@@ -159,11 +161,18 @@
                                 ?>
 
                             </select>
+                            @if($errors->any())
+                            <p style="color:Red">{{$errors->first('boatname')}}</p>
+                            @endif
 
                         </div>
                         <div class="form-group col-xl-4 col-lg-12">
                             <label for="ActivityDate">ACTIVITY DATE</label>
                             <input type="date" name="departuredate" class="form-control" required id="ActivityDate" value="{{ $activity->departuredate }}">
+
+                            @if($errors->any())
+                            <p style="color:Red">{{$errors->first('departuredate')}}</p>
+                            @endif
 
                         </div>
                     </div>
@@ -174,14 +183,26 @@
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityTime">ACTIVITY TIME</label>
                             <input type="time" name="departuretime" class="form-control" required id="ActivityTime" value="{{ $activity->departuretime }}">
+
+                            @if($errors->any())
+                            <p style="color:Red">{{$errors->first('departuretime')}}</p>
+                            @endif
                         </div>
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityDuration">ACTIVITY DURATION</label>
                             <input type="text" name="duration" class="form-control" required id="ActivityDuration" placeholder="Enter duration in decimal hours (2.5) rather than 2:30" value="{{ $activity->duration }}">
+
+                            @if($errors->any())
+                            <p style="color:Red">{{$errors->first('duration')}}</p>
+                            @endif
                         </div>
                         <div class="form-group col-xl-4 col-lg-12">
                             <label for="BriefDescription">BRIEF DESCRIPTION</label>
                             <input type="text" name="destination" class="form-control" required id="BriefDescription" value="{{ $activity->destination }}">
+
+                            @if($errors->any())
+                            <p style="color:Red">{{$errors->first('destination')}}</p>
+                            @endif
                         </div>
                     </div>
 
@@ -195,31 +216,50 @@
                         <div class="form-group col-xl-4 col-lg-12">
                             <label for="NumberCrewNeeded">NUMBER OF CREW NEEDED</label>
                             <input type="number" name="crewneeded" min="1" class="form-control" required id="NumberCrewNeeded" value="{{ $activity->crewneeded }}">
+
+                            @if($errors->any())
+                            <p style="color:Red">{{$errors->first('crewneeded')}}</p>
+                            @endif
                         </div>
                         <div class="form-group col-xl-5 col-lg-13">
                             <label for="TripCost">TRIP COST(£)</label>
                             <input type="number" name="tripcost" class="form-control" required id="TripCost" value="{{ $activity->cost }}">
+
+                            @if($errors->any())
+                            <p style="color:Red">{{$errors->first('tripcost')}}</p>
+                            @endif
                         </div>
                         <div class="form-group col-xl-6 col-lg-14">
                             <label for="BalanceDue">BALANCE DUE(£)</label>
                             <input type="number" name="tripbalance" class="form-control" required id="BalanceDue" value="{{ $activity->balance }}">
+
+                            @if($errors->any())
+                            <p style="color:Red">{{$errors->first('tripbalance')}}</p>
+                            @endif
+
                         </div>
                         <div class="form-group col-xl-7 col-lg-15">
                             <label for="PassengerCout">PASSENGER COUNT</label>
                             <input type="number" name="passengers" class="form-control" required id="PassengerCout" value="{{ $activity->passengers }}">
+
+                            @if($errors->any())
+                            <p style="color:Red">{{$errors->first('passengers')}}</p>
+                            @endif
                         </div>
                     </div>
 
                     <div class="row col-md-12">
                         <label for="NotesCrew">NOTES FOR CREW</label>
                         <textarea class="form-control" required id="NotesCrew" rows="5" name="NotesCrew">{{ $activity->crewnotes}}</textarea>
+
+                        @if($errors->any())
+                            <p style="color:Red">{{$errors->first('NotesCrew')}}</p>
+                            @endif
                     </div>
 
 
                     <br>
                     <div class="row">
-
-
 
                         <?php
 
@@ -320,7 +360,12 @@
                                 <?php
 
 
-                                $unavailable = DB::table('crews')->whereNotIn('initials', array_unique($available_member))->get();
+                                $unavailable = DB::table('crews')
+                                ->join('users','users.id','crews.user_id')
+                                ->where('users.role_id', 2)
+                                ->whereNotIn('initials', array_unique($available_member))
+                                ->select('crews.*')
+                                ->get();
                                 // echo "<pre>";
                                 // print_r($unavailable);
                                 if (!empty($unavailable)) {

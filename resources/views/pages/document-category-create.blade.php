@@ -48,8 +48,11 @@
                     @csrf
                     <div class="row">
                         <div class="col-xl-6 col-lg-6">
-                            <label for="document-name"> Document Name</label>
-                            <input type="name" class="form-control" name="doc_name" id="doc_name" value="">
+                            <label for="document-name"> Document Category Name</label>
+                            <input type="name" class="form-control" name="doc_name" id="doc_name" value="{{ old('doc_name') }}">
+                            @if($errors->any())
+                            <p style="color:Red">{{$errors->first('doc_name')}}</p>
+                            @endif
                         </div>
 
                         <div class=" col-xl-6 col-lg-6">
@@ -96,8 +99,8 @@
                                         ?>
                                                 <tr>
                                                     <td>{{$d->name}}</td>
-                                                    <td>{{$d->created_at}}</td>
-                                                    <td class="action">
+                                                    <td>{{date('d M Y', strtotime($d->created_at))}}</td>
+                                                    <td class="action" width="150">
 
                                                         <div class="dropdown">
                                                             <button class="btn" type="button" id="BtnAction" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -180,10 +183,36 @@
             }
 
 
+            function ShowWarningAlert(msg,id) {
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: msg,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        console.log('deleteID');
+                        window.location.href = "{{URL::to('document-category-delete')}}/" + id;
+                        // Swal.fire(
+                        //     'Deleted!',
+                        //     'Your file has been deleted.',
+                        //     'success'
+                        // )
+                    }
+                    return result.isConfirmed
+                });
+
+
+            }
+
             function DeleteDocx(id) {
 
-                if (confirm('Do You Want Delete ?')) {
-                    window.location.href = "{{URL::to('create-document-delete')}}/" + id;
+                if (ShowWarningAlert('Do You Want Delete ?', id)) {
+                    window.location.href = "{{URL::to('document-category-delete')}}/" + id;
                 }
 
             }

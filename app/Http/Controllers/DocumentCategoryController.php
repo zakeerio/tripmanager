@@ -46,7 +46,7 @@ class DocumentCategoryController extends Controller
             //dd($add->id);
             return redirect('/create-document-category')->with(['status' => true, 'msg' => 'Success ! Category Added']);
         } else {
-            return redirect('/create-document-category')->with(['status' => false, 'msg' => 'Failed ! Category Added Failed']);
+            return redirect('/create-document-category')->with(['status' => false, 'msg' => 'Failed ! Category Added Failed'])->withInput();
         }
     }
 
@@ -102,7 +102,7 @@ class DocumentCategoryController extends Controller
         $update = DocumentCategory::where('id', $request->update_id)->update(['name' => $request->doc_name]);
 
         if ($update) {
-            return redirect('pages/activity-types')->with(['status' => true, 'msg' => 'Success ! Category Name Update']);
+            return redirect('/create-document-category')->with(['status' => true, 'msg' => 'Success ! Category Name Update']);
         } else {
             return redirect()->back()->with(['status' => false, 'msg' => 'Error ! Someting Went Wrong']);
         }

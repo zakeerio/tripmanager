@@ -317,7 +317,13 @@
                         <div id="div1" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="unavailable[]">
                             <?php
 
-                            $unavailable = DB::table('crews')->whereNotIn('initials', array_unique($available_member))->get();
+                            // $unavailable = DB::table('crews')->whereNotIn('initials', array_unique($available_member))->get();
+                            $unavailable = DB::table('crews')
+                                ->join('users','users.id','crews.user_id')
+                                ->where('users.role_id', 2)
+                                ->whereNotIn('initials', array_unique($available_member))
+                                ->select('crews.*')
+                                ->get();
                             // echo "<pre>";
                             // print_r($unavailable);
                             if (!empty($unavailable)) {

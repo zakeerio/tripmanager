@@ -33,10 +33,6 @@ class ActivityController extends Controller
         $pagetitle = "All Activities";
 
 
-
-
-
-
         if(isset($request->filter) && $request->filter !="" ){
             $activitycheck = ActivityItem::where('activityname',$request->filter)->count();
 
@@ -68,10 +64,7 @@ class ActivityController extends Controller
                         ->paginate(50);
                     } else {
                         $trips = Trip::orderBy('departuredate', 'DESC')->paginate(50);
-
                     }
-
-                    // $trips = Trip::orderBy('departuredate', 'DESC')->paginate(50);
 
                 }
             }
@@ -318,8 +311,8 @@ class ActivityController extends Controller
             return view('pages/analytics')->with("user", $user)->with('tripcrews')->with("pagetitle", $pagetitle);
 
         } catch (\Exception $e) {
-            return view('pages/analytics')->with("user", $user)->with('tripcrews')->with("pagetitle", $pagetitle);
             // dd($e->getMessage());
+            return view('pages/analytics')->with("user", $user)->with('tripcrews')->with("pagetitle", $pagetitle);
         }
     }
 
@@ -507,7 +500,6 @@ class ActivityController extends Controller
         ]);
 
 
-
         if (isset($request->duration) && str_contains($request->duration, '.')) {
             $time = $request->duration;
             $time = explode('.', $time);
@@ -601,7 +593,10 @@ class ActivityController extends Controller
 
             //   dd($this->tripnumber);
 
-            if (isset($this->tripnumber) && $this->check1 && $this->check2 && $this->check3) {
+            // dd( $this->check2, $this->check1, $this->check3);
+
+
+            if (isset($this->tripnumber) || $this->check1 || $this->check2 || $this->check3) {
 
                 return redirect('/all-activities')->with(['status' => true, 'msg' => 'Success! Activity Created']);
             } else {
@@ -663,6 +658,20 @@ class ActivityController extends Controller
     public function update(Request $request)
     {
 
+        $this->validate(request(), [
+            'boatname'                 => 'required',
+            'departuredate'            => 'required',
+            'departuretime'            => 'required',
+            'duration'                 => 'required',
+            'destination'              => 'required',
+            'crewneeded'               => 'required',
+            'crewnotes'                => 'required',
+            'tripbalance'              => 'required',
+            'tripcost'                 => 'required',
+            'passengers'               => 'required',
+
+        ]);
+
         // dd($request->all());
 
 
@@ -681,8 +690,6 @@ class ActivityController extends Controller
             } else if (isset($request->duration) && str_contains($request->duration, ':')) {
                 $time = $request->duration;
             }
-
-
 
 
 

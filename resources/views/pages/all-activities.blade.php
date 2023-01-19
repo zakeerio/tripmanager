@@ -390,11 +390,46 @@
     }
 
 
+    function ShowWarningAlert(msg,id) {
+
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: msg,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                console.log('deleteID');
+                window.location.href = "{{URL::to('all-activites-delete')}}/" + id;
+                // Swal.fire(
+                //     'Deleted!',
+                //     'Your file has been deleted.',
+                //     'success'
+                // )
+            }
+            return result.isConfirmed
+        });
+
+
+    }
+
     function DeleteActivity(id) {
 
-        if (confirm('Do You Want Delete ?')) {
-            window.location.href = "{{URL::to('all-activites-delete')}}/" + id;
+        if (ShowWarningAlert('Do You Want Delete ?', id)) {
+            // window.location.href = "{{URL::to('all-activites-delete')}}/" + id;
         }
 
     }
+
+    // function DeleteActivity(id) {
+
+    //     if (confirm('Do You Want Delete ?')) {
+    //         window.location.href = "{{URL::to('all-activites-delete')}}/" + id;
+    //     }
+
+    // }
 </script>

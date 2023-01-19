@@ -431,8 +431,7 @@
     }
 
 
-    function ShowWarningAlert(msg) {
-
+    function ShowWarningAlert(msg,id) {
 
         Swal.fire({
             title: 'Are you sure?',
@@ -444,13 +443,14 @@
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire(
-                    'Deleted!',
-                    'Your file has been deleted.',
-                    'success'
-                )
+                console.log('deleteID');
+                window.location.href = "{{URL::to('all-activites-delete')}}/" + id;
+                // Swal.fire(
+                //     'Deleted!',
+                //     'Your file has been deleted.',
+                //     'success'
+                // )
             }
-
             return result.isConfirmed
         });
 
@@ -459,8 +459,8 @@
 
     function DeleteActivity(id) {
 
-        if (ShowWarningAlert('Do You Want Delete ?')) {
-            window.location.href = "{{URL::to('all-activites-delete')}}/" + id;
+        if (ShowWarningAlert('Do You Want Delete ?', id)) {
+            // window.location.href = "{{URL::to('all-activites-delete')}}/" + id;
         }
 
     }

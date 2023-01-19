@@ -361,8 +361,7 @@
         }
     }
 
-    function ShowWarningAlert(msg) {
-
+    function ShowWarningAlert(msg,id) {
 
         Swal.fire({
             title: 'Are you sure?',
@@ -374,13 +373,14 @@
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
+                console.log('deleteID');
+                window.location.href = "{{URL::to('document-category-delete')}}/" + id;
                 // Swal.fire(
                 //     'Deleted!',
-                //     'Category has been deleted.',
+                //     'Your file has been deleted.',
                 //     'success'
                 // )
             }
-
             return result.isConfirmed
         });
 
@@ -389,13 +389,9 @@
 
     function DeleteCategory(id) {
 
-        if (confirm('Do You Want Delete ?')) {
+        if (ShowWarningAlert('Do You Want Delete ?', id)) {
             window.location.href = "{{URL::to('document-category-delete')}}/" + id;
         }
-
-        // if (ShowWarningAlert('Do You Want Delete ?')) {
-        //     window.location.href = "{{URL::to('document-category-delete')}}/" + id;
-        // }
 
     }
 </script>
