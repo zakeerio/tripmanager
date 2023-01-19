@@ -35,13 +35,14 @@
 
             <div class="col-xl-5 col-lg-12">
                 <div class="btn-filter">
-                    <div class="teck-btn justify-content-start bg-white">
+                    <div class="teck-btn filterbutton justify-content-start bg-white">
                         <a href="#!"><img src="{{ asset('assets/images/rol icon.png') }}" class="btn-icon-2" alt=""> Filter by Role </a>
 
                         <ul class="teck-dropdown">
-                            <li>Item 01</li>
-                            <li>Item 02</li>
-                            <li>Item 03</li>
+                            <li><a href="{{ route('crew-members') }}">All</a></li>
+                            <li><a href="{{ route('crew-members') }}?filter=1">Admin</a></li>
+                            <li><a href="{{ route('crew-members') }}?filter=2">Crewmember</a></li>
+                            <li><a href="{{ route('crew-members') }}?filter=3">Developer</a></li>
                         </ul>
                     </div>
 

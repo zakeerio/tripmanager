@@ -462,11 +462,11 @@ class ActivityController extends Controller
 
 
 
-                if (!empty($request->confiremd)) {
+                if (!empty($request->confirmed)) {
 
-                    for ($i = 0; $i < count($request->confiremd); $i++) {
-                        if (isset($request->confiremd[$i])) {
-                            $trim = $request->confiremd[$i];
+                    for ($i = 0; $i < count($request->confirmed); $i++) {
+                        if (isset($request->confirmed[$i])) {
+                            $trim = $request->confirmed[$i];
                             $initials = explode(':', $trim);
                             $crewcode = $initials[0];
                             $this->check3 = DB::table('tripcrews')->insert([
@@ -609,13 +609,13 @@ class ActivityController extends Controller
 
 
            //  dd( $this->check2);
-         //  dd($request->confiremd);
-            if (!empty($request->confiremd)) {
+         //  dd($request->confirmed);
+            if (!empty($request->confirmed)) {
 
 
-                for ($i = 0; $i < count($request->confiremd); $i++) {
-                    if (isset($request->confiremd[$i])) {
-                        $trim = $request->confiremd[$i];
+                for ($i = 0; $i < count($request->confirmed); $i++) {
+                    if (isset($request->confirmed[$i])) {
+                        $trim = $request->confirmed[$i];
                         $initials = explode(':', $trim);
                         $crewcode3 = $initials[0];
                         $this->check3 = DB::table('tripcrews')->where('tripnumber', '=', $request->id)

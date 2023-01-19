@@ -278,7 +278,7 @@
 
                     <div class="col-sm-4">
                         <label class="confirm_label">Confirmed Crew</label>
-                        <div id="div2" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="confiremd[]">
+                        <div id="div2" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="confirmed[]">
                             <?php
 
                             if (!empty($confirmed)) {

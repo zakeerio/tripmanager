@@ -149,7 +149,7 @@
 
                                     foreach ($boats as $b) {
                                 ?>
-                                        <option value="{{$b->activityname}}" {{ $b->activityname == $activity->boatname  ? 'selected' : '' }}>{{$b->activityname}}</option>
+                                        <option data-id="{{ $b->activitycapacity }}" value="{{$b->activityname}}" {{ $b->activityname == $activity->boatname  ? 'selected' : '' }}>{{$b->activityname}}</option>
                                     <?php
                                     }
                                 } else {
@@ -215,7 +215,8 @@
                         </div>
                         <div class="form-group col-xl-4 col-lg-12">
                             <label for="NumberCrewNeeded">NUMBER OF CREW NEEDED</label>
-                            <input type="number" name="crewneeded" min="1" class="form-control" required id="NumberCrewNeeded" value="{{ $activity->crewneeded }}">
+                            <input type="number" name="crewneeded" min="1" class="form-control" onchange="checkNumberCrewNeeded(this)" oldval="{{ $activity->crewneeded }}"  required id="NumberCrewNeeded" value="{{ $activity->crewneeded }}">
+                            <div class="crew-exceed alert alert-danger d-none"></div>
 
                             @if($errors->any())
                             <p style="color:Red">{{$errors->first('crewneeded')}}</p>
@@ -319,7 +320,7 @@
 
                         <div class="col-sm-4">
                             <label class="confirm_label">Confirmed Crew</label>
-                            <div id="div2" ondrop="drop(event,this)" ondragover="allowDrop(event)" target="confirmed" content="confiremd[]">
+                            <div id="div2" ondrop="drop(event,this)" ondragover="allowDrop(event)" target="confirmed" content="confirmed[]">
                                 <?php
 
                                 if (!empty($confirmed)) {
@@ -399,7 +400,10 @@
 </div>
 
 <script>
-    var crewcount = <?php echo $activity->crewneeded; ?>;
+
+
+
+
 
     function allowDrop(ev, th) {
         ev.preventDefault();
@@ -413,6 +417,17 @@
 
     function drop(ev, th) {
         ev.preventDefault();
+
+
+        var original_crewcount = `{{ $activity->crewneeded }}`;
+
+        var NumberCrewNeeded = $("#NumberCrewNeeded").val();
+
+        // console.log(NumberCrewNeeded, crewcount);
+
+        var crewcount = (original_crewcount == NumberCrewNeeded) ? original_crewcount : NumberCrewNeeded;
+
+
         console.log('drag drop');
         var data = ev.dataTransfer.getData("text");
 
@@ -446,6 +461,22 @@
             ev.target.appendChild(document.getElementById(data));
             document.getElementById(data).setAttribute('name', th.getAttribute('content'));
         }
+    }
+
+    function checkNumberCrewNeeded(id){
+        var crewneeded = parseInt($(id).val());
+        var activity_seelcted_val = parseInt($('#ActivityItem').find('option:selected').attr('data-id'));
+        var activity_seelcted_name = $('#ActivityItem').find('option:selected').text();
+        if(crewneeded > activity_seelcted_val){
+            $(".crew-exceed").removeClass('d-none').html('Crew Members not allowed more then '+activity_seelcted_val+ " for activity type "+activity_seelcted_name);
+            $(id).val($(id).attr('oldval'));
+            // alert("exceeded-"+activity_seelcted_val+"--"+ crewneeded)
+        } else {
+            $(".crew-exceed").html('').addClass('d-none');
+            // alert("fine-"+activity_seelcted_val+"--"+ crewneeded)
+
+        }
+
     }
 
 

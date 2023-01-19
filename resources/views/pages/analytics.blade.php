@@ -15,7 +15,8 @@
 
             <div class="col-lg-4 col-md-6">
                 <div class="btn-filter justify-content-end">
-                    <div class="teck-btn bg-white">
+
+                    <div class="teck-btn filterbutton bg-white">
                         <a href="#!"><img src="{{ asset('assets/images/rol icon.png') }}" class="btn-icon-2" alt="">
                             <span>Filter by Role <br> <b> Show all analysis</b></span> </a>
 

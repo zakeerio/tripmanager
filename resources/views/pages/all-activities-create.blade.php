@@ -159,7 +159,7 @@
 
                                     foreach ($boats as $b) {
                                 ?>
-                                        <option {{ (old('boatname') == $b->activityname) ? 'selected' : '' }}  value="{{$b->activityname}}">{{$b->activityname}}</option>
+                                        <option data-id="{{ $b->activitycapacity }}" {{ (old('boatname') == $b->activityname) ? 'selected' : '' }}  value="{{$b->activityname}}">{{$b->activityname}}</option>
                                     <?php
                                     }
                                 } else {
@@ -226,7 +226,8 @@
                         <div class="form-group col-xl-4 col-lg-12">
                             <label for="NumberCrewNeeded">NUMBER OF CREW NEEDED</label>
 
-                            <input type="number" name="crewneeded" value="{{ old('crewneeded') }}" class="form-control" min="1" id="NumberCrewNeeded">
+                            <input type="number" name="crewneeded" onchange="checkNumberCrewNeeded(this)" value="{{ old('crewneeded') }}" class="form-control" min="1" id="NumberCrewNeeded">
+                            <div class="crew-exceed alert alert-danger d-none"></div>
                             @if($errors->any())
                             <p style="color:Red">{{$errors->first('crewneeded') ? $errors->first('crewneeded')." Crew Need Can Not Be 0" : '' }}  </p>
                             @endif
@@ -276,14 +277,14 @@
 
                         <div class="col-sm-4">
                             <label class="confirm_label">Confirmed Crew</label>
-                            <div id="div2" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="confiremd[]">
+                            <div id="div2" ondrop="drop(event,this)" ondragover="allowDrop(event)" target="confirmed" content="confirmed[]">
 
                             </div>
                         </div>
 
                         <div class="col-sm-4">
                             <label class="available_label">Available Crew</label>
-                            <div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="available[]">
+                            <div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)" target="available" content="available[]">
 
                             </div>
                         </div>
@@ -292,7 +293,7 @@
                         <div class="col-sm-4">
                             <label class="unavailable_label">Un Available Crew</label>
 
-                            <div id="div1" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="unavailable[]">
+                            <div id="div1" ondrop="drop(event,this)" ondragover="allowDrop(event)" target="unavailable" content="unavailable[]">
                                 <?php
 
 
@@ -318,9 +319,12 @@
 
 
                     </div>
+                    <div class="col-md-12">
+                        <div id="confirm_msg" class="alert alert-danger d-none mt-4"></div>
+                    </div>
 
-                    <br>
-                    <div class="teck-btn">
+
+                    <div class="teck-btn mt-4">
                         <button type="submit" class="btn btn-primary"> <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Create
                             Activity</button>
                     </div>
@@ -338,22 +342,76 @@
 @stop
 
 <script>
-    function allowDrop(ev) {
+    // function allowDrop(ev) {
+    //     ev.preventDefault();
+
+    // }
+
+    // function drag(ev) {
+    //     ev.dataTransfer.setData("text", ev.target.id);
+    // }
+
+    // function drop(ev, th) {
+    //     ev.preventDefault();
+    //     var data = ev.dataTransfer.getData("text");
+    //     ev.target.appendChild(document.getElementById(data));
+    //     //console.log(data);
+    //     document.getElementById(data).setAttribute('name', th.getAttribute('content'))
+    // }
+
+
+    function allowDrop(ev, th) {
         ev.preventDefault();
 
     }
 
-    function drag(ev) {
+    function drag(ev, th) {
         ev.dataTransfer.setData("text", ev.target.id);
+
     }
 
     function drop(ev, th) {
         ev.preventDefault();
+        console.log('drag drop');
+
+        var crewcount = $("#NumberCrewNeeded").val();
+        crewcount = (crewcount!= "undefined") ? crewcount : 0;
+
         var data = ev.dataTransfer.getData("text");
-        ev.target.appendChild(document.getElementById(data));
-        //console.log(data);
-        document.getElementById(data).setAttribute('name', th.getAttribute('content'))
+
+        // get Current drop target to identify if this is confirmed it should restrict dropping
+        var targetval = th.getAttribute('target');
+        // console.log(data);
+
+
+
+        var confirm_count = 0;
+        $('#div2').find('input[type="text"]').each(function() {
+
+            confirm_count += 1;
+            // alert("Filled Value=" + $(this).val());
+
+        });
+        // alert("Total Input Count=" + $('#container').find('input[type="text"]').length + "//Filled Inputs Count=" + count);
+        console.log(confirm_count , crewcount);
+        if (confirm_count >= crewcount && targetval == 'confirmed') {
+            $("#confirm_msg").removeClass('d-none');
+
+            document.getElementById('confirm_msg').innerHTML='Limit Reached Of '+crewcount;
+            document.getElementById('div2').setAttribute('ondrop', ' ')
+
+        } else {
+            $("#confirm_msg").addClass('d-none');
+
+            document.getElementById('div2').setAttribute('ondrop', 'drop(event,this)')
+            document.getElementById('confirm_msg').innerHTML='';
+
+            ev.target.appendChild(document.getElementById(data));
+            document.getElementById(data).setAttribute('name', th.getAttribute('content'));
+        }
     }
+
+
 </script>
 
 <script>
@@ -397,5 +455,18 @@
                 title: msg
             })
         }
+    }
+
+    function checkNumberCrewNeeded(id){
+        var crewneeded = $(id).val();
+        var activity_seelcted_val = $('#ActivityItem').find('option:selected').attr('data-id');
+        var activity_seelcted_name = $('#ActivityItem').find('option:selected').text();
+        if(crewneeded > activity_seelcted_val){
+            $(".crew-exceed").removeClass('d-none').html('Crew Members not allowed more then '+activity_seelcted_val+ " for activity type "+activity_seelcted_name)
+            // alert("exceeded-"+activity_seelcted_val+"--"+ crewneeded)
+        } else {
+            $(".crew-exceed").html('').addClass('d-none');
+        }
+
     }
 </script>

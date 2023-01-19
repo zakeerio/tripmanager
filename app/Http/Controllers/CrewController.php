@@ -24,12 +24,14 @@ class CrewController extends Controller
         }
     }
 
-    public function index()
+    public function index(Request $request)
     {
         if ($this->Access()) {
 
             return redirect('/dashboard')->with(['status' => false, 'msg' => 'Access Denied !']);
         }
+
+
 
         $pagetitle = "Crew Members";
 
@@ -75,6 +77,27 @@ class CrewController extends Controller
         */
 
         $crew_members = Crew::orderBy('id', 'DESC')->with('user')->paginate(50);
+
+        if(isset($request->filter) && $request->filter !="" ){
+
+            // $crew_members = DB::table('crews')
+            // ->join('users', 'users.id', 'crews.user_id')
+            // ->where('users.role_id', $request->filter)
+            // ->orderBy('id', 'DESC')
+            // ->with('user')
+            // ->paginate(50);
+
+            $crew_members = Crew::join('users', 'users.id', 'crews.user_id')
+            ->where('users.role_id', $request->filter)
+            ->orderBy('users.id', 'DESC')
+            ->with('user')
+            ->paginate(50);
+
+        }
+
+
+
+        // $crew_members = Crew::orderBy('id', 'DESC')->with('user')->paginate(50);
         // dd($crew_members);
         //  $crew_members = Crew::whereId('30')->get()->toArray();
         //  dd($crew_members);
