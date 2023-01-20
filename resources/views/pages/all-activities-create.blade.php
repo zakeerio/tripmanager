@@ -458,8 +458,9 @@
     }
 
     function checkNumberCrewNeeded(id){
-        var crewneeded = $(id).val();
-        var activity_seelcted_val = $('#ActivityItem').find('option:selected').attr('data-id');
+        var crewneeded = parseInt($(id).val());
+        var activity_seelcted_val = parseInt($('#ActivityItem').find('option:selected').attr('data-id'));
+        // alert(activity_seelcted_val);
         var activity_seelcted_name = $('#ActivityItem').find('option:selected').text();
         if(crewneeded > activity_seelcted_val){
             $(".crew-exceed").removeClass('d-none').html('Crew Members not allowed more then '+activity_seelcted_val+ " for activity type "+activity_seelcted_name)

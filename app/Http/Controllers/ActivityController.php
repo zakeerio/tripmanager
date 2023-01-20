@@ -533,26 +533,6 @@ class ActivityController extends Controller
                 ]);
 
 
-                if (!empty($request->unavailable)) {
-
-                    for ($i = 0; $i < count($request->unavailable); $i++) {
-
-                        // echo $request->skipper[$i];
-                        if (isset($request->unavailable[$i])) {
-                            $trim = $request->unavailable[$i];
-                            $initials = explode(':', $trim);
-                            $crewcode = $initials[0];
-
-                            $this->check1 = DB::table('tripcrews')->insert([
-                                'recordnumber'              => rand(10, 10000),
-                                'tripnumber'                => $this->tripnumber,
-                                'crewcode'                  => $crewcode,
-                                'isskipper'                 => 'Y'
-                            ]);
-                        }
-                    }
-                }
-
                 // dd($check1);
                 if (!empty($request->available)) {
 
@@ -589,6 +569,54 @@ class ActivityController extends Controller
                         }
                     }
                 }
+
+                if (!empty($request->unavailable)) {
+
+                    for ($i = 0; $i < count($request->unavailable); $i++) {
+
+                        // echo $request->skipper[$i];
+                        if (isset($request->unavailable[$i])) {
+                            $trim = $request->unavailable[$i];
+                            $initials = explode(':', $trim);
+                            $crewcode = $initials[0];
+
+                            $check_crew = DB::table('tripcrews')->where('tripnumber', '=', $this->tripnumber)
+                            ->where('crewcode', '=', $crewcode)->first();
+                            if($check_crew){
+
+                                $this->check1 =  DB::table('tripcrews')->where('tripnumber', '=', $this->tripnumber)
+                                ->where('tripnumber', '=', $this->tripnumber)
+                                ->where('crewcode', '=', $crewcode)->update([
+                                    'isskipper'                 => 'Y',
+                                    'available'                 => NULL,
+                                    'confirmed'                 => NULL,
+                                ]);
+                            }
+
+
+                            // $updateunavailable = DB::table('tripcrews')->where('tripnumber',$this->tripnumber)->where('crewcode', $crewcode)->first();
+
+                            // dd($updateunavailable);
+
+                            // if($updateunavailable){
+
+                            //     $this->check1 = DB::table('tripcrews')->update([
+                            //         // 'recordnumber'              => rand(10, 10000),
+                            //         'tripnumber'                => $this->tripnumber,
+                            //         'crewcode'                  => $crewcode,
+                            //         'confirmed'                 => NULL,
+                            //         'available'                 => NULL,
+                            //         'isskipper'                 => 'Y'
+                            //     ])->where($updateunavailable->id);
+
+                            // }
+
+
+                        }
+                    }
+                }
+
+
             });
 
             //   dd($this->tripnumber);
@@ -658,6 +686,9 @@ class ActivityController extends Controller
     public function update(Request $request)
     {
 
+        // dd($request->all());
+
+
         $this->validate(request(), [
             'boatname'                 => 'required',
             'departuredate'            => 'required',
@@ -665,7 +696,7 @@ class ActivityController extends Controller
             'duration'                 => 'required',
             'destination'              => 'required',
             'crewneeded'               => 'required',
-            'crewnotes'                => 'required',
+            'NotesCrew'                => 'required',
             'tripbalance'              => 'required',
             'tripcost'                 => 'required',
             'passengers'               => 'required',
