@@ -169,3 +169,10 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+ // Clear cache using reoptimized class
+ Route::get('/optimize-clear', function() {
+    \Artisan::call('optimize:clear');
+    return 'All cache cleared';
+});

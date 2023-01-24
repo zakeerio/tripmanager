@@ -506,6 +506,12 @@ class CrewController extends Controller
             return redirect('/dashboard')->with(['status' => false, 'msg' => 'Access Denied !']);
         }
 
+        // $users = User::findOrFail($id);
+
+        // $users->delete();
+
+
+
         $delete = Crew::whereId($id)->delete();
 
         if ($delete) {
