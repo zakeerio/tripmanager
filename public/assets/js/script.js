@@ -14,6 +14,7 @@ $(document).ready(function(){
        $(".btn-filter .teck-btn > .teck-dropdown").toggleClass("active");
     });
 
+
     // $(".btn-filter .teck-btn > a").click(function(){
     //     $(".btn-filter .teck-btn > .teck-dropdown").toggleClass("active");
     //  });
