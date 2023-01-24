@@ -260,7 +260,7 @@
 
                                                         if (!empty($check)) {
 
-                                                            if ($check->available == 'Y') {
+                                                            if ($check->available == 'Y' || $check->confirmed == 'Y') {
                                                                 $isAvailable = "I'm not available";
                                                                 $route = route('all-activities-available-unavailable', $trip->id);
                                                             } else {

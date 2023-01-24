@@ -14,7 +14,7 @@ class CreateActivityTypesTable extends Migration
     public function up()
     {
         Schema::create('activity_types', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements();
             $table->string('type_name')->nullable(false);
             $table->timestamps();
         });
