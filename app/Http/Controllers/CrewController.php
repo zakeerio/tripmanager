@@ -242,7 +242,9 @@ class CrewController extends Controller
                     'user_id' => $user,
                     'suspended' => 0,
                     'role_id' => $role_id,
-                    'traveltime' => $traveltime
+                    'traveltime' => $traveltime,
+                    "faexpire" => $request->faexpiry
+
                 );
 
                 // print_r($crew_data);
