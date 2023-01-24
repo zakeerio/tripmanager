@@ -299,7 +299,7 @@
                                                 }
 
                                                 ?>
-                                                {{-- <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a> --}}
+                                                <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a>
                                             @endif
                                         </div>
                                     </div>
