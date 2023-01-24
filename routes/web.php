@@ -58,7 +58,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::any('/all-activites-update', [ActivityController::class, 'update'])->name('all-activites-update');
 
-    Route::any('/all-activites-delete/{id}', [ActivityController::class, 'delete'])->name('all-activites-delete');
+    Route::any('/all-activites-delete/{icrew-membersd}', [ActivityController::class, 'delete'])->name('all-activites-delete');
 
     Route::any('/all-activities-available-unavailable/{id}', [ActivityController::class, 'available_unavailable'])->name('all-activities-available-unavailable');
 

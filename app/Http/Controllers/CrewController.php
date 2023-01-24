@@ -283,7 +283,7 @@ class CrewController extends Controller
 
                     // dd($request->all());
 
-                    return redirect()->route('/crew-members')->with(['success', $messages, 'status' => true, 'msg' => 'Success! User Created']);
+                    return redirect()->route('crew-members')->with(['success', $messages, 'status' => true, 'msg' => 'Success! User Created']);
 
                 }
             } else {
