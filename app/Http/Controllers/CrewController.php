@@ -141,33 +141,25 @@ class CrewController extends Controller
 
     public function save_crew(Request $request)
     {
+        // dd($request->all());
+
 
         $this->validate(request(),  [
-            'name' => 'required',
-            'email' => 'required',
-            'secondarynumber' => 'required',
-            'boatpreference' => 'required',
-            'memnumber' => 'required',
-            'firstaid' => 'required',
-            'keyholder' => 'required',
-            'keyholder' => 'required',
-            'skipper' => 'required',
-            'optin' => 'required',
-            'optin' => 'required',
-            'iwa' => 'required',
-            'rya' => 'required',
-            'cba' => 'required',
-            'privilege' => 'required',
-            'traveltime' => 'required',
-            'role_id' => 'required',
-            'initials' => 'required',
-            'fullname' => 'required',
-            'mobile' => 'required',
-            'user_type' => 'required',
-            'password' => 'required',
-            'confirmpassword' => 'required',
-
+            "name" => 'required',
+            "email" => 'required',
+            "mobile" => 'required',
+            "secondarynumber" => 'required',
+            "boatpreference" => 'required',
+            "initials" => 'required',
+            "username" => 'required',
+            "role_id" => 'required',
+            "memnumber" => 'required',
+            "traveltime" => 'required',
+            "faexpire" => 'required',
+            "password" => 'required',
+            "confirmpassword" => 'required'
         ]);
+
 
         // dd($request->all());
 
@@ -291,7 +283,7 @@ class CrewController extends Controller
 
                     // dd($request->all());
 
-                    return redirect()->back()->with(['success', $messages, 'status' => true, 'msg' => 'Success ! User Created']);
+                    return redirect()->route('/crew-members')->with(['success', $messages, 'status' => true, 'msg' => 'Success! User Created']);
 
                 }
             } else {
