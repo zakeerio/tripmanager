@@ -1019,9 +1019,9 @@ class ActivityController extends Controller
         }
 
         if ($flag == 'removed') {
-            return redirect()->back()->with(['status' => true, 'msg' => 'Success ! You Are Unavailable']);
+            return redirect()->route('all-activities')->with(['status' => true, 'msg' => 'Success ! You Are Unavailable']);
         } else if ($flag == 'added') {
-            return redirect()->back()->with(['status' => true, 'msg' => 'Success ! You Are Available']);
+            return redirect()->route('all-activities')->with(['status' => true, 'msg' => 'Success ! You Are Available']);
         }
     }
 
