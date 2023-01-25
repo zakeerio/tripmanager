@@ -243,7 +243,7 @@ class CrewController extends Controller
                     'suspended' => 0,
                     'role_id' => $role_id,
                     'traveltime' => $traveltime,
-                    "faexpire" => $request->faexpiry
+                    "faexpire" => $request->faexpire
 
                 );
 
@@ -440,7 +440,7 @@ class CrewController extends Controller
                 "iwa" => $iwa,
                 'profile' => $path,
                 // "traveltime" => $traveltime,
-                "faexpire" => $request->faexpiry
+                "faexpire" => $request->faexpire
             );
 
             // dd($crew_data);
@@ -510,11 +510,15 @@ class CrewController extends Controller
 
         // $users->delete();
 
+        $user =  Crew::findorFail($id);
 
+        $user_id = $user->user_id;
 
-        $delete = Crew::whereId($id)->delete();
+        $delete_user = User::whereId($user_id)->delete();
 
-        if ($delete) {
+        // $delete = Crew::whereId($id)->delete();
+
+        if ($delete_user) {
             return redirect('/crew-members')->with(['status' => true, 'msg' => 'Success! Member Deleted']);
         } else {
             return redirect('/crew-members')->with(['status' => false, 'msg' => 'Error! Member Delete Failed']);
@@ -527,6 +531,13 @@ class CrewController extends Controller
         try {
 
             //  dd($request->all());
+            $this->validate(request(), [
+                'name' => 'required',
+                'email' => 'required|email',
+                'username' => 'required',
+                'role_id' => 'required',
+                'primary_no' => 'required|numeric',
+            ]);
 
             $emailaddress = $request->emailaddress;
             $secondarynumber = $request->secondarynumber;

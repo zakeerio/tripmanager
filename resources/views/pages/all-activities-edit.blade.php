@@ -249,13 +249,15 @@
                         </div>
                     </div>
 
-                    <div class="row col-md-12">
-                        <label for="NotesCrew">NOTES FOR CREW</label>
-                        <textarea class="form-control" required id="NotesCrew" rows="5" name="NotesCrew">{{ $activity->crewnotes}}</textarea>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="NotesCrew">NOTES FOR CREW</label>
+                            <textarea class="form-control" required id="NotesCrew" rows="5" name="NotesCrew">{{ $activity->crewnotes}}</textarea>
 
-                        @if($errors->any())
-                            <p style="color:Red">{{$errors->first('NotesCrew')}}</p>
-                            @endif
+                            @if($errors->any())
+                                <p style="color:Red">{{$errors->first('NotesCrew')}}</p>
+                                @endif
+                        </div>
                     </div>
 
 

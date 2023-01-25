@@ -204,10 +204,12 @@
                             </strong>
                         </div>
                     </div>
+                    <div class="form-row">
 
-                    <div class="form-group col-xl-6 col-lg-14">
-                        <label for="NotesCrew">NOTES FOR CREW</label>
-                        <p><strong>{{ $activity->crewnotes }}</strong></p>
+                        <div class="form-group col-xl-6 col-lg-14">
+                            <label for="NotesCrew">NOTES FOR CREW</label>
+                            <p><strong>{{ $activity->crewnotes }}</strong></p>
+                        </div>
                     </div>
 
                     {{-- <div class="form-group col-xl-6 col-lg-14">

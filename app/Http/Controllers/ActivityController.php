@@ -186,7 +186,7 @@ class ActivityController extends Controller
 
                                     $minutes = ($duration_val[1] / 10);
 
-                                    $hours = $clock . "." . $minutes;
+                                    $hours = $clock . "." . (int)$minutes;
 
                                 // echo  $cr->initials." __ ".$trip[0]->id." -- ".$monthName ." Hours:  " .$hours."<br>";
 
@@ -385,7 +385,7 @@ class ActivityController extends Controller
 
                     $minutes = ($duration_val[1] / 10);
                     // dd($clock, $minutes);
-                    $total_month_hours += $clock . "." . $minutes;
+                    $total_month_hours += $clock . "." . (int)$minutes;
                 }
 
                 // if (isset($mh->duration) && str_contains($mh->duration, ':')) {
@@ -446,7 +446,7 @@ class ActivityController extends Controller
 
                     $minutes = ($duration_val[1] / 10);
                     // dd($clock, $minutes);
-                    $total_year_hours += $clock.".".$minutes;
+                    $total_year_hours += $clock.".".(int)$minutes;
                 }
 
                 // if (isset($yh->duration) && str_contains($yh->duration, ':')) {
@@ -503,7 +503,7 @@ class ActivityController extends Controller
         if (isset($request->duration) && str_contains($request->duration, '.')) {
             $time = $request->duration;
             $time = explode('.', $time);
-            $time = ($time[0]) . ":" . ($time[1] * 6) . ":" . "00";
+            $time = ($time[0]) . ":" . (substr($time[1], 0, 1) * 6) . ":" . "00";
             // dd($time);
         } else if (isset($request->duration) && str_contains($request->duration, ':')) {
             $time = $request->duration;
@@ -716,7 +716,7 @@ class ActivityController extends Controller
             if (isset($request->duration) && str_contains($request->duration, '.')) {
                 $time = $request->duration;
                 $time = explode('.', $time);
-                $time = ($time[0]) . ":" . ($time[1] * 6) . ":" . "00";
+                $time = ($time[0]) . ":" . (substr($time[1], 0, 1) * 6) . ":" . "00";
                 // dd($time);
             } else if (isset($request->duration) && str_contains($request->duration, ':')) {
                 $time = $request->duration;

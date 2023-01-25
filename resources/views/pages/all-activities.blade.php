@@ -174,7 +174,7 @@
 
                                                         $minutes = ($duration_val[1] / 10);
                                                         // dd($clock, $minutes);
-                                                        $durationfinal = $clock.".".$minutes;
+                                                        $durationfinal = $clock.".".(int)$minutes;
                                                     }
                                                 @endphp
                                                 {{ $durationfinal }} hours</td>

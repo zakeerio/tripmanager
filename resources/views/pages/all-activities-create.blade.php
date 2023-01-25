@@ -178,7 +178,7 @@
                         <div class="form-group col-xl-4 col-lg-12">
                             <label for="ActivityDate">ACTIVITY DATE</label>
 
-                            <input type="date" name="departuredate" value="{{ old('departuredate') }}" class="form-control" id="ActivityDate">
+                            <input type="date" name="departuredate" value="{{ old('departuredate') }}" class="form-control" id="ActivityDate" min="<?php echo date('Y-m-d')?>">
                             @if($errors->any())
                             <p style="color:Red">{{$errors->first('departuredate')}}</p>
                             @endif

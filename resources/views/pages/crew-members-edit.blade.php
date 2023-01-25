@@ -255,7 +255,7 @@
 
                                         <div class="form-group col-md-6">
                                             <label for="privilege">First aid expiry</label>
-                                            <input type="date" class="form-control" name="faexpiry" id="privilege" value="{{ $crew_member->faexpire }}">
+                                            <input type="date" class="form-control" name="faexpire" id="privilege" value="{{ $crew_member->faexpire }}">
                                         </div>
 
 
