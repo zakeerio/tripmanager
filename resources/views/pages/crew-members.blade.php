@@ -57,21 +57,24 @@
                         <a href="{{ route('crew-members-create') }}"><img src="{{ asset('assets/images/user.png') }}" class="img-fluid">Create new user</a>
                     </div>
                 </div>
-                <div class="btn-filter mt-3">
-                    <form action="{{ route('crew-members') }}" method="GET">
-                        @csrf
-                        <div class="form-group d-flex">
-                            <input type="text" class="form-control" value="{{ (\Request()->s) ? \Request()->s : '' }}" name="s" placeholder="Search By name"> <input type="submit" class="btn btn-primary" value="Search">
-                        </div>
-                    </form>
-                </div>
+
             </div>
         </div>
     </div>
 
 
     <div class="col-md-12 activies_table">
-        <div class="font-weight-bold">{{ ($crew_members) ? $crew_members->total() : '0' }} Records found</div>
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="font-weight-bold">{{ ($crew_members) ? $crew_members->total() : '0' }} Records found</div>
+            <div class="btn-filter mt-3">
+                <form action="{{ route('crew-members') }}" method="GET">
+                    @csrf
+                    <div class="form-group d-flex">
+                        <input type="text" class="form-control" value="{{ (\Request()->s) ? \Request()->s : '' }}" name="s" placeholder="Search By name"> <input type="submit" class="btn btn-success" value="Search">
+                    </div>
+                </form>
+            </div>
+        </div>
         <div class="row activity_col">
             <div class="col-lg-8 col-md-12 upcoming_activities">
 

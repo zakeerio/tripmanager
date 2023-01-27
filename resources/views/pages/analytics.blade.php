@@ -17,8 +17,17 @@
                 <div class="btn-filter justify-content-end">
 
                     @php
+                        $filtervalname= "";
                         $filterval = (\Request()->has('filter')) ? \Request()->get('filter') : '';
                         if($filterval !=""){
+                            if($filterval == 1){
+                                $filtervalname = "Admin";
+                            } elseif ($filterval == 2) {
+                                $filtervalname = "Crewmember";
+                            } elseif ($filterval == 3) {
+                                $filtervalname = "Developer";
+                            }
+
                             $filter_check = 'filter='.$filterval."&";
                         } else {
                             $filter_check = '';
@@ -65,6 +74,7 @@
 
 
     <div class="col-md-12 activies_table">
+        <div class="text-bold">{{ ($yearval) ? "Year ".$yearval : '' }} {{ ($filterval) ? " By ".$filtervalname : '' }}</div>
         <div class="row activity_col">
             <div class="col-lg-8 col-md-12 upcoming_activities">
 
@@ -137,24 +147,6 @@
                 </div>
             </div>
         </div>
-
-
-        {{-- <div class="row btm-row">
-            <div class="col-md-6 teck-showin-text">Showing <b>1-50</b> of <b>46</b> available activities.</div>
-            <div class="col-md-6">
-                <div class="pagination-row">
-                    <button class="btn-prev teck-arrow">
-                        < </button>
-                            <ul class="pagination">
-                                <li class="active"> 1 </li>
-                                <li> 2 </li>
-                                <li> 3 </li>
-                                <li> 4 </li>
-                            </ul>
-                            <button class="btn-next teck-arrow">></button>
-                </div>
-            </div>
-        </div> --}}
 
     </div>
 </div>
