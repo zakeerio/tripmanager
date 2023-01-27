@@ -70,7 +70,7 @@
                 <form action="{{ route('crew-members') }}" method="GET">
                     @csrf
                     <div class="form-group d-flex">
-                        <input type="text" class="form-control" value="{{ (\Request()->s) ? \Request()->s : '' }}" name="s" placeholder="Search By name"> <input type="submit" class="btn btn-success" value="Search">
+                        <input type="text" class="form-control" value="{{ (\Request()->s) ? \Request()->s : '' }}" name="s" placeholder="Search By name"> <input type="submit" class="btn btnsuccess" value="Search">
                     </div>
                 </form>
             </div>

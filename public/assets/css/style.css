@@ -311,7 +311,7 @@ a {text-decoration:none !important  ;}
 #main .activity_col .rwd-table > tbody  tr th, #main .activity_col .rwd-table > tbody  tr td { padding: 2% 0 30px; }
 #main .teck-btn-view-activites > a:hover { background: #a41e34; }
 #main .activity_col .rwd-table > tbody tr th:first-child, #main .activity_col .rwd-table > tbody tr td:first-child { padding-left: 2.5%; font-family: poppins; }
-#main .teck-btn > a { background-color: rgb(0, 109, 59); color: rgb(255, 255, 255); font-family: poppins; font-size: 15px; line-height: 1.2; font-weight: 600; height: 58px; display: flex; align-items: center; justify-content: center; border-radius: 12px; padding: 20px 25px; }
+#main .teck-btn > a, .btnsuccess { background-color: rgb(0, 109, 59); color: rgb(255, 255, 255); font-family: poppins; font-size: 15px; line-height: 1.2; font-weight: 600; height: 58px; display: flex; align-items: center; justify-content: center; border-radius: 12px; padding: 20px 25px; }
 #main .teck-btn-view-activites > a { background-color: rgb(0 109 59); color: rgb(255 255 255); font-family: poppins; font-size: 16px; line-height: 1.2; font-weight: 600; border-radius: 12px; height: 60px; display: flex; align-items: center; justify-content: center; min-width: 250px; }
 .teck-btn { display: flex; align-items: center; justify-content: center; position:relative; }
 .bg-white { background-color: rgb(249 249 249) !important; }
