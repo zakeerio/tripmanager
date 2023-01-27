@@ -346,7 +346,7 @@
                 </div>
             @endif
             <div class="teck-btn mt-4 pl-3">
-            @if(Session::get('role') == 'crewmember')
+            {{-- @if(Session::get('role') == 'crewmember') --}}
 
                 <div class="teck-btn-view-activites justify-content-end">
 
@@ -355,7 +355,7 @@
 
                 </div>
                 <br>
-            @endif
+            {{-- @endif --}}
                 {{-- <button type="submit" class="btn btn-primary" > <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Update Activity</button> --}}
             </div>
             </form>
