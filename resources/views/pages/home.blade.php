@@ -92,6 +92,7 @@
     </div>
 
     <div class="col-md-12 activies_table">
+        <div class="font-weight-bold mt-3">{{ ($upcoming_activites) ? $upcoming_activites->total() : '0' }} Records</div>
 
         <div class="row activity_col">
 

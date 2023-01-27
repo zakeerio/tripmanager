@@ -92,6 +92,9 @@
 
 
         <div class="col-md-12 activies_table">
+
+        <div class="font-weight-bold mt-2">{{ ($trips) ? $trips->total() : '0' }} Records</div>
+
             <div class="row activity_col">
                 <div class="col-lg-8 col-md-12 upcoming_activities">
 
@@ -249,8 +252,6 @@
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="BtnAction">
                                                         <a class="dropdown-item" href="{{ route('all-activities-view', [$trip->id,$isReady]) }}">View Activity</a>
-                                                        @if(Session::get('role')=='crewmember')
-
 
                                                         <?php
 
@@ -271,20 +272,24 @@
                                                             $isAvailable = "I'm available";
                                                             $route = route('all-activities-available-unavailable', $trip->id);
                                                         }
-
-
                                                         ?>
 
-                                                        <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a>
+
+                                                        @if(Session::get('role')=='crewmember')
+
+                                                            <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a>
                                                         @else
 
                                                             @if($trip->archived ==NULL || $trip->archived =="")
                                                                 <a class="dropdown-item" href="{{ route('all-activities-edit',[$trip->id,$isReady]) }}">Edit Activity</a>
                                                                 <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete Activity</a>
                                                             @else
-                                                                <a class="dropdown-item" href="#">Not Editable</a>
+                                                            <a class="dropdown-item" href="#">Not Editable</a>
                                                             @endif
 
+                                                        @endif
+                                                        @if($trip->archived ==NULL || $trip->archived =="")
+                                                            <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a>
                                                         @endif
 
                                                     </div>

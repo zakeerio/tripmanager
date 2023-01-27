@@ -34,7 +34,14 @@
             </div>
 
             <div class="col-xl-5 col-lg-12">
+               @php
+                $filtercheck = \Request()->get('filter');
+                $filterval = (\Request()->has('filter')) ? "?filter=".$filtercheck : "";
+
+                // dd($filterval);
+               @endphp
                 <div class="btn-filter">
+
                     <div class="teck-btn filterbutton justify-content-start bg-white">
                         <a href="#!"><img src="{{ asset('assets/images/rol icon.png') }}" class="btn-icon-2" alt=""> Filter by Role </a>
 
@@ -50,12 +57,21 @@
                         <a href="{{ route('crew-members-create') }}"><img src="{{ asset('assets/images/user.png') }}" class="img-fluid">Create new user</a>
                     </div>
                 </div>
+                <div class="btn-filter mt-3">
+                    <form action="{{ route('crew-members') }}" method="GET">
+                        @csrf
+                        <div class="form-group d-flex">
+                            <input type="text" class="form-control" value="{{ (\Request()->s) ? \Request()->s : '' }}" name="s" placeholder="Search By name"> <input type="submit" class="btn btn-primary" value="Search">
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 
 
     <div class="col-md-12 activies_table">
+        <div class="font-weight-bold">{{ ($crew_members) ? $crew_members->total() : '0' }} Records found</div>
         <div class="row activity_col">
             <div class="col-lg-8 col-md-12 upcoming_activities">
 

@@ -43,6 +43,8 @@
 
 
     <div class="col-md-12 activies_table">
+
+        <div class="font-weight-bold">{{ ($trips) ? $trips->total() : '0' }} Records</div>
         <div class="row activity_col">
             <div class="col-md-12">
                 <div class="teck-table">
@@ -196,6 +198,28 @@
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="BtnAction">
 
+                                            <?php
+
+                                                $initials = Session::get('initials');
+                                                $check = \App\Models\Tripcrew::where(['crewcode' => $initials, 'tripnumber' => $trip->id])->first();
+
+                                                //  dd($check);
+                                                if (!empty($check)) {
+                                                    // echo $check->available;
+                                                    if ($check->available == 'Y' || $check->confirmed == 'Y') {
+                                                        $isAvailable = "I'm not available";
+                                                        $route = route('all-activities-available-unavailable', $trip->id);
+                                                    } else {
+                                                        $isAvailable = "I'm available";
+                                                        $route = route('all-activities-available-unavailable', $trip->id);
+                                                    }
+                                                } else {
+                                                    $isAvailable = "I'm available";
+                                                    $route = route('all-activities-available-unavailable', $trip->id);
+                                                }
+
+                                            ?>
+
                                             @if(Session::get('role') !='crewmember')
                                                 <a class="dropdown-item" href="{{ route('all-activities-view',  [$trip->id,$isReady]) }}">View Activity</a>
                                                 @if($trip->archived ==NULL || $trip->archived =="")
@@ -208,29 +232,10 @@
                                             @else
 
                                                 <a class="dropdown-item" href="{{ route('all-activities-view',[$trip->id,$isReady]) }}">View activity</a>
-                                                <?php
 
-
-                                                    $initials = Session::get('initials');
-                                                    $check = \App\Models\Tripcrew::where(['crewcode' => $initials, 'tripnumber' => $trip->id])->first();
-
-                                                    //  dd($check);
-                                                    if (!empty($check)) {
-                                                        // echo $check->available;
-                                                        if ($check->available == 'Y' || $check->confirmed == 'Y') {
-                                                            $isAvailable = "I'm not available";
-                                                            $route = route('all-activities-available-unavailable', $trip->id);
-                                                        } else {
-                                                            $isAvailable = "I'm available";
-                                                            $route = route('all-activities-available-unavailable', $trip->id);
-                                                        }
-                                                    } else {
-                                                        $isAvailable = "I'm available";
-                                                        $route = route('all-activities-available-unavailable', $trip->id);
-                                                    }
-
-                                                ?>
-                                                {{-- <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a> --}}
+                                            @endif
+                                            @if($trip->archived ==NULL || $trip->archived =="")
+                                                <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a>
                                             @endif
 
 

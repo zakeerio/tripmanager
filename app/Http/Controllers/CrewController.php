@@ -95,6 +95,16 @@ class CrewController extends Controller
 
         }
 
+        if(isset($request->s) && $request->s !="" ){
+
+            $crew_members = Crew::join('users', 'users.id', 'crews.user_id')
+            ->where('crews.fullname', 'LIKE', '%'.$request->s.'%')
+            ->orderBy('users.id', 'DESC')
+            ->with('user')
+            ->paginate(50);
+
+        }
+
 
 
         // $crew_members = Crew::orderBy('id', 'DESC')->with('user')->paginate(50);
