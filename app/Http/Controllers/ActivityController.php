@@ -691,7 +691,11 @@ class ActivityController extends Controller
 
         $pagetitle = "Edit Activity";
         $activity = Trip::findOrFail($id);
-        // sdd($activity);
+
+        // dd($activity);
+        if($activity->archived == 'Y'){
+            return redirect('/all-activities')->with(['status' => false, 'msg' => 'Edit Access Denied for Archived trip !']);
+        }
         if ($activity) {
             return view('pages/all-activities-edit')->with("activity", $activity)->with('tripcrews')->with('pagetitle', $pagetitle)->with('status', $status);
         } else {
