@@ -116,7 +116,20 @@ class ActivityController extends Controller
 
     public function analytics_view(Request $request)
     {
+
+        $years = DB::table('trips')
+        ->select(DB::raw('EXTRACT(year from departuredate) as year'))
+        ->distinct()
+        ->orderBy('year', 'ASC')
+        ->get();
+
         $crew = DB::table('crews')->get();
+
+        if($request->has('year')){
+            $year = $request->year;
+        } else {
+            $year = date('Y');
+        }
 
         if(isset($request->filter) && $request->filter !="" ){
 
@@ -125,7 +138,6 @@ class ActivityController extends Controller
             ->where('users.role_id', $request->filter)
             ->select('crews.*')
             ->get();
-
         }
 
         try {
@@ -161,7 +173,7 @@ class ActivityController extends Controller
                     ->join('trips','trips.id','tripcrews.tripnumber')
                     ->select('tripcrews.*')
                     ->where('crewcode', $cr->initials)
-                    ->whereBetween('departuredate',[date('Y-01-01'), date('Y-12-t')])
+                    ->whereBetween('departuredate',[date($year.'-01-01'), date($year.'-12-t')])
                     ->get();
 
                     // dd($tripcrews->count());
@@ -312,7 +324,7 @@ class ActivityController extends Controller
                 $des_hours = 0;
             } //main_loop
 
-            return view('pages/analytics')->with("user", $user)->with('tripcrews')->with("pagetitle", $pagetitle);
+            return view('pages/analytics')->with("user", $user)->with('years', $years)->with('tripcrews')->with("pagetitle", $pagetitle);
 
         } catch (\Exception $e) {
             // dd($e->getMessage());

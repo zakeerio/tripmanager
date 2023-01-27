@@ -16,14 +16,46 @@
             <div class="col-lg-4 col-md-6">
                 <div class="btn-filter justify-content-end">
 
+                    @php
+                        $filterval = (\Request()->has('filter')) ? \Request()->get('filter') : '';
+                        if($filterval !=""){
+                            $filter_check = 'filter='.$filterval."&";
+                        } else {
+                            $filter_check = '';
+                        }
+
+                        $yearval = (\Request()->has('year')) ? \Request()->get('year') : '';
+                        if($yearval !=""){
+                            $year_check = '&year='.$yearval;
+                        } else {
+                            $year_check = '';
+                        }
+                    @endphp
+
+                    <div class="teck-btn filterbutton bg-white">
+                        <a href="#!"><img src="{{ asset('assets/images/clander icon.png') }}" class="btn-icon-2" alt="">
+                            <span>Filter By Year <br></span> </a>
+
+                        <ul class="teck-dropdown">
+
+                            <li><a href="{{ route('analytics') }}">None</a></li>
+                            @foreach ($years as $year )
+                                {{-- {{ $filter_check }} --}}
+                                <li><a href="{{ route('analytics') }}?{{ $filter_check."year=".$year->year }}">{{ $year->year }}</a></li>
+
+                            @endforeach
+                        </ul>
+                    </div>
+                    &nbsp;&nbsp;
                     <div class="teck-btn filterbutton bg-white">
                         <a href="#!"><img src="{{ asset('assets/images/rol icon.png') }}" class="btn-icon-2" alt="">
                             <span>Filter by Role <br> <b> Show all analysis</b></span> </a>
 
                         <ul class="teck-dropdown">
-                            <li><a href="{{ route('analytics') }}?filter=1">Admin</a></li>
-                            <li><a href="{{ route('analytics') }}?filter=2">Crewmember</a></li>
-                            <li><a href="{{ route('analytics') }}?filter=3">Developer</a></li>
+                            <li><a href="{{ route('analytics') }}">None</a></li>
+                            <li><a href="{{ route('analytics') }}?filter=1{{ $year_check }}">Admin</a></li>
+                            <li><a href="{{ route('analytics') }}?filter=2{{ $year_check }}">Crewmember</a></li>
+                            <li><a href="{{ route('analytics') }}?filter=3{{ $year_check }}">Developer</a></li>
                         </ul>
                     </div>
                 </div>

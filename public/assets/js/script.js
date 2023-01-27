@@ -11,7 +11,9 @@ $(document).ready(function(){
 
     //Filter
     $(".btn-filter .teck-btn.filterbutton > a").click(function(){
-       $(".btn-filter .teck-btn > .teck-dropdown").toggleClass("active");
+        // $(".teck-dropdown").removeClass('active');
+        $(this).siblings(".teck-dropdown").toggleClass('active');
+    //    $(".btn-filter .teck-btn > .teck-dropdown").toggleClass("active");
     });
 
 
