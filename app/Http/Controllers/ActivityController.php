@@ -43,11 +43,12 @@ class ActivityController extends Controller
 
                     if(isset($request->completed) && $request->completed == 'hide' ){
                         $trips = Trip::orderBy('departuredate', 'DESC')
-                        ->where('archived', "!=",  'Y')
-                        ->orWhere('archived', "=",  NULL)
                         ->where('boatname',$request->filter)->paginate(50);
                     } else {
-                        $trips = Trip::orderBy('departuredate', 'DESC')->where('boatname',$request->filter)->paginate(50);
+                        $trips = Trip::orderBy('departuredate', 'DESC')
+                        ->w->where('archived', "!=",  'Y')
+                        ->orWhere('archived', "=",  NULL)
+                        ->where('boatname',$request->filter)->paginate(50);
                     }
                 }
             } else {
@@ -59,11 +60,13 @@ class ActivityController extends Controller
                     if(isset($request->completed) && $request->completed == 'hide' ){
                         // $trips = Trip::orderBy('departuredate', 'DESC')->paginate(50);
                         $trips = Trip::orderBy('departuredate', 'DESC')
+
+                        ->paginate(50);
+                    } else {
+                        $trips = Trip::orderBy('departuredate', 'DESC')
                         ->w->where('archived', "!=",  'Y')
                         ->orWhere('archived', "=",  NULL)
                         ->paginate(50);
-                    } else {
-                        $trips = Trip::orderBy('departuredate', 'DESC')->paginate(50);
                     }
 
                 }
@@ -81,13 +84,14 @@ class ActivityController extends Controller
                 if(isset($request->completed) && $request->completed == 'hide' ){
                     // $trips = Trip::orderBy('departuredate', 'DESC')->paginate(50);
                     $trips = Trip::orderBy('departuredate', 'DESC')
-                    ->where('archived', "!=",  'Y')
-                    ->orWhere('archived', "=",  NULL)
                     ->paginate(50);
                     // ->toSql();
                     // dd($trips);
                 } else {
-                    $trips = Trip::orderBy('departuredate', 'DESC')->paginate(50);
+                    $trips = Trip::orderBy('departuredate', 'DESC')
+                    ->where('archived', "!=",  'Y')
+                    ->orWhere('archived', "=",  NULL)
+                    ->paginate(50);
 
                 }
 
@@ -925,43 +929,25 @@ class ActivityController extends Controller
 
         // $trips = Trip::paginate(50);
         $role = Session::get('role');
-        if($role == 'crewmember'){
 
-            $trips = DB::table('trips')
-            ->join('tripcrews', 'tripnumber', '=', 'trips.id')
-            ->select('tripcrews.*', 'trips.*')
-            ->where('crewcode', '=', Session::get('initials'))
-            ->where('trips.archived', '!=', 'Y')
+        $trips = DB::table('trips')
+        ->join('tripcrews', 'tripnumber', '=', 'trips.id')
+        ->select('tripcrews.*', 'trips.*')
+        ->where('crewcode', '=', Session::get('initials'))
 
-            ->where('tripcrews.confirmed', '=', 'Y')
-            // ->where('tripcrews.isskipper','!=','Y')
-            // ->where('tripcrews.isskipper', '!=', "Y")
-            // ->where('confirmed', '=', 'Y')
-            // ->groupBy('tripnumber')
-            ->orderBy('trips.departuredate', 'DESC')
-            ->paginate(50);
-            // ->get();
-            // ->toSql();
-
-        } else{
+        ->where('tripcrews.confirmed', '=', 'Y')
+        // ->where('tripcrews.available', '=', 'Y')
+        // ->where('tripcrews.isskipper','!=','Y')
+        // ->where('tripcrews.isskipper', '!=', "Y")
+        // ->where('confirmed', '=', 'Y')
+        // ->groupBy('tripnumber')
+        ->orderBy('trips.departuredate', 'DESC')
+        ->paginate(50);
+        // ->get()
+        // ->toSql();
 
 
-            $trips = DB::table('trips')
-            ->join('tripcrews', 'tripnumber', '=', 'trips.id')
-            ->select('tripcrews.*', 'trips.*')
-            ->where('crewcode', '=', Session::get('initials'))
-
-            ->where('tripcrews.confirmed', '=', 'Y')
-            // ->where('tripcrews.available', '=', 'Y')
-            // ->where('tripcrews.isskipper','!=','Y')
-            // ->where('tripcrews.isskipper', '!=', "Y")
-            // ->where('confirmed', '=', 'Y')
-            // ->groupBy('tripnumber')
-            ->orderBy('trips.departuredate', 'DESC')
-            ->paginate(50);
-            // ->get();
-            // ->toSql();
-        }
+        // dd($trips);
 
 
         // $res=Crew::where(['initials' => 'JY'])->first()->toArray();

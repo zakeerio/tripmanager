@@ -198,7 +198,7 @@
                                     <div class="form-group col-md-12">
                                         <div><label>ADDITIONAL</label></div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="firstaid" name="firstaid" {{ !empty($crew_member->firstaid) ? 'checked' : '' }}>
+                                            <input class="form-check-input" type="checkbox" id="firstaid"  onchange="firstAidChange(this)"  name="firstaid" {{ !empty($crew_member->firstaid) ? 'checked' : '' }}>
                                             <label class="form-check-label" for="firstaid">First Aid</label>
                                         </div>
                                         <div class="form-check">
@@ -216,10 +216,10 @@
                                             <input class="form-check-input" type="checkbox" id="iwa" name="iwa" {{ !empty($crew_member->iwa) ? 'checked' : '' }}>
                                             <label class="form-check-label" for="iwa">IWA</label>
                                         </div>
-                                        {{-- <div class="form-check">
+                                        <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="keyholder" name="keyholder" {{ !empty($crew_member->keyholder) ? 'checked' : '' }}>
                                             <label class="form-check-label" for="keyholder">Key Holder</label>
-                                        </div> --}}
+                                        </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="skipper" name="skipper" {{ !empty($crew_member->skipper) ? 'checked' : '' }}>
                                             <label class="form-check-label" for="skipper">Skipper</label>
@@ -242,20 +242,20 @@
                                         </div> --}}
 
 
-                                        <div class="form-check">
+                                        {{-- <div class="form-check">
                                             <label for="KeyHolder">Key Holder</label>
                                             <input class="form-control" type="text" id="KeyHolder" name="keyholder" value="{{ $crew_member->keyholder }}">
-                                        </div>
+                                        </div> --}}
 
 
-                                        <div class="form-group col-md-6">
+                                        {{-- <div class="form-group col-md-6">
                                             <label for="traveltime">Travel Time</label>
                                             <input type="text" class="form-control" name="traveltime" id="traveltime" value="{{ $crew_member->traveltime }}">
-                                        </div>
+                                        </div> --}}
 
-                                        <div class="form-group col-md-6">
-                                            <label for="privilege">First aid expiry</label>
-                                            <input type="date" class="form-control" name="faexpire" id="privilege" value="{{ $crew_member->faexpire }}">
+                                        <div class="form-group col-md-6 {{ !empty($crew_member->firstaid) ? '' : 'hidebox' }} " id="FirstAidbox">
+                                            <label for="faexpire">First aid expiry</label>
+                                            <input type="date" class="form-control" name="faexpire" id="faexpire" value="{{ $crew_member->faexpire }}">
                                         </div>
 
 
@@ -359,5 +359,16 @@
 
             reader.readAsDataURL(file);
         }
+    }
+    function firstAidChange(e){
+        if ($(e).is(":checked"))
+        {
+            $("#FirstAidbox").removeClass('hidebox');
+
+        } else {
+            $("#FirstAidbox").addClass('hidebox');
+            $("#faexpire").val("");
+        }
+
     }
 </script>

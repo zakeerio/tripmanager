@@ -20,11 +20,11 @@
                             $hidecompleted_val = "?completed=hide";
                             $filter =  isset($check_filter) ? "&filter=".$check_filter : '';
                             $querystring = $hidecompleted_val.$filter;
-                            $hidelabel = "Hide Completed";
+                            $hidelabel = "Show Completed";
                         } else {
                             $filter =  isset($check_filter) ? "?filter=".$check_filter : '';
                             $querystring = $filter;
-                            $hidelabel = "Show Completed";
+                            $hidelabel = "Hide Completed";
 
                         }
                     @endphp

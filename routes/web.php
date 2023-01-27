@@ -128,6 +128,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::any('/item-activity-update', [ActivityItemController::class, 'update'])->name('item-activity-update');
     Route::any('/activity-items-edit/{id}', [ActivityItemController::class, 'edit'])->name('activity-items-edit');
+    Route::any('/activity-items-delete/{id}', [ActivityItemController::class, 'destroy'])->name('activity-items-delete');
     Route::any('/activity-items', [ActivityItemController::class, 'index'])->name('activity-items');
     Route::any('/item-activity-add', [ActivityItemController::class, 'store'])->name('item-activity-add');
 

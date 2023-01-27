@@ -164,7 +164,7 @@
                                     <div class="form-group col-md-12">
                                         <div><label>ADDITIONAL</label></div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" placeholder="First Aid" id="FirstAid" name="firstaid" value="{{ old('firstaid') }}">
+                                            <input class="form-check-input" type="checkbox" onchange="firstAidChange(this)" placeholder="First Aid" id="FirstAid" name="firstaid" value="{{ old('firstaid') }}">
                                             <label class="form-check-label" for="FirstAid">First Aid</label>
                                         </div>
                                         <div class="form-check">
@@ -182,10 +182,10 @@
                                             <input class="form-check-input" type="checkbox" placeohlder="IWA" id="IWA" name="iwa" value="{{ old('iwa') }}">
                                             <label class="form-check-label" for="IWA">IWA</label>
                                         </div>
-                                        {{-- <div class="form-check">
+                                        <div class="form-check">
                                             <input class="form-check-input" id="Keyholder" type="checkbox" placeholder="Key Holder" name="keyholder" value="{{ old('keyholder') }}">
                                             <label class="form-check-label" for="Keyholder">Key Holder</label>
-                                        </div> --}}
+                                        </div>
                                         <div class="form-check">
                                             <input class="form-check-input" id="Skipper" type="checkbox" placeholder="Skipper" name="skipper" value="{{ old('skipper') }}">
                                             <label class="form-check-label" for="Skipper">Skipper</label>
@@ -207,18 +207,18 @@
                                             <input type="number" class="form-control" name="privilege" value="{{ old('privilege') }}" id="privilege" required>
                                         </div> --}}
 
-                                        <div class="form-group col-md-6">
+                                        {{-- <div class="form-group col-md-6">
                                             <label for="KeyHolder">Key Holder</label>
                                             <input class="form-control" type="text" id="KeyHolder" name="keyholder" value="{{ old('keyholder') }}" required>
-                                        </div>
+                                        </div> --}}
 
-                                        <div class="form-group col-md-6">
+                                        {{-- <div class="form-group col-md-6">
                                             <label for="traveltime">Travel Time</label>
                                             <input type="number" class="form-control" name="traveltime" value="{{ old('traveltime') }}" id="traveltime" required>
-                                        </div>
+                                        </div> --}}
 
-                                        <div class="form-group col-md-6">
-                                            <label for="traveltime">First aid expiry</label>
+                                        <div class="form-group col-md-6 hidebox" id="FirstAidbox">
+                                            <label for="faexpire">First aid expiry</label>
                                             <input type="date" class="form-control" name="faexpire" value="{{ old('faexpire') }}" id="faexpire" required>
                                         </div>
                                     </div>
@@ -487,4 +487,16 @@
             reader.readAsDataURL(file);
         }
     }
+    function firstAidChange(e){
+        if ($(e).is(":checked"))
+        {
+            $("#FirstAidbox").removeClass('hidebox');
+
+        } else {
+            $("#FirstAidbox").addClass('hidebox');
+            $("#faexpire").val("");
+        }
+
+    }
+
 </script>

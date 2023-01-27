@@ -213,8 +213,17 @@ class ActivityItemController extends Controller
      * @param  \App\Models\ActivityItem  $activityItem
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ActivityItem $activityItem)
+    public function destroy($id)
     {
-        //
+        $activityitem = ActivityItem::where('id', $id)->get();
+
+        if ($activityitem->isNotEmpty()) {
+            $delete = ActivityItem::where('id', $id)->delete();
+            return redirect()->back()->with(['status' => true, 'msg' => 'Success ! Activity Item Deleted ']);
+        } else {
+            return redirect()->back()->with(['status' => false, 'msg' => 'Warning ! something went wrong!']);
+        }
+
+        // dd();
     }
 }

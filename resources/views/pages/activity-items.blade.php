@@ -135,7 +135,7 @@
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="BtnAction">
                                             <a class="dropdown-item" href="{{ route('activity-items-edit',$i['id']) }}">Edit</a>
-                                            <a class="dropdown-item" href="#">Delete</a>
+                                            <a class="dropdown-item" onclick="DeleteActivityItems({{ $i['id'] }})" href="javascript:;">Delete</a>
                                         </div>
                                     </div>
                                 </td>
@@ -235,5 +235,39 @@
                 title: msg
             })
         }
+    }
+
+    function ShowWarningAlert(msg,id) {
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: msg,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                console.log('deleteID');
+                window.location.href = "{{URL::to('activity-items-delete')}}/" + id;
+                // Swal.fire(
+                //     'Deleted!',
+                //     'Your file has been deleted.',
+                //     'success'
+                // )
+            }
+            return result.isConfirmed
+        });
+
+
+    }
+
+    function DeleteActivityItems(id) {
+
+        if (ShowWarningAlert('Do You Want Delete ?', id)) {
+            // window.location.href = "{{URL::to('all-activites-delete')}}/" + id;
+        }
+
     }
 </script>
