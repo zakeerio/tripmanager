@@ -288,8 +288,12 @@
                                                             @endif
 
                                                         @endif
-                                                        @if($trip->archived ==NULL || $trip->archived =="")
-                                                            <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a>
+
+                                                        @if(Session::get('role')!='crewmember')
+
+                                                            @if($trip->archived ==NULL || $trip->archived =="")
+                                                                <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a>
+                                                            @endif
                                                         @endif
 
                                                     </div>
