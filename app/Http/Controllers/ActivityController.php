@@ -900,7 +900,7 @@ class ActivityController extends Controller
         }
     }
 
-    function delete($id)
+    public function delete($id)
     {
 
         //  dd($id);
