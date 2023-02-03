@@ -38,7 +38,11 @@ class ActivityController extends Controller
 
             if($activitycheck > 0){
                 if (Session::get('role') == 'crewmember') {
-                    $trips = Trip::orderBy('departuredate', 'DESC')->where('archived', "=",  NULL)->orWhere('archived', "=",  "")->where('boatname',$request->filter)->paginate(50);
+                    $trips = Trip::orderBy('departuredate', 'DESC')
+                    ->where('archived', "=",  NULL)
+                    ->orWhere('archived', "=",  "")
+                    ->where('boatname',$request->filter)
+                    ->paginate(50);
                 } else {
 
                     if(isset($request->completed) && $request->completed == 'hide' ){
@@ -54,7 +58,10 @@ class ActivityController extends Controller
             } else {
                 if (Session::get('role') == 'crewmember') {
 
-                    $trips = Trip::orderBy('departuredate', 'DESC')->where('archived', "=", NULL)->orWhere('archived', "=",  "")->paginate(50);
+                    $trips = Trip::orderBy('departuredate', 'DESC')
+                    ->where('archived', "=", NULL)
+                    ->orWhere('archived', "=",  "")
+                    ->paginate(50);
                 } else {
 
                     if(isset($request->completed) && $request->completed == 'hide' ){
@@ -74,7 +81,10 @@ class ActivityController extends Controller
         } else {
             if (Session::get('role') == 'crewmember') {
 
-                $trips = Trip::orderBy('departuredate', 'DESC')->where('archived', "=", NULL)->orWhere('archived', "=", '')->paginate(50);
+                $trips = Trip::orderBy('departuredate', 'DESC')
+                ->where('archived', "=", NULL)
+                ->orWhere('archived', "=", '')
+                ->paginate(50);
                 // $trips = Trip::orderBy('departuredate', 'DESC')->where('archived', "=", NULL)->toSql();
                 // dd($trips);
 
@@ -341,8 +351,9 @@ class ActivityController extends Controller
             ->join('tripcrews', 'trips.id', '=', 'tripcrews.tripnumber')
             ->where('tripcrews.crewcode', '=', SESSION::get('initials'))
             // ->where('tripcrews.available', '=', 'Y')
-            // ->where('tripcrews.confirmed', '=', 'Y')
-            ->where('tripcrews.isskipper', '=', NULL)
+            ->where('tripcrews.confirmed', '=', 'Y')
+            // ->where('tripcrews.isskipper', '=', NULL)
+
             // ->orWhere('tripcrews.skipper', '!=', 'Y')
             // ->orWhere('tripcrews.available', '=', 'Y')
             ->where('trips.departuredate', '>=', date('Y-m-d'))
@@ -354,6 +365,8 @@ class ActivityController extends Controller
             ->paginate(50);
             // ->select('trips.*')->toSql();
             // dd($upcoming_activites->toArray());
+
+
 
 
 
@@ -385,6 +398,7 @@ class ActivityController extends Controller
             ->where('archived', '=', "Y")
             ->where('tripcrews.crewcode', Session::get('initials'))
             // ->where('tripcrews.isskipper','!=','Y')
+            ->where('tripcrews.confirmed','=','Y')
 
             ->get();
 
@@ -444,6 +458,8 @@ class ActivityController extends Controller
 
             ->where('tripcrews.crewcode', Session::get('initials'))
             // ->where('tripcrews.isskipper','!=','Y')
+            ->where('tripcrews.confirmed','=','Y')
+
             ->get();
             // ->toSql();
 
@@ -484,7 +500,7 @@ class ActivityController extends Controller
             ->select(DB::raw('duration as duration,crewcode'))
             ->whereBetween('trips.departuredate', [$datefrom, $dateto])
             ->where('tripcrews.crewcode', Session::get('initials'))
-            // ->where('tripcrews.isskipper','!=','Y')
+            ->where('tripcrews.confirmed','=','Y')
             ->where('archived' ,'=',"Y")
 
             ->get();
@@ -493,7 +509,7 @@ class ActivityController extends Controller
         // $current_month_crews1 = DB::table('trips')->whereBetween('departuredate', [$datefrom, $dateto])->selectRaw('SELECT time(sum(TIMEDIFF( duration, duration )))')->get();
         // dd($current_month_crews);
 
-        return view('pages/home')->with('pagetitle', $pagetitle)->with('current_month_crews', $current_month_crews)->with('tripcrews')->with('month_hours', $total_month_hours)->with('year_hours', $total_year_hours)->with('upcoming_activites', $upcoming_activites);
+        return view('pages.home')->with('pagetitle', $pagetitle)->with('current_month_crews', $current_month_crews)->with('tripcrews')->with('month_hours', $total_month_hours)->with('year_hours', $total_year_hours)->with('upcoming_activites', $upcoming_activites);
     }
 
 
