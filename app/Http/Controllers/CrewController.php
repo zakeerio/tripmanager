@@ -542,15 +542,14 @@ class CrewController extends Controller
     {
         try {
 
-            //  dd($request->all());
             $this->validate(request(), [
                 'name' => 'required',
-                'email' => 'required|email',
-                'username' => 'required',
-                'role_id' => 'required',
-                'primary_no' => 'required|numeric',
+                'emailaddress' => 'required|email',
+                // 'username' => 'required',
+                'primary_no' => 'required',
             ]);
 
+            //  dd($request->all());
             $emailaddress = $request->emailaddress;
             $secondarynumber = $request->secondarynumber;
             $username = $request->username;
