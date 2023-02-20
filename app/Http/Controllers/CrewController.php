@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Crew;
-use App\Models\User;
+
+// Import Models
+use App\Models\{Crew, User };
+
 use App\Http\Middleware\Authenticate;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;

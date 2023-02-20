@@ -3,15 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Activity;
-use DB;
-use App\Models\User;
-use App\Models\Role;
-use App\Models\Trip;
-use App\Models\Crew;
-use App\Models\Tripcrew;
-use App\Models\ActivityItem;
 
+// Import Models
+use App\Models\{Activity, User, Role, Trip, Crew, Tripcrew, ActivityItem};
+
+use DB;
 use DateTime;
 use Session;
 use URL;

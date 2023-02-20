@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Documents;
-use App\Models\DocumentCategory;
+// Import Models
+use App\Models\{Documents, DocumentCategory };
+
 use Illuminate\Http\Request;
 use DB;
 use League\CommonMark\Node\Block\Document;

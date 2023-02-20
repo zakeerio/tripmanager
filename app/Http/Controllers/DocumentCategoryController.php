@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DocumentCategory;
+// Import Models
+use App\Models\{DocumentCategory, Documents };
+
 use Illuminate\Http\Request;
-use App\Models\Documents;
 
 class DocumentCategoryController extends Controller
 {

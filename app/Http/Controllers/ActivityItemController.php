@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ActivityItem;
-use App\Models\ActivityType;
+// Import Models
+use App\Models\{ActivityItem, ActivityType};
 
 use Illuminate\Http\Request;
 use Session;

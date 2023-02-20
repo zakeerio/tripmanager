@@ -1,13 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CrewController;
-use App\Http\Controllers\ActivityController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\ActivityItemController;
-use App\Http\Controllers\DocumentCategoryController;
-use App\Http\Controllers\DocumentsController;
-use App\Http\Controllers\ActivityTypeController;
+
+// Import Controllers
+use App\Http\Controllers\{CrewController, ActivityController, RoleController, ActivityItemController, DocumentCategoryController, DocumentsController, ActivityTypeController};
 
 use App\Http\Middleware\Authenticate;
 

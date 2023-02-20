@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ActivityType;
+// Import Models
+
+use App\Models\{ActivityType, ActivityItem };
+
 use Illuminate\Http\Request;
 
-use App\Models\ActivityItem;
 
 class ActivityTypeController extends Controller
 {
