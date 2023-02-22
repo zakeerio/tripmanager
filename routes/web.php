@@ -86,6 +86,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::any('/update-crew-account', [CrewController::class, 'update_crew'])->name('update-crew-account');
 
     Route::any('/delete-crew/{id}', [CrewController::class, 'delete_crew'])->name('delete-crew');
+    // Route::get('/delete-crew/{id}', function(){
+    //     dd("test");
+    // })->name('delete-crew');
 
 
     Route::get('/my-account', [CrewController::class, 'myaccount'])->name('my-account');

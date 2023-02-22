@@ -91,6 +91,7 @@ class CrewController extends Controller
 
             $crew_members = Crew::join('users', 'users.id', 'crews.user_id')
             ->where('users.role_id', $request->filter)
+            ->select('crews.*')
             ->orderBy('crews.initials', 'ASC')
             ->with('user')
             ->paginate(50);
@@ -101,6 +102,7 @@ class CrewController extends Controller
 
             $crew_members = Crew::join('users', 'users.id', 'crews.user_id')
             ->where('crews.fullname', 'LIKE', '%'.$request->s.'%')
+            ->select('crews.*')
             ->orderBy('crews.initials', 'ASC')
             ->with('user')
             ->paginate(50);
@@ -522,19 +524,31 @@ class CrewController extends Controller
 
         // $users->delete();
 
+        // $user =  Crew::where("id", $id)->get();
+
         $user =  Crew::findorFail($id);
+        // dd($user);
 
-        $user_id = $user->user_id;
+        if($user->count() > 0) {
+            $user_id = $user->user_id;
+            // dd($user_id);
 
-        $delete_user = User::whereId($user_id)->delete();
+            $delete_user = User::whereId($user_id)->delete();
 
-        // $delete = Crew::whereId($id)->delete();
 
-        if ($delete_user) {
-            return redirect('/crew-members')->with(['status' => true, 'msg' => 'Success! Member Deleted']);
+            // dd($delete_user ,$delete_crew);
+
+            if ($delete_user) {
+                $delete_crew = Crew::whereId($id)->delete();
+                return redirect('/crew-members')->with(['status' => true, 'msg' => 'Success! Member Deleted']);
+            } else {
+                return redirect('/crew-members')->with(['status' => false, 'msg' => 'Error! Member Delete Failed']);
+            }
         } else {
-            return redirect('/crew-members')->with(['status' => false, 'msg' => 'Error! Member Delete Failed']);
+            return redirect('/crew-members')->with(['status' => false, 'msg' => 'Error! Member Delete Failed something went wrong']);
         }
+
+
     }
 
 

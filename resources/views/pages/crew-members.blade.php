@@ -330,7 +330,8 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 console.log('deleteID');
-                window.location.href = "{{URL::to('delete-crew')}}/" + id;
+                // console.log("{{URL::to('/delete-crew')}}/" + id);
+                window.location.href = "{{URL::to('/delete-crew')}}/" + id;
                 // Swal.fire(
                 //     'Deleted!',
                 //     'Your file has been deleted.',
