@@ -46,7 +46,7 @@ class ActivityController extends Controller
                         ->where('boatname',$request->filter)->paginate(50);
                     } else {
                         $trips = Trip::orderBy('departuredate', 'DESC')
-                        ->w->where('archived', "!=",  'Y')
+                        ->where('archived', "!=",  'Y')
                         ->orWhere('archived', "=",  NULL)
                         ->where('boatname',$request->filter)->paginate(50);
                     }
@@ -67,7 +67,7 @@ class ActivityController extends Controller
                         ->paginate(50);
                     } else {
                         $trips = Trip::orderBy('departuredate', 'DESC')
-                        ->w->where('archived', "!=",  'Y')
+                        ->where('archived', "!=",  'Y')
                         ->orWhere('archived', "=",  NULL)
                         ->paginate(50);
                     }
@@ -952,7 +952,6 @@ class ActivityController extends Controller
     {
 
         // dd(Session::get('initials'));
-
 
         $pagetitle = "My Activities";
 
