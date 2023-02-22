@@ -51,10 +51,12 @@ class ActivityItemController extends Controller
             return redirect('/dashboard')->with(['status' => false, 'msg' => 'Access Denied !']);
         }
 
+        $pagetitle = "Activity Items";
+
         $items = ActivityItem::all()->toArray();
         // dd($items);
         if (!empty($items)) {
-            return view('/pages/activity-items', compact('items'));
+            return view('/pages/activity-items', compact('items'))->with('pagetitle', $pagetitle );
         }
     }
 
@@ -143,12 +145,13 @@ class ActivityItemController extends Controller
      */
     public function edit($id)
     {
+        $pagetitle = "Edit Activity Items";
         $activitytypes = ActivityType::all();
 
         // dd($activitytypes);
         $items = ActivityItem::findorFail($id);
         if (!empty($items)) {
-            return view('pages/activity-items-edit')->with('items', $items)->with('activitytypes',$activitytypes);
+            return view('pages/activity-items-edit')->with('items', $items)->with('activitytypes',$activitytypes)->with('pagetitle', $pagetitle);
         }
     }
 

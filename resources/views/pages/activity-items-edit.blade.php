@@ -78,13 +78,12 @@
 
 
 
-
                                     <select id="ActivityType" class="form-control" name="activitytype">
 
                                         <option >Please Select...</option>
 
                                         @foreach ($activitytypes as $activitytype )
-                                            <option value="{{ $activitytype->type_name }}" {{ ($activitytype->type_name == $items->activityname) ? 'selected':'' }}>{{ $activitytype->type_name }}</option>
+                                            <option value="{{ $activitytype->type_name }}" {{ ($activitytype->type_name == $items->activitytype) ? 'selected':'' }}>{{ $activitytype->type_name }}</option>
                                         @endforeach
 
                                     </select>

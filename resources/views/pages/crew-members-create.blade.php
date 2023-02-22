@@ -164,34 +164,34 @@
                                     <div class="form-group col-md-12">
                                         <div><label>ADDITIONAL</label></div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" onchange="firstAidChange(this)" placeholder="First Aid" id="FirstAid" name="firstaid" value="{{ old('firstaid') }}">
+                                            <input class="form-check-input" type="checkbox" onchange="firstAidChange(this)" placeholder="First Aid" id="FirstAid" name="firstaid" {{ old('firstaid') ? "checked" : '' }}">
                                             <label class="form-check-label" for="FirstAid">First Aid</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" placeholder="CBA" id="CBA" name="cba" value="{{ old('cba') }}">
+                                            <input class="form-check-input" type="checkbox" placeholder="CBA" id="CBA" name="cba" {{ old('cba') ? "checked" : '' }}>
                                             <label class="form-check-label" for="CBA">CBA</label>
                                         </div>
 
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" placeholder="RYA" id="RYA" name="rya" value="{{ old('rya') }}">
+                                            <input class="form-check-input" type="checkbox" placeholder="RYA" id="RYA" name="rya" {{ old('rya') ? "checked" : '' }}>
                                             <label class="form-check-label" for="RYA">RYA</label>
                                         </div>
 
 
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" placeohlder="IWA" id="IWA" name="iwa" value="{{ old('iwa') }}">
+                                            <input class="form-check-input" type="checkbox" placeohlder="IWA" id="IWA" name="iwa" {{ old('iwa') ? "checked" : '' }}>
                                             <label class="form-check-label" for="IWA">IWA</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" id="Keyholder" type="checkbox" placeholder="Key Holder" name="keyholder" value="{{ old('keyholder') }}">
+                                            <input class="form-check-input" id="Keyholder" type="checkbox" placeholder="Key Holder" name="keyholder" {{ old('keyholder') ? "checked" : '' }}>
                                             <label class="form-check-label" for="Keyholder">Key Holder</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" id="Skipper" type="checkbox" placeholder="Skipper" name="skipper" value="{{ old('skipper') }}">
+                                            <input class="form-check-input" id="Skipper" type="checkbox" placeholder="Skipper" name="skipper" {{ old('skipper') ? "checked" : '' }}>
                                             <label class="form-check-label" for="Skipper">Skipper</label>
                                         </div>
                                         <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="optin" value="{{ old('optin') }}" id="optin">
+                                            <input type="checkbox" class="form-check-input" name="optin" {{ old('optin') ? "checked" : '' }} id="optin">
                                             <label for="optin">Opted in for Details</label>
                                         </div>
 

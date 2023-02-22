@@ -297,7 +297,7 @@
                                 <?php
 
 
-                                $crews = \App\Models\Crew::all()->toArray();
+                                $crews = \App\Models\Crew::orderBy('initials', 'ASC')->get()->toArray();
 
                                 if (!empty($crews)) {
 

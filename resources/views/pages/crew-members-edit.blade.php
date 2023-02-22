@@ -107,7 +107,7 @@
 
                                             foreach ($boats as $b) {
                                         ?>
-                                                <option value="{{$b->activityname}}" {{$b->activityname==$crew_member->boatpreference?'Selected':''}}>{{$b->activityname}}</option>
+                                                <option value="{{$b->activityname}}" {{$b->activityname == $crew_member->boatpreference?'Selected':''}}>{{$b->activityname}}</option>
                                             <?php
                                             }
                                         } else {
@@ -149,7 +149,9 @@
                                             {{-- </div> --}}
                                             <?php
 
-                                            $crew_role = \App\Models\User::where(['username'=>$crew_member->username,'email'=>$crew_member->emailaddress])->get();
+                                            $user_id = $crew_member->user_id;
+
+                                            $crew_role = \App\Models\User::where(['id'=>$user_id])->get();
                                             // dd($crew_role->count());
 
                                             if($crew_role->count() > 0){
@@ -255,7 +257,7 @@
 
                                         <div class="form-group col-md-6 {{ !empty($crew_member->firstaid) ? '' : 'hidebox' }} " id="FirstAidbox">
                                             <label for="faexpire">First aid expiry</label>
-                                            <input type="date" class="form-control" name="faexpire" id="faexpire" value="{{ $crew_member->faexpire }}">
+                                            <input type="date" class="form-control" name="faexpire" id="faexpire" data-value="{{ $crew_member->faexpire }}" value="{{ $crew_member->faexpire }}">
                                         </div>
 
 
@@ -363,7 +365,9 @@
     function firstAidChange(e){
         if ($(e).is(":checked"))
         {
+            console.log($("#faexpire").data('value'));
             $("#FirstAidbox").removeClass('hidebox');
+            $("#FirstAidbox").val($("#faexpire").data('value'));
 
         } else {
             $("#FirstAidbox").addClass('hidebox');

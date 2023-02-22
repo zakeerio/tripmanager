@@ -78,7 +78,7 @@ class CrewController extends Controller
 
         */
 
-        $crew_members = Crew::orderBy('id', 'DESC')->with('user')->paginate(50);
+        $crew_members = Crew::orderBy('initials', 'ASC')->with('user')->paginate(50);
 
         if(isset($request->filter) && $request->filter !="" ){
 
@@ -91,7 +91,7 @@ class CrewController extends Controller
 
             $crew_members = Crew::join('users', 'users.id', 'crews.user_id')
             ->where('users.role_id', $request->filter)
-            ->orderBy('users.id', 'DESC')
+            ->orderBy('crews.initials', 'ASC')
             ->with('user')
             ->paginate(50);
 
@@ -101,7 +101,7 @@ class CrewController extends Controller
 
             $crew_members = Crew::join('users', 'users.id', 'crews.user_id')
             ->where('crews.fullname', 'LIKE', '%'.$request->s.'%')
-            ->orderBy('users.id', 'DESC')
+            ->orderBy('crews.initials', 'ASC')
             ->with('user')
             ->paginate(50);
 
@@ -211,7 +211,6 @@ class CrewController extends Controller
                 'username' => 'required',
                 'role_id' => 'required',
                 'password' => 'required',
-                'initials' => 'required',
             ]);
 
             // dd($request->all());
@@ -231,7 +230,7 @@ class CrewController extends Controller
             $user = User::create($userdata)->id;
 
             // $userdat = auth()->login($user);
-            // dd($user);
+            // print_r($user);
 
             if ($user) {
 
@@ -259,7 +258,7 @@ class CrewController extends Controller
 
                 );
 
-                // print_r($crew_data);
+                // dd($crew_data);
                 $crewupdate = Crew::create($crew_data)->id;
 
                 if ($crewupdate) {
@@ -512,6 +511,7 @@ class CrewController extends Controller
 
     public function delete_crew($id)
     {
+        // dd($id);
 
         if ($this->Access()) {
 

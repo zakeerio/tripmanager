@@ -18,8 +18,10 @@ class ActivityTypeController extends Controller
      */
     public function index()
     {
+        $pagetitle = "Activity Type";
+
         $types = ActivityType::all();
-        return view('pages/activity-types')->with('types', $types);
+        return view('pages/activity-types')->with('types', $types)->with('pagetitle', $pagetitle);
     }
 
     /**
@@ -74,11 +76,12 @@ class ActivityTypeController extends Controller
      */
     public function edit($id)
     {
+        $pagetitle = "Edit Activity Item";
         $cat = ActivityType::where('id', $id)->get();
 
         if ($cat->isNotEmpty()) {
 
-            return view('pages/activity-type-edit')->with('cat', $cat);
+            return view('pages/activity-type-edit')->with('cat', $cat)->with('pagetitle', $pagetitle);
         } else {
             return redirect()->back()->with(['status' => false, 'msg' => 'Error ! Someting Went Wrong']);
         }

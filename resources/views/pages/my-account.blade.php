@@ -241,10 +241,8 @@
                                         <div><label>ADDITIONAL</label></div>
 
                                         <div class="form-check">
-
-                                            <input class="form-check-input" {{$disabled}} type="checkbox" id="firstaid" name="firstaid" {{ !empty($crewmember->firstaid) ? 'checked' : '' }} >
+                                            <input class="form-check-input" {{$disabled}} type="checkbox" id="firstaid"  onchange="firstAidChange(this)"  name="firstaid" {{ !empty($crewmember->firstaid) ? 'checked' : '' }}>
                                             <label class="form-check-label" for="firstaid">First Aid</label>
-
                                         </div>
 
                                         <div class="form-check">
@@ -297,8 +295,7 @@
                                         </div> --}}
 
 
-
-                                        <div class="form-group col-md-6">
+                                        <div class="form-group col-md-6 {{ !empty($crewmember->firstaid) ? '' : 'hidebox' }} " id="FirstAidbox">
                                             <label for="faexpire">First aid expiry</label>
                                             <input type="date" class="form-control" name="faexpire" id="faexpire" value="{{ $crewmember->faexpire }}"  {{$readonly}}>
                                         </div>
@@ -395,7 +392,7 @@
 
                                 } else {
                                 ?>
-                                    <img src="{{ asset('assets/images/profile-picture.png') }}" style="width: 220px; height: 220px;" class="img-fluid preview" />
+                                    <img src="{{ asset('assets/images/profile-picture.png') }}" style="width: 220px;" class="img-fluid preview" />
                                 <?php
                                 }
 
@@ -514,5 +511,17 @@
 
             reader.readAsDataURL(file);
         }
+    }
+
+    function firstAidChange(e){
+        if ($(e).is(":checked"))
+        {
+            $("#FirstAidbox").removeClass('hidebox');
+
+        } else {
+            $("#FirstAidbox").addClass('hidebox');
+            $("#faexpire").val("");
+        }
+
     }
 </script>

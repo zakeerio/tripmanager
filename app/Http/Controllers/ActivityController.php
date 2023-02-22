@@ -108,6 +108,7 @@ class ActivityController extends Controller
         $activities_filter = ActivityItem::orderBy('id', 'DESC')->get();
 
         // dd($trips);
+        // dd($pagetitle);
         return view('pages/all-activities')->with("trips", $trips)->with('tripcrews')->with('pagetitle', $pagetitle)->with('activities_filter',$activities_filter);
     }
 
