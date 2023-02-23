@@ -4,15 +4,15 @@
 
 <div class="row dashboard_col" id="activity-items-create">
     <div class="col-md-12 dashboard_Sec">
-        <div class="row">
-            <div class="col-xl-8 col-lg-12 teck-acticites">
-                
-            </div>
-            <div class="col-xl-4 col-lg-12">
-                <div class="teck-btn justify-content-end" id="teck-btn-pag-3">
-                     <a href="/activity-items/" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:20px;"> Go Back</a>
-                </div>
-            </div>
+
+        <h1>Activity Items - Create a new activity item</h1>
+
+        <p class="sub-pages-text">These details will be added to all lcreation pages where an activity is selected.</p>
+
+        <div class="teck-btn justify-content-start">
+
+            <a href="{{ route('activity-items') }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:20px;"> Go Back</a>
+        </div>
 
         @if(Session::get('status'))
 
@@ -33,15 +33,8 @@
     </div>
 
     <div class="col-md-12 activies_table">
+
         <div class="row activity_col">
-                        <div class="col-md-12">
-                <div class="col-md-12 dashboard-heading-desc  dashboard-heading-container">
-                   <div class="row">
-                <div class="col-lg-12">
-                        <h1>Activity Items - Create a new activity item</h1>
-                        <p class="col-12-descrapction">Please fill out the information below to create a new activity item.</p>
-                </div>
-            </div></div>
 
             <div class="col-md-12 dashboard-heading-desc">
 
@@ -159,7 +152,7 @@
 
                                 <label>ACTIVITY PICTURE</label>
 
-                                <img src="{{ asset('assets/images/Chacha.png') }}" style="width: 220px; height: 220px;" class="img-fluid preview"/>
+                                <img src="{{ asset('assets/images/profile-picture.png') }}" style="width: 220px; height: 220px;" class="img-fluid preview"/>
 
                                 <div class="teck-btn bg-white upload-btn">
 

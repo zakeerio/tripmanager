@@ -5,6 +5,8 @@
     <div class="col-md-12 dashboard_Sec">
         <div class="row">
             <div class="col-lg-8 col-md-12">
+                <h1>Analysis</h1>
+                <p class="sub-pages-text">This is a list all analysis results.</p>
                 {{-- <div class="teck-btn justify-content-start">
 
                     <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:20px;"> Go Back</a>
@@ -65,21 +67,6 @@
                             <li><a href="{{ route('analytics') }}?filter=3{{ $year_check }}">Developer</a></li>
                         </ul>
                     </div>
-
-                </div>
-                <div class="btn-filter mt-3">
-                    <form action="{{ route('analytics') }}" method="GET">
-                        @csrf
-                        @if($filterval !="")
-                            <input type="hidden" name="filter" value="{{ $filterval }}">
-                        @endif
-                        @if($yearval !="")
-                            <input type="hidden" name="year" value="{{ $yearval }}">
-                        @endif
-                        <div class="form-group d-flex">
-                            <input type="text" class="form-control" value="{{ (\Request()->s) ? \Request()->s : '' }}" name="s" placeholder="Search By name"> <input type="submit" class="btn btnsuccess" value="Search">
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
@@ -94,24 +81,10 @@
             </div>
 
             <div class="col-md-12">
-                <div class="col-md-12 dashboard-heading-desc dashboard-heading-container">
-                <div class="row">
-                    <div class="col-lg-8 col-md-12 upcoming_activities">
-                        <h1>Crew Member Analysis</h1>
-                        <p class="col-12-descrapction">This is a list of the hours Crew Members have completed.</p>
-                    </div>
-<div class="col-lg-4 col-md-12">
-        <div class="d-flex justify-content-end align-items-end">
-
-            <div class="btn-filter mt-3">
-                   </div>
-        </div> </div>
-                </div>
-                </div>
                 <div class="teck-table">
                     <table class="rwd-table">
 
-                        <thead class="list-table-heading">
+                        <thead>
 
                             <th class="th-heading">Crew</th>
                             <th class="th-heading">Code</th>
@@ -131,8 +104,6 @@
                         </thead>
 
                         <tbody>
-
-
                             <?php
 
                             if (!empty($user)) {

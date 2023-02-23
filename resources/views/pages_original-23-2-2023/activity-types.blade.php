@@ -4,15 +4,18 @@
 
 
 <div class="row dashboard_col" id="login">
-    <div class="col-md-12 dashboard_sec">
 
-        <div class="row">
+    <div class="col-md-12 activies_table">
+
+        <div class="row activity_col">
             {{-- <div class="teck-btn justify-content-start">
 
                 <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/clander icon.png') }}" class="img-fluid"> Go Back</a>
             </div> --}}
 
             <div class="col-md-12 dashboard-heading-desc upcoming_activities">
+                <h4>Activity Type</h4>
+                <p class="col-12-descrapction">Here You can Name Your Actvity Types</p>
 
                 @if (Session::has('status'))
 
@@ -32,21 +35,31 @@
 
                 <div class="row">
                     <div class="col-lg-12 col-md-12 upcoming_activities">
-<div class="teck-btn-view-activites justify-content-end">
-                                        <form class="teck-form upload-form" enctype="multipart/form-data" method="POST" action="{{route('/activity-type-add')}}">
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-12">
+
+                <form class="teck-form upload-form" enctype="multipart/form-data" method="POST" action="{{route('/activity-type-add')}}">
 
                     @csrf
                     <div class="row">
                         <div class="col-xl-6 col-lg-6">
-                            <input type="name" class="form-control" name="type_name" placeholder="Activity type here..." id="type_name" value="{{ old('type_name')}}">
+                            <label for="document-name">Activity Type Name</label>
+
+                            <input type="name" class="form-control" name="type_name" id="type_name" value="{{ old('type_name')}}">
                             @if($errors->any())
                             <p style="color:red ;">{{$errors->first('type_name') }}</p>
                             @endif
                         </div>
 
                         <div class=" col-xl-6 col-lg-6">
+                            <label for="document-name">&nbsp; </label>
                             <div class="teck-btn justify-content-left" style="justify-content: left;">
-                                <button type="submit" class="btn btn-primary"> <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Create New
+                                <button type="submit" class="btn btn-primary"> <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Create
                                     Type</button>
                             </div>
 
@@ -54,29 +67,16 @@
 
                     </div>
                 </form>
-                        </div>
-                    </div>
-                    </div>
-                    
-                </div>
-            </div></div>
 
+                <div class="col-md-12 activies_table">
+                    <div class="row activity_col">
 
-<div class="col-md-12 activies_table">
-        <div class="row activity_col">
-                <div class="col-md-12">
-                    <div class="col-md-12 dashboard-heading-desc dashboard-heading-container">
-                <div class="row">
-                    <div class="col-lg-8 col-md-12 upcoming_activities">
-                        <h1>Activity Types</h1>
-                        <p class="col-12-descrapction">This is a list of the different activity categories for easier management.</p>
-                    </div>
+                        <div class="col-md-12">
+                            <div class="teck-table">
 
-                </div>
-            </div>
                                 <table class="rwd-table">
 
-                                    <thead class="list-table-heading">
+                                    <thead>
                                         <tr>
                                             <th class="th-heading">Activity Type Name</th>
                                             <th class="th-heading">Created At</th>
@@ -96,7 +96,7 @@
                                             foreach ($types as $d) {
                                         ?>
                                                 <tr>
-                                                    <td><p><b>{{$d->type_name}}<b></p></td>
+                                                    <td>{{$d->type_name}}</td>
                                                     <td>{{$d->created_at}}</td>
                                                     <td class="action" width="150">
 

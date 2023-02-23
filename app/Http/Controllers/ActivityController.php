@@ -124,6 +124,8 @@ class ActivityController extends Controller
     public function analytics_view(Request $request)
     {
 
+
+
         $years = DB::table('trips')
         ->select(DB::raw('EXTRACT(year from departuredate) as year'))
         ->distinct()
@@ -138,13 +140,37 @@ class ActivityController extends Controller
             $year = date('Y');
         }
 
-        if(isset($request->filter) && $request->filter !="" ){
+        if((isset($request->filter) && $request->filter !="") || isset($request->s) ){
+            // dd($request->all());
+            if(isset($request->s) && $request->s !="" && $request->filter !="" ){
+                $crew = DB::table('crews')
+                ->join('users', 'users.id', 'crews.user_id')
+                ->where('users.role_id', $request->filter)
+                ->where('crews.fullname', 'LIKE', '%'.$request->s.'%')
+
+                ->select('crews.*')
+                ->get();
+
+            } else if ($request->filter !="" && $request->s =="" ){
+                $crew = DB::table('crews')
+                ->join('users', 'users.id', 'crews.user_id')
+                ->where('users.role_id', $request->filter)
+                ->select('crews.*')
+                ->get();
+            } else {
+                $crew = DB::table('crews')
+                ->join('users', 'users.id', 'crews.user_id')
+                ->where('crews.fullname', 'LIKE', '%'.$request->s.'%')
+                ->select('crews.*')
+                ->get();
+            }
+        } else {
 
             $crew = DB::table('crews')
             ->join('users', 'users.id', 'crews.user_id')
-            ->where('users.role_id', $request->filter)
             ->select('crews.*')
             ->get();
+
         }
 
         try {
@@ -706,9 +732,9 @@ class ActivityController extends Controller
         $activity = Trip::findOrFail($id);
 
         // dd($activity);
-        if($activity->archived == 'Y'){
-            return redirect('/all-activities')->with(['status' => false, 'msg' => 'Edit Access Denied for Archived trip !']);
-        }
+        // if($activity->archived == 'Y'){
+        //     return redirect('/all-activities')->with(['status' => false, 'msg' => 'Edit Access Denied for Archived trip !']);
+        // }
         if ($activity) {
             return view('pages/all-activities-edit')->with("activity", $activity)->with('tripcrews')->with('pagetitle', $pagetitle)->with('status', $status);
         } else {
@@ -721,20 +747,33 @@ class ActivityController extends Controller
 
         // dd($request->all());
 
+        if($request->has('archived') AND $request->archived == "Y"){
+            $this->validate(request(), [
+                'NotesCrew'                => 'required',
+                'tripbalance'              => 'required',
+                'tripcost'                 => 'required',
+                'passengers'               => 'required',
+            ]);
 
-        $this->validate(request(), [
-            'boatname'                 => 'required',
-            'departuredate'            => 'required',
-            'departuretime'            => 'required',
-            'duration'                 => 'required',
-            'destination'              => 'required',
-            'crewneeded'               => 'required',
-            'NotesCrew'                => 'required',
-            'tripbalance'              => 'required',
-            'tripcost'                 => 'required',
-            'passengers'               => 'required',
 
-        ]);
+        } else {
+            $this->validate(request(), [
+                'boatname'                 => 'required',
+                'departuredate'            => 'required',
+                'departuretime'            => 'required',
+                'duration'                 => 'required',
+                'destination'              => 'required',
+                'crewneeded'               => 'required',
+                'NotesCrew'                => 'required',
+                'tripbalance'              => 'required',
+                'tripcost'                 => 'required',
+                'passengers'               => 'required',
+
+            ]);
+
+        }
+
+
 
         // dd($request->all());
 
@@ -755,23 +794,36 @@ class ActivityController extends Controller
                 $time = $request->duration;
             }
 
+            if($request->has('archived') AND $request->archived == "Y"){
+
+                $activityArray = [
+
+                    'crewnotes'      => $request->NotesCrew,
+                    'cost'           => $request->tripcost,
+                    'balance'        => $request->tripbalance,
+                    'passengers'     => $request->passengers
+                ];
 
 
-            $activityArray = [
+            } else {
 
-                'departuredate'  => $request->departuredate,
-                'departuretime'  => $request->departuretime,
-                'crewnotes'      => $request->NotesCrew,
-                'boatname'       => $request->boatname,
-                'destination'    => $request->destination,
-                'duration'       => $time,
-                //'archived'     =>
-                'crewneeded'     => $request->crewneeded,
-                'cost'           => $request->tripcost,
-                'balance'        => $request->tripbalance,
-                'passengers'     => $request->passengers
 
-            ];
+                $activityArray = [
+
+                    'departuredate'  => $request->departuredate,
+                    'departuretime'  => $request->departuretime,
+                    'crewnotes'      => $request->NotesCrew,
+                    'boatname'       => $request->boatname,
+                    'destination'    => $request->destination,
+                    'duration'       => $time,
+                    //'archived'     =>
+                    'crewneeded'     => $request->crewneeded,
+                    'cost'           => $request->tripcost,
+                    'balance'        => $request->tripbalance,
+                    'passengers'     => $request->passengers
+
+                ];
+            }
 
             $update =  Trip::whereId($request->id)->update($activityArray);
 
@@ -948,15 +1000,58 @@ class ActivityController extends Controller
         }
     }
 
-    public function myactivities()
+    public function myactivities(Request $request)
     {
 
         // dd(Session::get('initials'));
 
         $pagetitle = "My Activities";
 
+        if(isset($request->completed) && $request->completed == 'hide' ){
+            $trips = DB::table('trips')
+            ->join('tripcrews', 'tripnumber', '=', 'trips.id')
+            ->select('tripcrews.*', 'trips.*')
+            ->where('crewcode', '=', Session::get('initials'))
+
+
+            ->where('tripcrews.confirmed', '=', 'Y')
+            // ->where('tripcrews.available', '=', 'Y')
+            // ->where('tripcrews.isskipper','!=','Y')
+            // ->where('tripcrews.isskipper', '!=', "Y")
+            // ->where('confirmed', '=', 'Y')
+            // ->groupBy('tripnumber')
+            ->orderBy('trips.departuredate', 'DESC')
+            ->paginate(50);
+            // ->get()
+            // ->toSql();
+        } else {
+
+            $trips = DB::table('trips')
+            ->join('tripcrews', 'tripnumber', '=', 'trips.id')
+            ->select('tripcrews.*', 'trips.*')
+            ->where('crewcode', '=', Session::get('initials'))
+
+            ->where('trips.archived', '!=', 'Y')
+
+
+            ->where('tripcrews.confirmed', '=', 'Y')
+            // ->where('tripcrews.available', '=', 'Y')
+            // ->where('tripcrews.isskipper','!=','Y')
+            // ->where('tripcrews.isskipper', '!=', "Y")
+            // ->where('confirmed', '=', 'Y')
+            // ->groupBy('tripnumber')
+            ->orderBy('trips.departuredate', 'DESC')
+            ->paginate(50);
+            // ->get()
+            // ->toSql();
+
+        }
+
+
         // $trips = Trip::paginate(50);
-        $role = Session::get('role');
+        // $role = Session::get('role');
+
+        /*
 
         $trips = DB::table('trips')
         ->join('tripcrews', 'tripnumber', '=', 'trips.id')
@@ -973,7 +1068,7 @@ class ActivityController extends Controller
         ->paginate(50);
         // ->get()
         // ->toSql();
-
+        */
 
         // dd($trips);
 

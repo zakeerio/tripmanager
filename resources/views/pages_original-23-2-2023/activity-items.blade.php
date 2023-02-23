@@ -9,6 +9,11 @@
 
             <div class="col-xl-8 col-lg-12">
 
+                <h1>Activity Items</h1>
+
+                <p class="sub-pages-text">This is a list of all the scheduled activities in the Activity Manager system..
+                </p>
+
                 {{-- <div class="teck-btn justify-content-start">
 
                     <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:20px;"> Go Back</a>
@@ -50,30 +55,34 @@
 
 
     <div class="col-md-12 activies_table">
-<div class="row activity_col">
+
+        <div class="row activity_col">
+
+            <div class="col-lg-8 col-md-12 upcoming_activities">
+
+
+            </div>
+
+
             <div class="col-md-12">
-                    <div class="col-md-12 dashboard-heading-desc dashboard-heading-container">
-                <div class="row">
-                    <div class="col-lg-8 col-md-12 upcoming_activities">
-                        <h1>Activity Items</h1>
-                        <p class="col-12-descrapction">This is a list of the different Activities available in the Activity Manager.</p>
-                    </div>
-</div>
-                </div>
                 <div class="teck-table">
 
                     <table class="rwd-table">
 
+                        <tbody>
 
-
-                        <thead class="list-table-heading">
                             <tr>
 
                                 <th class="th-heading">Activity Name</th>
+
                                 <th class="th-heading">Type</th>
+
                                 <th class="th-heading-brief">Capacity</th>
+
                                 <th class="th-heading">Min Crew</th>
+
                                 <th class="th-heading">Color</th>
+
                                 <th class="th-heading">Action</th>
 
                             </tr>
@@ -81,8 +90,7 @@
                             @forelse($items as $i)
 
                             <tr>
-                                <thead>
-                        <tbody>
+
                                 <td>
 
                                     <div class="table-div">

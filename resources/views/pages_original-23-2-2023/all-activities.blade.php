@@ -280,11 +280,11 @@
                                                             <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a>
                                                         @else
 
-                                                            <a class="dropdown-item" href="{{ route('all-activities-edit',[$trip->id,$isReady]) }}">Edit Activity</a>
                                                             @if($trip->archived ==NULL || $trip->archived =="")
+                                                                <a class="dropdown-item" href="{{ route('all-activities-edit',[$trip->id,$isReady]) }}">Edit Activity</a>
                                                                 <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete Activity</a>
-                                                            {{-- @else --}}
-                                                            {{-- <a class="dropdown-item" href="#">Not Editable</a> --}}
+                                                            @else
+                                                            <a class="dropdown-item" href="#">Not Editable</a>
                                                             @endif
 
                                                         @endif

@@ -53,14 +53,13 @@
 <div class="row dashboard_col" id="all-activities-edit">
 
     <div class="col-md-12 dashboard_Sec">
-<div class="row">
-            <div class="col-xl-8 col-lg-12 teck-activities">
-                
-            </div>
-            <div class="col-xl-4 col-lg-12">
-                <div class="teck-btn justify-content-end" id="teck-btn-pag-3">
-                     <a href="/all-activities/" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:20px;"> Go Back</a>
-                </div>
+
+        <h1>Activities - View an existing activity</h1>
+        <p>Please amend any details below and click save changes to submit</p>
+        <div class="teck-btn justify-content-start">
+
+            <a href="{{ route('all-activities') }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:20px;"> Go Back</a>
+        </div>
 
         @if (Session::has('status'))
 
@@ -83,21 +82,13 @@
     <div class="col-md-12 activies_table">
 
         <div class="row activity_col">
-            <div class="col-md-12">
-                <div class="col-md-12 dashboard-heading-desc dashboard-heading-container">
-                   <div class="row">
-                      <div class="col-lg-12">
-                        <h1>View Activity</h1>
-                        <p class="col-12-descrapction">Please the information for the activity below.</p>
-                 </div>
-            </div>
-            
-         </div>
+
             <div class="col-md-12 dashboard-heading-desc">
                 <div class="row">
                     <div class="col-lg-8 col-md-12 upcoming_activities">
                         <h4>Activity Information</h4>
-                        <p class="col-12-descrapction">This information is regarding the details of this activity.</p>
+                        <p class="col-12-descrapction">These details will be visible throughout the Activity Manager
+                            system.</p>
                     </div>
                     <div class="col-lg-4 col-md-12 ready">
 
@@ -132,29 +123,26 @@
                     <input type="hidden" name="id" class="form-control" id="" value="{{ $activity->id }}">
 
                     <div class="form-row">
-                        <div class="form-group col-xl-2 col-lg-6">
-                            <label for="ActivityNumber">ACTIVITY NUMBER:</label>
-                                <p>{{ $activity->id }}</p>
+                        <div class="form-group col-xl-4 col-lg-6">
+                            <label for="ActivityNumber">ACTIVITY NUMBER</label>
+                            <strong>
+                                <h5>{{ $activity->id }}</h5>
+                            </strong>
+                        </div>
+
+                        <div class="form-group col-xl-4 col-lg-6">
+                            <label for="ActivityItem">SELECT ACTIVITY ITEM</label>
+
+                            <strong>
+                                <h5>{{$activity->boatname}}</h5>
+                            </strong>
 
                         </div>
-                        <div class="form-group col-xl-2 col-lg-6">
-                            <label for="ActivityItem">ACTIVITY ITEM:</label>
-                                <p>{{$activity->boatname}}</p>
-                        </div>
-                        <div class="form-group col-xl-2 col-lg-12">
-                            <label for="ActivityDate">ACTIVITY DATE:</label>
-                                <p>{{ $activity->departuredate }}</p>
-                        </div>
-                                                <div class="form-group col-xl-2 col-lg-6">
-                            <label for="ActivityTime">ACTIVITY TIME:</label>
-
-                                <p>{{$activity->departuretime }}</p>
-
-                        </div>
-                        <div class="form-group col-xl-2 col-lg-6">
-                            <label for="ActivityDuration">ACTIVITY DURATION:</label>
-
-                                <p>{{ $activity->duration }}</p>
+                        <div class="form-group col-xl-4 col-lg-12">
+                            <label for="ActivityDate">ACTIVITY DATE</label>
+                            <strong>
+                                <h5>{{ $activity->departuredate }}</h5>
+                            </strong>
 
                         </div>
                     </div>
@@ -162,12 +150,24 @@
 
 
                     <div class="form-row">
+                        <div class="form-group col-xl-4 col-lg-6">
+                            <label for="ActivityTime">ACTIVITY TIME</label>
 
-                        <div class="form-group col-xl-8 col-lg-12">
-                            <label for="BriefDescription">BRIEF DESCRIPTION:</label>
-
-                                <p>{{ $activity->destination }}</p>
-
+                            <strong>
+                                <h5>{{$activity->departuretime }}</h5>
+                            </strong>
+                        </div>
+                        <div class="form-group col-xl-4 col-lg-6">
+                            <label for="ActivityDuration">ACTIVITY DURATION</label>
+                            <strong>
+                                <h5>{{ $activity->duration }}</h5>
+                            </strong>
+                        </div>
+                        <div class="form-group col-xl-4 col-lg-12">
+                            <label for="BriefDescription">BRIEF DESCRIPTION</label>
+                            <strong>
+                                <h5>{{ $activity->destination }}</h5>
+                            </strong>
                         </div>
                     </div>
 
@@ -178,36 +178,37 @@
                             <h4>Crew Information</h4>
                             <p class="col-12-descrapction">This information is regarding the crew of this activity.</p>
                         </div>
-                        <div class="form-group col-xl-3 col-lg-12">
-                            <label for="NumberCrewNeeded">NUMBER OF CREW NEEDED:</label>
-
-                                <p>{{ $activity->crewneeded }}</p>
-
+                        <div class="form-group col-xl-4 col-lg-12">
+                            <label for="NumberCrewNeeded">NUMBER OF CREW NEEDED</label>
+                            <strong>
+                                <h5>{{ $activity->crewneeded }}</h5>
+                            </strong>
                         </div>
-                        <div class="form-group col-xl-2 col-lg-13">
-                            <label for="TripCost">TRIP COST(£):</label>
-
-                                <p>£{{ $activity->cost }}</p>
-
+                        <div class="form-group col-xl-5 col-lg-13">
+                            <label for="TripCost">TRIP COST(£)</label>
+                            <strong>
+                                <h5>{{ $activity->cost }}</h5>
+                            </strong>
                         </div>
-                        <div class="form-group col-xl-2 col-lg-14">
-                            <label for="BalanceDue">BALANCE DUE(£):</label>
+                        <div class="form-group col-xl-6 col-lg-14">
+                            <label for="BalanceDue">BALANCE DUE(£)</label>
 
-                                <p>£{{ $activity->balance }}</p>
-
+                            <strong>
+                                <h5>{{ $activity->balance }}</h5>
+                            </strong>
                         </div>
-                        <div class="form-group col-xl-2 col-lg-15">
-                            <label for="PassengerCout">PASSENGER COUNT:</label>
-
-                                <p>{{ $activity->passengers }}</p>
-
+                        <div class="form-group col-xl-7 col-lg-15">
+                            <label for="PassengerCout">PASSENGER COUNT</label>
+                            <strong>
+                                <h5>{{ $activity->passengers }}</h5>
+                            </strong>
                         </div>
                     </div>
                     <div class="form-row">
 
                         <div class="form-group col-xl-6 col-lg-14">
-                            <label for="NotesCrew">NOTES FOR CREW:</label>
-                            <p>{{ $activity->crewnotes }}</p>
+                            <label for="NotesCrew">NOTES FOR CREW</label>
+                            <p><strong>{{ $activity->crewnotes }}</strong></p>
                         </div>
                     </div>
 

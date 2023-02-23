@@ -4,15 +4,18 @@
 
 
 <div class="row dashboard_col" id="login">
-    <div class="col-md-12 dashboard_sec">
 
-        <div class="row">
-            {{-- <div class="teck-btn justify-content-start">
+    <div class="col-md-12 activies_table">
 
-                <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/clander icon.png') }}" class="img-fluid"> Go Back</a>
-            </div> --}}
+        <div class="row activity_col">
+            <div class="teck-btn justify-content-start">
+
+                <a href="{{ route('/documents') }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:20px;"> Go Back</a>
+            </div>
 
             <div class="col-md-12 dashboard-heading-desc upcoming_activities">
+                <h4>Create Category </h4>
+                <p class="col-12-descrapction">Here You can Categorize Your Documents By Assigning Name to A Category</p>
 
                 @if (Session::has('status'))
 
@@ -32,55 +35,52 @@
 
                 <div class="row">
                     <div class="col-lg-12 col-md-12 upcoming_activities">
-<div class="teck-btn-view-activites justify-content-end">
-                                        <form class="teck-form upload-form" enctype="multipart/form-data" method="POST" action="{{route('/activity-type-add')}}">
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-12">
+
+                <form class="teck-form upload-form" enctype="multipart/form-data" method="POST" action="{{route('/create-document-add')}}">
 
                     @csrf
                     <div class="row">
                         <div class="col-xl-6 col-lg-6">
-                            <input type="name" class="form-control" name="type_name" placeholder="Activity type here..." id="type_name" value="{{ old('type_name')}}">
+                            <label for="document-name"> Document Category Name</label>
+                            <input type="name" class="form-control" name="doc_name" id="doc_name" value="{{ old('doc_name') }}">
                             @if($errors->any())
-                            <p style="color:red ;">{{$errors->first('type_name') }}</p>
+                            <p style="color:Red">{{$errors->first('doc_name')}}</p>
                             @endif
                         </div>
 
                         <div class=" col-xl-6 col-lg-6">
-                            <div class="teck-btn justify-content-left" style="justify-content: left;">
-                                <button type="submit" class="btn btn-primary"> <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Create New
-                                    Type</button>
+                            <label for="document-name"> </label>
+                            <div class="teck-btn" style="margin-top:5px;">
+                                <button type="submit" class="btn btn-primary"> <img src="{{ asset('assets/images/save.svg') }}" class="img-fluid"> Create
+                                    Category</button>
                             </div>
 
                         </div>
 
                     </div>
                 </form>
-                        </div>
-                    </div>
-                    </div>
-                    
-                </div>
-            </div></div>
 
+                <div class="col-md-12 activies_table">
+                    <div class="row activity_col">
 
-<div class="col-md-12 activies_table">
-        <div class="row activity_col">
-                <div class="col-md-12">
-                    <div class="col-md-12 dashboard-heading-desc dashboard-heading-container">
-                <div class="row">
-                    <div class="col-lg-8 col-md-12 upcoming_activities">
-                        <h1>Activity Types</h1>
-                        <p class="col-12-descrapction">This is a list of the different activity categories for easier management.</p>
-                    </div>
+                        <div class="col-md-12">
+                            <div class="teck-table">
 
-                </div>
-            </div>
                                 <table class="rwd-table">
 
-                                    <thead class="list-table-heading">
+                                    <thead>
                                         <tr>
-                                            <th class="th-heading">Activity Type Name</th>
+                                            <th class="th-heading">Cateogry Name</th>
                                             <th class="th-heading">Created At</th>
                                             <th class="th-heading-brief">Action</th>
+
                                         </tr>
                                     </thead>
 
@@ -88,16 +88,18 @@
 
                                         <?php
 
+                                        $docx = \App\Models\DocumentCategory::all();
+
                                         // print_r($docx);
                                         // exit;
 
-                                        if ($types->isNotEmpty()) {
+                                        if ($docx->isNotEmpty()) {
 
-                                            foreach ($types as $d) {
+                                            foreach ($docx as $d) {
                                         ?>
                                                 <tr>
-                                                    <td><p><b>{{$d->type_name}}<b></p></td>
-                                                    <td>{{$d->created_at}}</td>
+                                                    <td>{{$d->name}}</td>
+                                                    <td>{{date('d M Y', strtotime($d->created_at))}}</td>
                                                     <td class="action" width="150">
 
                                                         <div class="dropdown">
@@ -107,10 +109,10 @@
                                                                 <span></span>
                                                             </button>
                                                             <div class="dropdown-menu" aria-labelledby="BtnAction">
-                                                                <a class="dropdown-item" href="{{route('/activity-type-edit',[$d->id])}}">Edit</a>
+                                                                <a class="dropdown-item" href="{{route('/create-document-edit',[$d->id])}}">Edit</a>
 
 
-                                                                <a class="dropdown-item" href="#" onclick="DeleteType('{{$d->id}}')">Delete</a>
+                                                                <a class="dropdown-item" href="#" onclick="DeleteDocx('{{$d->id}}')">Delete</a>
 
                                                             </div>
                                                         </div>
@@ -119,13 +121,7 @@
                                                 </tr>
                                         <?php
                                             }
-                                        }else{
-                                           ?>
-                                           <tr>
-                                            <td>No data Found</td>
-                                           </tr>
-                                           <?php
-;                                        }
+                                        }
 
 
                                         ?>
@@ -186,8 +182,8 @@
                 }
             }
 
-            function ShowWarningAlert(msg,id) {
 
+            function ShowWarningAlert(msg,id) {
 
                 Swal.fire({
                     title: 'Are you sure?',
@@ -200,7 +196,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         console.log('deleteID');
-                        window.location.href = "{{URL::to('/activity-type-delete')}}/" + id;
+                        window.location.href = "{{URL::to('document-category-delete')}}/" + id;
                         // Swal.fire(
                         //     'Deleted!',
                         //     'Your file has been deleted.',
@@ -213,20 +209,11 @@
 
             }
 
-            function DeleteType(id) {
+            function DeleteDocx(id) {
 
                 if (ShowWarningAlert('Do You Want Delete ?', id)) {
-                    // window.location.href = "{{URL::to('/activity-type-delete')}}/" + id;
+                    window.location.href = "{{URL::to('document-category-delete')}}/" + id;
                 }
 
             }
-
-
-            // function DeleteType(id) {
-
-            //     if (confirm('Do You Want Delete ?')) {
-            //         window.location.href = "{{URL::to('/activity-type-delete')}}/" + id;
-            //     }
-
-            // }
         </script>

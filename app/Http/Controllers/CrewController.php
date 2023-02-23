@@ -357,6 +357,8 @@ class CrewController extends Controller
 
         try {
 
+            $password_update = false;
+
             $emailaddress = $request->emailaddress;
             $secondarynumber = $request->secondarynumber;
             $boatpreference = $request->boatpreference;
@@ -399,7 +401,9 @@ class CrewController extends Controller
 
                     $update_pass_user_table = User::whereId($crew[0]->user_id)->Update(['password' => $password]);
                     $update_pass_crew_table = Crew::where('user_id', $crew[0]->user_id)->Update(['pswd' => $password]);
-                    //dd('t');
+                    // dd($update_pass_crew_table);
+                    $password_update = true;
+
                 } else {
                     return redirect()->back()->withErrors(['msg' => 'Access Denied']);
                 }
@@ -461,9 +465,9 @@ class CrewController extends Controller
             $update = Crew::WHERE('id', $crewid)->UPDATE($crew_data);
             $update_role = User::WHERE('id',$request->user_id)->UPDATE(['role_id'=>$request->role_id]);
 
-           //dd($update);
+        //    dd($update);
 
-            if ($update) {
+            if ($update || $password_update) {
                 $messages[] =  "User Data Updated Successfully";
                 return redirect('/crew-members')->with(['status' => true, 'msg' => 'Success ! Member Updated']);
             } else {
@@ -533,13 +537,15 @@ class CrewController extends Controller
             $user_id = $user->user_id;
             // dd($user_id);
 
-            $delete_user = User::whereId($user_id)->delete();
+            // $delete_user = User::whereId($user_id)->delete();
+            $delete_crew = Crew::whereId($id)->delete();
+
 
 
             // dd($delete_user ,$delete_crew);
 
-            if ($delete_user) {
-                $delete_crew = Crew::whereId($id)->delete();
+            if ($delete_crew) {
+                // $delete_crew = Crew::whereId($id)->delete();
                 return redirect('/crew-members')->with(['status' => true, 'msg' => 'Success! Member Deleted']);
             } else {
                 return redirect('/crew-members')->with(['status' => false, 'msg' => 'Error! Member Delete Failed']);

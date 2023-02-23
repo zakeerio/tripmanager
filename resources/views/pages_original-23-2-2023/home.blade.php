@@ -92,6 +92,7 @@
     </div>
 
     <div class="col-md-12 activies_table">
+        <div class="font-weight-bold mt-3">{{ ($upcoming_activites) ? $upcoming_activites->total() : '0' }} Records</div>
 
         <div class="row activity_col">
 
@@ -116,8 +117,8 @@
                         <thead>
                             <tr>
                                 <th class="th-heading">Activity</th>
-                                <th class="th-heading">Date / Time</th>
-                                <th class="th-heading-brief">Crew Notes</th>
+                                <th class="th-heading">Activity Date</th>
+                                <th class="th-heading-brief">Brief</th>
                                 <th class="th-heading">Duration</th>
                                 <th class="th-heading">Crew Needed</th>
                                 <th class="th-heading">Crew</th>
@@ -133,7 +134,7 @@
 
                             <tr class="">
 
-                                <td width="250">
+                                <td width="300">
 
                                     <div class="table-div">
 
@@ -158,14 +159,14 @@
 
                                         ?>
 
-                                                    <p> <b>{{$trip->boatname}}</b> <br>{{$trip->destination}}<br>
-                                                        #{{$trip->id}}
-                                                    </p>
+                                        <p> <b>{{$trip->boatname}}</b> <br>
+                                            #{{$trip->id}}
+                                        </p>
 
                                     </div>
 
-                                       <td>{{ date('d-M-Y', strtotime($trip->departuredate)) }}<br>at {{ date('h:i A', strtotime($trip->departuretime)) }}</td>
-                                <td width="300" style="padding-right:30px">{!! $trip->crewnotes !!}</td>
+                                <td>{{$trip->departuredate}}</td>
+                                <td width="300">{!! $trip->crewnotes !!}</td>
                                 <td>
                                     @php
                                         $durationfinal = 0;
@@ -181,7 +182,7 @@
                                         }
                                     @endphp
                                     {{ $durationfinal }} hours</td>
-                                <td>{{ $trip->crewneeded }} Members</td>
+                                <td>{{ $trip->crewneeded }} Crew Members</td>
 
                                 <td width="250">
                                     <?php
@@ -227,7 +228,7 @@
                                         $isReady = 'completed';
                                     @endphp
 
-                                    <td width="180" data-th="Net Amount">
+                                    <td width="200" data-th="Net Amount">
                                         <span class="active-btn"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Completed</span>
                                     </td>
 
@@ -235,7 +236,7 @@
 
                                         @if(($check_crewcount >= $trip->crewneeded ) ? 'teck-danger' : "" )
 
-                                            <td width="180" data-th="Net Amount">
+                                            <td width="200" data-th="Net Amount">
                                                 <span class="active-btn"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Ready</span>
                                             </td>
                                         @php
@@ -245,7 +246,7 @@
                                     @php
                                         $isReady = 'Needed';
                                         @endphp
-                                        <td width="180" data-th="Net Amount" class="crew_btn">
+                                        <td width="240" data-th="Net Amount" class="crew_btn">
                                             <span class="active-btn-2"><img src="{{ asset('assets/images/Button-Crew-Needed.png') }}" class="alrt-image" alt=""> Crew Needed</span>
                                         </td>
 
@@ -267,11 +268,11 @@
                                             @if(Session::get('role') !='crewmember')
                                                 <a class="dropdown-item" href="{{ route('all-activities-view', [$trip->id,$isReady]) }}">View Activity</a>
 
-                                                <a class="dropdown-item" href="{{ route('all-activities-edit',[$trip->id,$isReady]) }}">Edit Activity</a>
                                                 @if($trip->archived ==NULL || $trip->archived =="")
+                                                    <a class="dropdown-item" href="{{ route('all-activities-edit',[$trip->id,$isReady]) }}">Edit Activity</a>
                                                     <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete Activity</a>
-                                                {{-- @else --}}
-                                                    {{-- <a class="dropdown-item" href="#">Not Editable</a> --}}
+                                                @else
+                                                    <a class="dropdown-item" href="#">Not Editable</a>
                                                 @endif
 
                                                 {{-- <a class="dropdown-item" href="{{ route('all-activities-edit', [$trip->id,$isReady]) }}">Edit Activity</a> --}}

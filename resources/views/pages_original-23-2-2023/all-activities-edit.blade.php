@@ -65,31 +65,21 @@
 <div class="row dashboard_col" id="all-activities-edit">
 
     <div class="col-md-12 dashboard_Sec">
-<div class="row">
-            <div class="col-xl-8 col-lg-12 teck-acticites">
 
-            </div>
-            <div class="col-xl-4 col-lg-12">
-                <div class="teck-btn justify-content-end" id="teck-btn-pag-3">
-                     <a href="/all-activities/" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:20px;"> Go Back</a>
-                </div>
-            </div>
+        <h1>Activities - Edit an existing activity</h1>
+        <p>Please amend any details below and click save changes to submit</p>
+        <div class="teck-btn justify-content-start">
+
+            <a href="{{ route('all-activities')  }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:20px;"> Go Back</a>
+        </div>
+
+    </div>
 
 
 
     <div class="col-md-12 activies_table">
 
         <div class="row activity_col">
-            <div class="col-md-12">
-                <div class="col-md-12 dashboard-heading-desc dashboard-heading-container">
-                   <div class="row">
-                      <div class="col-lg-12">
-                        <h1>All Activities - Edit an existing activity</h1>
-                        <p class="col-12-descrapction">To update an activities details, please edit the required fields and press the "Update Activity" button.</p>
-                 </div>
-            </div>
-
-         </div>
 
             <div class="col-md-12 dashboard-heading-desc">
                 <div class="row">
@@ -132,17 +122,10 @@
                 <form class="teck-form" method="post" action="{{ route('all-activites-update') }}">
                     @csrf
 
-
-                    @php
-                        $archivedisabled = ($activity->archived == "Y") ? "disabled" : "";
-                    @endphp
-
-                    {{ $archivedisabled }}
-
                     <input type="hidden" name="id" class="form-control" required id="" value="{{ $activity->id }}">
 
                     <div class="form-row">
-                        <div class="form-group col-xl-2 col-lg-6">
+                        <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityNumber">ACTIVITY NUMBER</label>
                             <input type="text" name="tripnumber" class="form-control" required id="ActivityNumber" value="{{ $activity->id }}" disabled>
 
@@ -153,7 +136,7 @@
                         <div class="form-group col-xl-4 col-lg-6">
                             <label for="ActivityItem">SELECT ACTIVITY ITEM</label>
 
-                            <select id="ActivityItem" name="boatname" class="form-control" required {{ $archivedisabled }}>
+                            <select id="ActivityItem" name="boatname" class="form-control" required>
 
 
                                 <option value="">__SELECT__</option>
@@ -183,40 +166,39 @@
                             @endif
 
                         </div>
-                        <div class="form-group col-xl-2 col-lg-12">
+                        <div class="form-group col-xl-4 col-lg-12">
                             <label for="ActivityDate">ACTIVITY DATE</label>
-                            <input type="date" name="departuredate" class="form-control"  {{ $archivedisabled }} required id="ActivityDate" value="{{ $activity->departuredate }}">
+                            <input type="date" name="departuredate" class="form-control" required id="ActivityDate" value="{{ $activity->departuredate }}">
 
                             @if($errors->any())
                             <p style="color:Red">{{$errors->first('departuredate')}}</p>
                             @endif
 
                         </div>
-                         <div class="form-group col-xl-2 col-lg-6">
-                            <label for="ActivityTime">ACTIVITY TIME</label>
-                            <input type="time" name="departuretime" class="form-control" {{ $archivedisabled }} required id="ActivityTime" value="{{ $activity->departuretime }}">
-
-                            @if($errors->any())
-                            <p style="color:Red">{{$errors->first('departuretime')}}</p>
-                            @endif
-                        </div>
-                        <div class="form-group col-xl-2 col-lg-6">
-                            <label for="ActivityDuration">ACTIVITY DURATION</label>
-                            <input type="text" name="duration" class="form-control" required {{ $archivedisabled }} id="ActivityDuration" placeholder="Enter duration in decimal hours (2.5) rather than 2:30" value="{{ $activity->duration }}">
-
-                            @if($errors->any())
-                            <p style="color:Red">{{$errors->first('duration')}}</p>
-                            @endif
-                        </div>
                     </div>
 
 
 
                     <div class="form-row">
+                        <div class="form-group col-xl-4 col-lg-6">
+                            <label for="ActivityTime">ACTIVITY TIME</label>
+                            <input type="time" name="departuretime" class="form-control" required id="ActivityTime" value="{{ $activity->departuretime }}">
 
-                        <div class="form-group col-xl-8 col-lg-12">
+                            @if($errors->any())
+                            <p style="color:Red">{{$errors->first('departuretime')}}</p>
+                            @endif
+                        </div>
+                        <div class="form-group col-xl-4 col-lg-6">
+                            <label for="ActivityDuration">ACTIVITY DURATION</label>
+                            <input type="text" name="duration" class="form-control" required id="ActivityDuration" placeholder="Enter duration in decimal hours (2.5) rather than 2:30" value="{{ $activity->duration }}">
+
+                            @if($errors->any())
+                            <p style="color:Red">{{$errors->first('duration')}}</p>
+                            @endif
+                        </div>
+                        <div class="form-group col-xl-4 col-lg-12">
                             <label for="BriefDescription">BRIEF DESCRIPTION</label>
-                            <input type="text" name="destination" class="form-control" required {{ $archivedisabled }} id="BriefDescription" value="{{ $activity->destination }}">
+                            <input type="text" name="destination" class="form-control" required id="BriefDescription" value="{{ $activity->destination }}">
 
                             @if($errors->any())
                             <p style="color:Red">{{$errors->first('destination')}}</p>
@@ -231,17 +213,16 @@
                             <h4>Crew Information</h4>
                             <p class="col-12-descrapction">This information is regarding the crew of this activity.</p>
                         </div>
-                        <div class="form-group col-xl-2 col-lg-12">
+                        <div class="form-group col-xl-4 col-lg-12">
                             <label for="NumberCrewNeeded">NUMBER OF CREW NEEDED</label>
-                            <input type="hidden" name="archived" value="{{ $activity->archived }}">
-                            <input type="number" name="crewneeded" min="1" class="form-control" {{ $archivedisabled }} onchange="checkNumberCrewNeeded(this)" oldval="{{ $activity->crewneeded }}"  required id="NumberCrewNeeded" value="{{ $activity->crewneeded }}">
+                            <input type="number" name="crewneeded" min="1" class="form-control" onchange="checkNumberCrewNeeded(this)" oldval="{{ $activity->crewneeded }}"  required id="NumberCrewNeeded" value="{{ $activity->crewneeded }}">
                             <div class="crew-exceed alert alert-danger d-none"></div>
 
                             @if($errors->any())
                             <p style="color:Red">{{$errors->first('crewneeded')}}</p>
                             @endif
                         </div>
-                        <div class="form-group col-xl-2 col-lg-13">
+                        <div class="form-group col-xl-5 col-lg-13">
                             <label for="TripCost">TRIP COST(£)</label>
                             <input type="number" name="tripcost" class="form-control" required id="TripCost" value="{{ $activity->cost }}">
 
@@ -249,7 +230,7 @@
                             <p style="color:Red">{{$errors->first('tripcost')}}</p>
                             @endif
                         </div>
-                        <div class="form-group col-xl-2 col-lg-14">
+                        <div class="form-group col-xl-6 col-lg-14">
                             <label for="BalanceDue">BALANCE DUE(£)</label>
                             <input type="number" name="tripbalance" class="form-control" required id="BalanceDue" value="{{ $activity->balance }}">
 
@@ -258,7 +239,7 @@
                             @endif
 
                         </div>
-                        <div class="form-group col-xl-2 col-lg-15">
+                        <div class="form-group col-xl-7 col-lg-15">
                             <label for="PassengerCout">PASSENGER COUNT</label>
                             <input type="number" name="passengers" class="form-control" required id="PassengerCout" value="{{ $activity->passengers }}">
 
@@ -339,13 +320,9 @@
 
                         ?>
 
-                        @php
-                        $ondragover = ($activity->archived !="Y" || $activity->archived !="" ) ? 'ondragover=allowDrop(event,this)' : "";
-                        @endphp
-
                         <div class="col-sm-4">
                             <label class="confirm_label">Confirmed Crew</label>
-                            <div id="div2" ondrop="drop(event,this)" {{ $ondragover }}  target="confirmed" content="confirmed[]">
+                            <div id="div2" ondrop="drop(event,this)" ondragover="allowDrop(event)" target="confirmed" content="confirmed[]">
                                 <?php
 
                                 if (!empty($confirmed)) {
@@ -363,7 +340,7 @@
 
                         <div class="col-sm-4">
                             <label class="available_label">Available Crew</label>
-                            <div id="div3" ondrop="drop(event,this)"  {{ $ondragover }}  target="available" content="available[]">
+                            <div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)" target="available" content="available[]">
                                 <?php
 
                                 if (!empty($available)) {
@@ -382,8 +359,7 @@
                         <div class="col-sm-4">
                             <label class="unavailable_label">Un Available Crew</label>
 
-
-                            <div id="div1" ondrop="drop(event,this)" {{ $ondragover }} target="unavailable" content="unavailable[]">
+                            <div id="div1" ondrop="drop(event,this)" ondragover="allowDrop(event,this)" target="unavailable" content="unavailable[]">
                                 <?php
 
 
@@ -516,5 +492,30 @@
 
     }
 
+
+    function ShowWarningAlert(msg) {
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: msg,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            }
+
+            return result.isConfirmed
+        });
+
+
+    }
 </script>
 @stop

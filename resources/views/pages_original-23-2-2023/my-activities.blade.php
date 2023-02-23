@@ -1,123 +1,59 @@
 @extends('layouts.default')
 
 @section('content')
-
-<?php
-
-// print_r(file_exists(public_path().'/assets/activity-images'.'/'.'638740b37298f9umAI8GUdHac1 (1).png'));
-
-// exit;
-
-?>
-<div class="row dashboard_col" id="dashboard">
-
+<div class="row dashboard_col" id="my-activities">
     <div class="col-md-12 dashboard_Sec">
-
-        <h1>Dashboard</h1>
-
-        <p>Hey <strong>{{ (Auth::user() !== null) ? Auth::user()->name : '' }}</strong>, welcome to your dashboard.</p>
-        @if (Session::has('status'))
-
-        @if(Session::get('status'))
-        <script>
-            var msg = "{{Session::get('msg')}}";
-            ShowToast(msg, 'success');
-        </script>
-        @else
-        <script>
-            var msg = "{{Session::get('msg')}}";
-            ShowToast(msg, 'error');
-        </script>
-        @endif
-
-        @endif
-
-    </div>
-    <div class="col-lg-12 row-2">
-
         <div class="row">
+            <div class="col-xl-8 col-lg-12 teck-acticites">
+                <h1>My Activities</h1>
+                <p>This is a list of all the scheduled activities in the Activity Manager system..</p>
 
-            <div class="col-lg-3 col-md-12 teck-first-colum">
 
-                <div class="icon-box">
+                {{-- <div class="teck-btn justify-content-start">
 
-                    <img src="{{ asset('assets/images/1.png') }}" class="img-box" alt="">
-
-                    <p>
-                        <span>{{ $current_month_crews->count() }}</span>
-                        Activities <br> This Month
-
-                    </p>
-
-                </div>
+                    <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:20px;"> Go Back</a>
+                </div> --}}
 
             </div>
 
-            <div class="col-lg-3 col-md-12 teck-second-colum">
+            @if (Session::has('status'))
 
-                <div class="icon-box">
+            @if(Session::get('status'))
+            <script>
+                var msg = "{{Session::get('msg')}}";
+                ShowToast(msg, 'success');
+            </script>
+            @else
+            <script>
+                var msg = "{{Session::get('msg')}}";
+                ShowToast(msg, 'error');
+            </script>
+            @endif
 
-                    <img src="{{ asset('assets/images/2.png') }}" class="img-box" alt="">
-
-                    <p>
-                        <span>{{ $month_hours }}</span>
-
-                        Hours Logged <br> This Month
-
-                    </p>
-
+            @endif
+            @if(Session::get('role') !='crewmember')
+            <div class="col-xl-4 col-lg-12">
+                <div class="teck-btn justify-content-end" id="teck-btn-pag-3">
+                    <a href="{{ route('all-activities-create', auth()->user()->id ) }}"><img src="{{ 'assets/images/clander icon.png' }}" class="img-fluid">Create Activity</a>
                 </div>
-
             </div>
-
-            <div class="col-lg-3 col-md-12 teck-third-colum">
-
-                <div class="icon-box">
-
-                    <img src="{{ asset('assets/images/3.png') }}" class="img-box" alt="">
-
-                    <p>
-                        <span>{{$year_hours}}</span>
-
-                        Hours Logged <br> This Year
-
-                    </p>
-
-                </div>
-
-            </div>
-
+            @endif
         </div>
-
     </div>
+
 
     <div class="col-md-12 activies_table">
 
+        <div class="font-weight-bold">{{ ($trips) ? $trips->total() : '0' }} Records</div>
         <div class="row activity_col">
-
-            <div class="col-md-12 dashboard-heading-desc">
-                <div class="row">
-                    <div class="col-lg-8 col-md-12 upcoming_activities">
-                        <h4>Your upcoming activities <span class="circle-green">{{count($upcoming_activites)}}</span></h4>
-                        <p class="col-12-descrapction">Below is a list of the upcoming activities you are scheduled to attend within the next 30 days.</p>
-                    </div>
-
-                    <div class="col-lg-4 col-md-12">
-                        <div class="teck-btn-view-activites justify-content-end">
-                            <a href="{{ route('my-activities') }}"><img src="{{ asset('assets/images/All-Activities.png') }}" class="view-activites-icon">View all my activities</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="col-md-12">
                 <div class="teck-table">
-                    <table class="rwd-table table" @if ($upcoming_activites->count() > 0 ) id="datatables" @endif >
-
+                    <table class="rwd-table" @if ($trips->count() > 0 ) id="datatables" @endif >
                         <thead>
                             <tr>
                                 <th class="th-heading">Activity</th>
-                                <th class="th-heading">Date / Time</th>
-                                <th class="th-heading-brief">Crew Notes</th>
+                                <th class="th-heading">Activity Date</th>
+                                <th class="th-heading-brief">Brief</th>
                                 <th class="th-heading">Duration</th>
                                 <th class="th-heading">Crew Needed</th>
                                 <th class="th-heading">Crew</th>
@@ -128,12 +64,12 @@
 
                         <tbody>
 
-                            @forelse ($upcoming_activites as $trip )
+                            @forelse ($trips as $trip )
 
 
                             <tr class="">
 
-                                <td width="250">
+                                <td width="300">
 
                                     <div class="table-div">
 
@@ -158,14 +94,15 @@
 
                                         ?>
 
-                                                    <p> <b>{{$trip->boatname}}</b> <br>{{$trip->destination}}<br>
-                                                        #{{$trip->id}}
-                                                    </p>
+                                        <p> <b>{{$trip->boatname}}</b> <br>
+                                            #{{$trip->id}}
+                                        </p>
 
                                     </div>
+                                </td>
 
-                                       <td>{{ date('d-M-Y', strtotime($trip->departuredate)) }}<br>at {{ date('h:i A', strtotime($trip->departuretime)) }}</td>
-                                <td width="300" style="padding-right:30px">{!! $trip->crewnotes !!}</td>
+                                <td>{{$trip->departuredate}}</td>
+                                <td width="300">{{$trip->crewnotes }}</td>
                                 <td>
                                     @php
                                         $durationfinal = 0;
@@ -181,7 +118,7 @@
                                         }
                                     @endphp
                                     {{ $durationfinal }} hours</td>
-                                <td>{{ $trip->crewneeded }} Members</td>
+                                <td>{{ $trip->crewneeded }} Crew Members</td>
 
                                 <td width="250">
                                     <?php
@@ -191,29 +128,28 @@
 
                                     $members = \App\Models\Tripcrew::where(['tripnumber' => $trip->id, 'confirmed' => 'Y'])->get();
 
-                                    $check_crewcount = 0;
+                                    $check_crewcount = 0; // echo $check_crewcount."<br>";
 
 
                                     if (!empty($members)) {
 
                                         foreach ($members as $m) {
-
-                                            // echo $m->isskipper . ",11";
                                             $member = \App\Models\Crew::where(['initials' => $m->crewcode])->first();
 
-                                            if($member && $m->isskipper != 'Y' && $m->isskipper == '') {
-                                                $check_crewcount++;
-
-                                                echo $m->crewcode . ",";
+                                            if($member){
+                                                if ($m->isskipper != 'Y' && $m->isskipper == '') {
+                                                    $check_crewcount++;
+                                                    echo $m->crewcode . ",";
+                                                }
+                                                $i++;
                                             }
-                                            $i++;
                                     ?>
 
                                     <?php
                                         }
                                     }
-                                    ?>
 
+                                    ?>
                                 </td>
 
 
@@ -227,7 +163,7 @@
                                         $isReady = 'completed';
                                     @endphp
 
-                                    <td width="180" data-th="Net Amount">
+                                    <td width="200" data-th="Net Amount">
                                         <span class="active-btn"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Completed</span>
                                     </td>
 
@@ -235,7 +171,7 @@
 
                                         @if(($check_crewcount >= $trip->crewneeded ) ? 'teck-danger' : "" )
 
-                                            <td width="180" data-th="Net Amount">
+                                            <td width="200" data-th="Net Amount">
                                                 <span class="active-btn"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Ready</span>
                                             </td>
                                         @php
@@ -245,7 +181,7 @@
                                     @php
                                         $isReady = 'Needed';
                                         @endphp
-                                        <td width="180" data-th="Net Amount" class="crew_btn">
+                                        <td width="240" data-th="Net Amount" class="crew_btn">
                                             <span class="active-btn-2"><img src="{{ asset('assets/images/Button-Crew-Needed.png') }}" class="alrt-image" alt=""> Crew Needed</span>
                                         </td>
 
@@ -261,33 +197,17 @@
                                             <span></span>
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="BtnAction">
-                                            <!-- <a class="dropdown-item" href="{{ route('all-activities-edit', [$trip->id,$isReady]) }}">1Edit</a>
-                                                 <a class="dropdown-item" href="#">Delete</a> -->
 
-                                            @if(Session::get('role') !='crewmember')
-                                                <a class="dropdown-item" href="{{ route('all-activities-view', [$trip->id,$isReady]) }}">View Activity</a>
-
-                                                <a class="dropdown-item" href="{{ route('all-activities-edit',[$trip->id,$isReady]) }}">Edit Activity</a>
-                                                @if($trip->archived ==NULL || $trip->archived =="")
-                                                    <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete Activity</a>
-                                                {{-- @else --}}
-                                                    {{-- <a class="dropdown-item" href="#">Not Editable</a> --}}
-                                                @endif
-
-                                                {{-- <a class="dropdown-item" href="{{ route('all-activities-edit', [$trip->id,$isReady]) }}">Edit Activity</a> --}}
-                                            @else
-                                                <a class="dropdown-item" href="{{ route('all-activities-view', [$trip->id,$isReady]) }}">View Activity</a>
-
-                                                <?php
-
+                                            <?php
 
                                                 $initials = Session::get('initials');
                                                 $check = \App\Models\Tripcrew::where(['crewcode' => $initials, 'tripnumber' => $trip->id])->first();
 
+                                                //  dd($check);
                                                 if (!empty($check)) {
-
+                                                    // echo $check->available;
                                                     if ($check->available == 'Y' || $check->confirmed == 'Y') {
-                                                        $isAvailable = "I'm not Available";
+                                                        $isAvailable = "I'm not available";
                                                         $route = route('all-activities-available-unavailable', $trip->id);
                                                     } else {
                                                         $isAvailable = "I'm available";
@@ -298,9 +218,27 @@
                                                     $route = route('all-activities-available-unavailable', $trip->id);
                                                 }
 
-                                                ?>
+                                            ?>
+
+                                            @if(Session::get('role') !='crewmember')
+                                                <a class="dropdown-item" href="{{ route('all-activities-view',  [$trip->id,$isReady]) }}">View Activity</a>
+                                                @if($trip->archived ==NULL || $trip->archived =="")
+                                                    <a class="dropdown-item" href="{{ route('all-activities-edit',[$trip->id,$isReady]) }}">Edit Activity</a>
+                                                    <a class="dropdown-item" href="#" onclick="DeleteActivity('{{$trip->id}}')">Delete Activity</a>
+                                                @else
+                                                    <a class="dropdown-item" href="#">Not Editable</a>
+                                                @endif
+                                                {{-- <a class="dropdown-item" href="{{ route('all-activities-edit',  [$trip->id,$isReady]) }}">Edit Activity</a> --}}
+                                            @else
+
+                                                <a class="dropdown-item" href="{{ route('all-activities-view',[$trip->id,$isReady]) }}">View activity</a>
+
+                                            @endif
+                                            @if($trip->archived ==NULL || $trip->archived =="")
                                                 <a class="dropdown-item" href="<?php echo $route ?>"><?php echo $isAvailable ?></a>
                                             @endif
+
+
                                         </div>
                                     </div>
 
@@ -314,7 +252,6 @@
                             </tr>
                             @endforelse
                             {{-- <tr>
-
 
 
                                     "id" => 1006
@@ -439,296 +376,23 @@
             </table>
 
 
-            {{-- <table class="rwd-table">
-
-                            <tbody>
-
-                                <tr>
-
-                                    <th>Activity</th>
-
-                                    <th>Activity Date</th>
-
-                                    <th>Brief</th>
-
-                                    <th>Duration</th>
-
-                                    <th>Crew Needed</th>
-
-                                    <th>Crew</th>
-
-                                    <th>Status</th>
-
-                                </tr>
-
-                                <tr>
-
-
-
-                                    <td data-th="Supplier Code">
-
-                                        <div class="table-div">
-
-                                            <img src="{{ asset('assets/images/Picture-01.png') }}" class="img-fluid"
-            alt="">
-
-            <p><b>Hugh Henshall </b><br> #7083 </p>
-
         </div>
-
-        </td>
-
-        <td data-th="Supplier Name">
-
-            <p>
-
-                Tue 26th July '22 <br> 09:00 AM
-
-            </p>
-
-        </td>
-
-        <td data-th="Invoice Number">
-
-            Tuesday Bacon Cob Cruise
-
-        </td>
-
-        <td data-th="Invoice Date">
-
-            8 hours
-
-        </td>
-
-        <td data-th="Due Date">
-
-            6 Crew Members
-
-        </td>
-
-        <td data-th="Net Amount">
-
-            <p>ADL, CH, KW1,
-
-                PLE, AB, JKL</p>
-
-        </td>
-
-        <td data-th="Net Amount">
-
-            <span class="active-btn"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Ready</span>
-
-        </td>
-        <td class="action">
-            <div class="dropdown">
-                <button class="btn" type="button" id="BtnAction" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-                <div class="dropdown-menu" aria-labelledby="BtnAction">
-                    <a class="dropdown-item" href="{{ route('all-activities-edit', 3) }}">Edit</a>
-                    <a class="dropdown-item" href="#">Delete</a>
-                </div>
-            </div>
-        </td>
-        </tr>
-
-        <tr class="teck-danger">
-
-            <td data-th="Supplier Code">
-
-                <div class="table-div">
-
-                    <img src="{{ asset('assets/images/Picture-02.png') }}" class="img-fluid" alt="">
-
-                    <p><b>Seth Ellis</b><br> #7084 </p>
-
-                </div>
-
-            </td>
-
-            <td data-th="Supplier Name">
-
-                <p>
-
-                    Wed 27th July '22 <br> 09:15 AM
-
-                </p>
-
-            </td>
-
-            <td data-th="Invoice Number">
-
-                Drakehouse 2 hour cruises
-
-            </td>
-
-            <td data-th="Invoice Date">
-
-                7.5 hours
-
-            </td>
-
-            <td data-th="Due Date">
-
-                4 Crew Members
-
-            </td>
-
-            <td data-th="Net Amount">
-
-                <p>ADL, CH,</p>
-
-            </td>
-
-            <td data-th="Net Amount" class="crew_btn">
-
-                <span class="active-btn-2"><img src="{{ asset('assets/images/Button-Crew-Needed.png') }}" class="img-fluid" alt=""> Crew Needed</span>
-
-            </td>
-            <td class="action">
-
-                <div class="dropdown">
-                    <button class="btn" type="button" id="BtnAction" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="BtnAction">
-                        <a class="dropdown-item" href="{{ route('all-activities-edit', 3) }}">Edit</a>
-                        <a class="dropdown-item" href="#">Delete</a>
-                    </div>
-                </div>
-
-            </td>
-
-        </tr>
-
-        <tr>
-
-            <td data-th="Supplier Code">
-
-                <div class="table-div">
-
-                    <img src="{{ asset('assets/images/Picture-02.png') }}" class="img-fluid" alt="">
-
-                    <p><b>Hugh Henshall</b><br> #7083 </p>
-
-                </div>
-
-            </td>
-
-            <td data-th="Supplier Name">
-
-                <p>
-
-                    Tue 26th July '22 <br> 09:00 AM
-
-                </p>
-
-            </td>
-
-            <td data-th="Invoice Number">
-
-                Tuesday Bacon Cob Cruise
-
-            </td>
-
-            <td data-th="Invoice Date">
-
-                8 hours
-
-            </td>
-
-            <td data-th="Due Date">
-
-                6 Crew Members
-
-            </td>
-
-            <td data-th="Net Amount">
-
-                <p>ADL, CH, KW1,
-
-                    PLE, AB, JKL</p>
-
-            </td>
-
-            <td data-th="Net Amount">
-
-                <span class="active-btn"><img src="{{ asset('assets/images/Activity-Ready-Button.png') }}" class="img-fluid" alt=""> Activity Ready</span>
-
-            </td>
-            <td class="action">
-
-                <div class="dropdown">
-                    <button class="btn" type="button" id="BtnAction" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="BtnAction">
-                        <a class="dropdown-item" href="{{ route('all-activities-edit', 3) }}">Edit</a>
-                        <a class="dropdown-item" href="#">Delete</a>
-                    </div>
-                </div>
-
-            </td>
-
-        </tr>
-
-        </tbody>
-        </table> --}}
     </div>
 
-    @if ($upcoming_activites->hasPages())
+    @if ($trips->hasPages())
 
     <div class="row btm-row">
-        {{ $upcoming_activites->links('pagination::bootstrap-4') }}
+        {{ $trips->links('pagination::bootstrap-4') }}
 
     </div>
 
     @endif
 
-
 </div>
-
 </div>
-
-</div>
-
-</div>
-
 @stop
 
 <script>
-    function ShowWarningAlert(msg) {
-
-
-        Swal.fire({
-            title: 'Are you sure?',
-            text: msg,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire(
-                    'Deleted!',
-                    'Your file has been deleted.',
-                    'success'
-                )
-            }
-
-            return result.isConfirmed
-        });
-
-
-    }
-
     function ShowToast(msg, type) {
 
 
@@ -805,13 +469,4 @@
         }
 
     }
-
-
-    // function DeleteActivity(id) {
-
-    //     if (ShowWarningAlert('Do You Want Delete ?')) {
-    //         window.location.href = "{{URL::to('dashboard-activites-delete')}}/" + id;
-    //     }
-
-    // }
 </script>
