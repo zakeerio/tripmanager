@@ -548,9 +548,6 @@ class ActivityController extends Controller
             'destination'              => 'required',
             'crewneeded'               => 'required',
             'crewnotes'                => 'required',
-            'tripbalance'              => 'required',
-            'tripcost'                 => 'required',
-            'passengers'               => 'required',
 
         ]);
 
@@ -748,12 +745,12 @@ class ActivityController extends Controller
         // dd($request->all());
 
         if($request->has('archived') AND $request->archived == "Y"){
-            $this->validate(request(), [
-                'NotesCrew'                => 'required',
-                'tripbalance'              => 'required',
-                'tripcost'                 => 'required',
-                'passengers'               => 'required',
-            ]);
+            // $this->validate(request(), [
+            //     'NotesCrew'                => 'required',
+            //     'tripbalance'              => 'required',
+            //     'tripcost'                 => 'required',
+            //     'passengers'               => 'required',
+            // ]);
 
 
         } else {

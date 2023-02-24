@@ -207,7 +207,7 @@ class CrewController extends Controller
         if($firstaid == "Y") {
             $faexpire = $request->faexpire;
         } else {
-            $faexpire = "";
+            $faexpire = NULL;
         }
 
 
@@ -396,7 +396,7 @@ class CrewController extends Controller
             if($firstaid == "Y") {
                 $faexpire = $request->faexpire;
             } else {
-                $faexpire = "";
+                $faexpire = NULL;
             }
 
 
