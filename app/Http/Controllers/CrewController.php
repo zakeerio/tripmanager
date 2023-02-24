@@ -204,6 +204,12 @@ class CrewController extends Controller
         $password = $request->password;
         $confirmpassword = $request->confirmpassword;
 
+        if($firstaid == "Y") {
+            $faexpire = $request->faexpire;
+        } else {
+            $faexpire = "";
+        }
+
 
         if ($password != "" && ($password == $confirmpassword)) {
 
@@ -256,7 +262,7 @@ class CrewController extends Controller
                     'suspended' => 0,
                     'role_id' => $role_id,
                     // 'traveltime' => $traveltime,
-                    "faexpire" => $request->faexpire
+                    "faexpire" => $faexpire
 
                 );
 
@@ -387,6 +393,13 @@ class CrewController extends Controller
             // $password = $request->password;
             $confirmpassword = $request->confirmpassword;
 
+            if($firstaid == "Y") {
+                $faexpire = $request->faexpire;
+            } else {
+                $faexpire = "";
+            }
+
+
          // dd($request->all());
 
             if (isset($password)) {
@@ -457,7 +470,7 @@ class CrewController extends Controller
                 "iwa" => $iwa,
                 'profile' => $path,
                 // "traveltime" => $traveltime,
-                "faexpire" => $request->faexpire
+                "faexpire" => $faexpire
             );
 
             // dd($crew_data);
