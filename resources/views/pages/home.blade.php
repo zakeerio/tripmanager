@@ -86,6 +86,23 @@
 
                 </div>
 
+                <div class="col-lg-3 col-md-12 teck-third-colum">
+
+                    <div class="icon-box">
+
+                        <img src="{{ asset('assets/images/2.png') }}" class="img-box" alt="">
+
+                        <p>
+                            <span>{{ $total_altogether_hours }}</span>
+
+                            Hours logged <br> Altogether
+
+                        </p>
+
+                    </div>
+
+                </div>
+
             </div>
 
         </div>

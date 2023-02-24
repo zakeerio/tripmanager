@@ -77,8 +77,9 @@
                                 @endforelse
 
                             </ul>
-                        </div>
 
+
+                        </div>
 
                         @if (Session::get('role') != 'crewmember')
                             <div class="teck-btn justify-content-end">
@@ -88,7 +89,12 @@
                             </div>
                         @endif
 
+
+
                     </div>
+                    <div class="teck-btn justify-content-end mt-3">
+                        <a href="{{ route('all-activities') }}">Show All</a>
+                   </div>
                 </div>
             </div>
 

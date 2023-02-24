@@ -34,7 +34,7 @@ class ActivityController extends Controller
 
             if($activitycheck > 0){
                 if (Session::get('role') == 'crewmember') {
-                    $trips = Trip::orderBy('departuredate', 'DESC')
+                    $trips = Trip::orderBy('departuredate', 'ASC')
                     ->where('archived', "=",  NULL)
                     ->orWhere('archived', "=",  "")
                     ->where('boatname',$request->filter)
@@ -42,10 +42,10 @@ class ActivityController extends Controller
                 } else {
 
                     if(isset($request->completed) && $request->completed == 'hide' ){
-                        $trips = Trip::orderBy('departuredate', 'DESC')
+                        $trips = Trip::orderBy('departuredate', 'ASC')
                         ->where('boatname',$request->filter)->paginate(50);
                     } else {
-                        $trips = Trip::orderBy('departuredate', 'DESC')
+                        $trips = Trip::orderBy('departuredate', 'ASC')
                         ->where('archived', "!=",  'Y')
                         ->orWhere('archived', "=",  NULL)
                         ->where('boatname',$request->filter)->paginate(50);
@@ -54,19 +54,19 @@ class ActivityController extends Controller
             } else {
                 if (Session::get('role') == 'crewmember') {
 
-                    $trips = Trip::orderBy('departuredate', 'DESC')
+                    $trips = Trip::orderBy('departuredate', 'ASC')
                     ->where('archived', "=", NULL)
                     ->orWhere('archived', "=",  "")
                     ->paginate(50);
                 } else {
 
                     if(isset($request->completed) && $request->completed == 'hide' ){
-                        // $trips = Trip::orderBy('departuredate', 'DESC')->paginate(50);
-                        $trips = Trip::orderBy('departuredate', 'DESC')
+                        // $trips = Trip::orderBy('departuredate', 'ASC')->paginate(50);
+                        $trips = Trip::orderBy('departuredate', 'ASC')
 
                         ->paginate(50);
                     } else {
-                        $trips = Trip::orderBy('departuredate', 'DESC')
+                        $trips = Trip::orderBy('departuredate', 'ASC')
                         ->where('archived', "!=",  'Y')
                         ->orWhere('archived', "=",  NULL)
                         ->paginate(50);
@@ -77,24 +77,24 @@ class ActivityController extends Controller
         } else {
             if (Session::get('role') == 'crewmember') {
 
-                $trips = Trip::orderBy('departuredate', 'DESC')
+                $trips = Trip::orderBy('departuredate', 'ASC')
                 ->where('archived', "=", NULL)
                 ->orWhere('archived', "=", '')
                 ->paginate(50);
-                // $trips = Trip::orderBy('departuredate', 'DESC')->where('archived', "=", NULL)->toSql();
+                // $trips = Trip::orderBy('departuredate', 'ASC')->where('archived', "=", NULL)->toSql();
                 // dd($trips);
 
 
             } else {
 
                 if(isset($request->completed) && $request->completed == 'hide' ){
-                    // $trips = Trip::orderBy('departuredate', 'DESC')->paginate(50);
-                    $trips = Trip::orderBy('departuredate', 'DESC')
+                    // $trips = Trip::orderBy('departuredate', 'ASC')->paginate(50);
+                    $trips = Trip::orderBy('departuredate', 'ASC')
                     ->paginate(50);
                     // ->toSql();
                     // dd($trips);
                 } else {
-                    $trips = Trip::orderBy('departuredate', 'DESC')
+                    $trips = Trip::orderBy('departuredate', 'ASC')
                     ->where('archived', "!=",  'Y')
                     ->orWhere('archived', "=",  NULL)
                     ->paginate(50);
@@ -380,7 +380,7 @@ class ActivityController extends Controller
             // ->orWhere('tripcrews.skipper', '!=', 'Y')
             // ->orWhere('tripcrews.available', '=', 'Y')
             ->where('trips.departuredate', '>=', date('Y-m-d'))
-            ->orderBy('departuredate')
+            ->orderBy('departuredate', 'ASC')
             // ->orderBy('id', 'DESC')
             // ->distinct()
             ->select('trips.*')
@@ -451,6 +451,45 @@ class ActivityController extends Controller
             }
         } else {
             $total_month_hours = 0;
+        }
+
+        $altogether_hours = DB::table('trips')
+            ->join('tripcrews', 'tripcrews.tripnumber', '=', 'trips.id')
+            ->select(DB::raw('duration as duration,crewcode'))
+            ->where('departuredate', '<', date('Y-m-d'))
+            ->where('archived', '=', "Y")
+            ->where('tripcrews.crewcode', Session::get('initials'))
+            // ->where('tripcrews.isskipper','!=','Y')
+            ->where('tripcrews.confirmed','=','Y')
+
+            ->get();
+
+        if (!empty($altogether_hours)) {
+
+            $total_altogether_hours = 0;
+            foreach ($altogether_hours as $mh) {
+
+                $duration = (!empty($mh->duration)) ? $mh->duration : 0;
+                // dd($duration);
+                if ($duration != 0) {
+                    $duration_val = explode(':', $duration);
+                    $clock = intVal($duration_val[0]);
+
+                    $minutes = ($duration_val[1] / 10);
+                    // dd($clock, $minutes);
+                    $total_altogether_hours += $clock . "." . (int)$minutes;
+                }
+
+                // if (isset($mh->duration) && str_contains($mh->duration, ':')) {
+                //     $hours = explode(':', $mh->duration);
+
+                //     $hours =  ($hours[0]) + ($hours[1] / 60);
+
+                //     $total_altogether_hours += number_format($hours, 0, '.', '');
+                // }
+            }
+        } else {
+            $total_altogether_hours = 0;
         }
         //echo ceil($total_month_hours). ",";
         // dd(str_replace(array('.'),'',$total_month_hours));
@@ -532,7 +571,7 @@ class ActivityController extends Controller
         // $current_month_crews1 = DB::table('trips')->whereBetween('departuredate', [$datefrom, $dateto])->selectRaw('SELECT time(sum(TIMEDIFF( duration, duration )))')->get();
         // dd($current_month_crews);
 
-        return view('pages.home')->with('pagetitle', $pagetitle)->with('current_month_crews', $current_month_crews)->with('tripcrews')->with('month_hours', $total_month_hours)->with('year_hours', $total_year_hours)->with('upcoming_activites', $upcoming_activites);
+        return view('pages.home')->with('pagetitle', $pagetitle)->with("total_altogether_hours", $total_altogether_hours)->with('current_month_crews', $current_month_crews)->with('tripcrews')->with('month_hours', $total_month_hours)->with('year_hours', $total_year_hours)->with('upcoming_activites', $upcoming_activites);
     }
 
 
@@ -1017,7 +1056,7 @@ class ActivityController extends Controller
             // ->where('tripcrews.isskipper', '!=', "Y")
             // ->where('confirmed', '=', 'Y')
             // ->groupBy('tripnumber')
-            ->orderBy('trips.departuredate', 'DESC')
+            ->orderBy('trips.departuredate', 'ASC')
             ->paginate(50);
             // ->get()
             // ->toSql();
@@ -1037,7 +1076,7 @@ class ActivityController extends Controller
             // ->where('tripcrews.isskipper', '!=', "Y")
             // ->where('confirmed', '=', 'Y')
             // ->groupBy('tripnumber')
-            ->orderBy('trips.departuredate', 'DESC')
+            ->orderBy('trips.departuredate', 'ASC')
             ->paginate(50);
             // ->get()
             // ->toSql();
@@ -1061,7 +1100,7 @@ class ActivityController extends Controller
         // ->where('tripcrews.isskipper', '!=', "Y")
         // ->where('confirmed', '=', 'Y')
         // ->groupBy('tripnumber')
-        ->orderBy('trips.departuredate', 'DESC')
+        ->orderBy('trips.departuredate', 'ASC')
         ->paginate(50);
         // ->get()
         // ->toSql();
