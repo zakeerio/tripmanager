@@ -489,4 +489,4 @@ div#main-login {max-width: 580px;}
 .form-row {margin-top: 15px;}
 .col-md-12.dashboard-heading-container {border-bottom: 1px solid #dee2e6;}
 
-
+.draggable-item.crewlead { background: yellow; font-weight: 700; }

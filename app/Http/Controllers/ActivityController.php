@@ -586,7 +586,6 @@ class ActivityController extends Controller
             'duration'                 => 'required',
             'destination'              => 'required',
             'crewneeded'               => 'required',
-            'crewnotes'                => 'required',
 
         ]);
 
@@ -771,6 +770,7 @@ class ActivityController extends Controller
         // if($activity->archived == 'Y'){
         //     return redirect('/all-activities')->with(['status' => false, 'msg' => 'Edit Access Denied for Archived trip !']);
         // }
+
         if ($activity) {
             return view('pages/all-activities-edit')->with("activity", $activity)->with('tripcrews')->with('pagetitle', $pagetitle)->with('status', $status);
         } else {
@@ -800,10 +800,6 @@ class ActivityController extends Controller
                 'duration'                 => 'required',
                 'destination'              => 'required',
                 'crewneeded'               => 'required',
-                'NotesCrew'                => 'required',
-                'tripbalance'              => 'required',
-                'tripcost'                 => 'required',
-                'passengers'               => 'required',
 
             ]);
 

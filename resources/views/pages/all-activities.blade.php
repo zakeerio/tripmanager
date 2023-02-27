@@ -68,6 +68,7 @@
                             @endphp
 
                             <ul class="teck-dropdown">
+                                <li><a href="{{ route('all-activities') }}">Show All</a></li>
                                 @forelse ($activities_filter as $activity)
                                     <li><a
                                             href="{{ route('all-activities') }}?filter={{ $activity->activityname }}{{ $querystring_cat }}">{{ $activity->activityname }}</a>
@@ -92,9 +93,7 @@
 
 
                     </div>
-                    <div class="teck-btn justify-content-end mt-3">
-                        <a href="{{ route('all-activities') }}">Show All</a>
-                   </div>
+
                 </div>
             </div>
 

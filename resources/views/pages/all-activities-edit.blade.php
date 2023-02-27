@@ -1,6 +1,7 @@
 @extends('layouts.default')
 
 @section('content')
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
 
 <style>
@@ -37,7 +38,7 @@
         background-color: #2ecc71;
     }
 
-    input[type=text] {
+    .connected-sortable li.draggable-item {
         cursor: move;
         /* fallback: no `url()` support or images disabled */
         cursor: url(images/grab.cur);
@@ -243,7 +244,7 @@
                         </div>
                         <div class="form-group col-xl-2 col-lg-13">
                             <label for="TripCost">TRIP COST(£)</label>
-                            <input type="number" name="tripcost" class="form-control" required id="TripCost" value="{{ $activity->cost }}">
+                            <input type="number" name="tripcost" class="form-control"  id="TripCost" value="{{ $activity->cost }}">
 
                             @if($errors->any())
                             <p style="color:Red">{{$errors->first('tripcost')}}</p>
@@ -251,7 +252,7 @@
                         </div>
                         <div class="form-group col-xl-2 col-lg-14">
                             <label for="BalanceDue">BALANCE DUE(£)</label>
-                            <input type="number" name="tripbalance" class="form-control" required id="BalanceDue" value="{{ $activity->balance }}">
+                            <input type="number" name="tripbalance" class="form-control"  id="BalanceDue" value="{{ $activity->balance }}">
 
                             @if($errors->any())
                             <p style="color:Red">{{$errors->first('tripbalance')}}</p>
@@ -260,7 +261,7 @@
                         </div>
                         <div class="form-group col-xl-2 col-lg-15">
                             <label for="PassengerCout">PASSENGER COUNT</label>
-                            <input type="number" name="passengers" class="form-control" required id="PassengerCout" value="{{ $activity->passengers }}">
+                            <input type="number" name="passengers" class="form-control"  id="PassengerCout" value="{{ $activity->passengers }}">
 
                             @if($errors->any())
                             <p style="color:Red">{{$errors->first('passengers')}}</p>
@@ -271,7 +272,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="NotesCrew">NOTES FOR CREW</label>
-                            <textarea class="form-control" required id="NotesCrew" rows="5" name="NotesCrew">{{ $activity->crewnotes}}</textarea>
+                            <textarea class="form-control" id="NotesCrew" rows="5" name="NotesCrew">{{ $activity->crewnotes}}</textarea>
 
                             @if($errors->any())
                                 <p style="color:Red">{{$errors->first('NotesCrew')}}</p>
@@ -295,19 +296,22 @@
                         $avaiable = array();
 
                         $available_member = array();
+                        $crewlead = "";
+
+                        $counter = 0;
 
                         foreach ($activity->tripcrews as $key => $crewmember) {
+                            // dd($crewmember);
 
-                            $crew_name = \App\Models\Crew::where(['initials' => $crewmember->crewcode])->first();
+                            // $crew_name = \App\Models\Crew::where(['initials' => $crewmember->crewcode])->first();
 
-                            // if (isset($crew_name['fullname'])) {
-                            //     echo "<pre>";
-                            //     print_r($crew_name['fullname']);
-                            // }
+                            $crew_name = \App\Models\Crew::join('users','users.id','crews.user_id')
+                                ->where(['initials' => $crewmember->crewcode])
+                                ->select('crews.*')
+                                // ->orderBy('initials', 'ASC')
+                                ->first();
 
-                            // echo "<pre>";
-                            //  print_r($crew_name['fullname']);
-
+                                // print_r($crew_name);
 
                             if (!empty($crew_name) && isset($crew_name['fullname'])) {
                                 //  echo $crew_name[0] . "<br>";
@@ -317,13 +321,20 @@
 
                                 $fullname = $crew_name["fullname"];
                                 if ($crewmember->confirmed == 'Y' && $crewmember->isskipper != 'Y') {
-                                    $confirmed[] = "<input type='text' class='form-control' id=drag" . $randome_no_1 . " draggable='true' ondragstart='drag(event)' name='confirmed[]' value='" . $crewmember->crewcode . " : " . $fullname . "' >";
+                                    if($counter !=1) {
+                                        $crewlead = "crewlead";
+                                        $counter = 1;
+                                    } else {
+                                        $crewlead = "";
+                                    }
+
+                                    $confirmed[] = "<li class='draggable-item form-control ".$crewlead."'><input type='hidden' name='confirmed[]' value='" . $crewmember->crewcode . " : " . $fullname . "' > ".$crewmember->crewcode . " : " . $fullname." </li>";
 
                                     $available_member[] = $crew_name['initials'];
                                 }
 
                                 if ($crewmember->available == 'Y' && $crewmember->isskipper != 'Y') {
-                                    $available[] = "<input type='text' class='form-control' id=drag" . $randome_no_2 . " draggable='true' ondragstart='drag(event)' name='available[]' value='" . $crewmember->crewcode . " : " . $fullname . "' >";
+                                    $available[] = "<li class='draggable-item form-control'><input type='hidden' name='available[]' value='" . $crewmember->crewcode . " : " . $fullname . "' >" . $crewmember->crewcode . " : " . $fullname . "</li>";
 
                                     $available_member[] = $crew_name['initials'];
                                 }
@@ -340,12 +351,12 @@
                         ?>
 
                         @php
-                        $ondragover = ($activity->archived !="Y" || $activity->archived !="" ) ? 'ondragover=allowDrop(event,this)' : "";
+                        $connected_sortable = ($activity->archived !="Y" || $activity->archived =="" ) ? 'connected-sortable' : "";
                         @endphp
 
                         <div class="col-sm-4">
                             <label class="confirm_label">Confirmed Crew</label>
-                            <div id="div2" ondrop="drop(event,this)" {{ $ondragover }}  target="confirmed" content="confirmed[]">
+                            <ul id="div2"  class="{{ $connected_sortable }} droppable-area33" target="confirmed" >
                                 <?php
 
                                 if (!empty($confirmed)) {
@@ -358,12 +369,12 @@
 
                                 ?>
 
-                            </div>
+                            </ul>
                         </div>
 
                         <div class="col-sm-4">
                             <label class="available_label">Available Crew</label>
-                            <div id="div3" ondrop="drop(event,this)"  {{ $ondragover }}  target="available" content="available[]">
+                            <ul id="div3"  class="{{ $connected_sortable }} droppable-area22" target="available" >
                                 <?php
 
                                 if (!empty($available)) {
@@ -375,7 +386,7 @@
                                 }
 
                                 ?>
-                            </div>
+                            </ul>
                         </div>
 
 
@@ -383,7 +394,7 @@
                             <label class="unavailable_label">Un Available Crew</label>
 
 
-                            <div id="div1" ondrop="drop(event,this)" {{ $ondragover }} target="unavailable" content="unavailable[]">
+                            <ul id="div1" class="{{ $connected_sortable }} droppable-area11" target="unavailable" >
                                 <?php
 
 
@@ -399,14 +410,14 @@
                                 if (!empty($unavailable)) {
                                     foreach ($unavailable as $ua) {
                                         $randome_no_3= uniqid();
-                                        echo  "<input type='text' class='form-control' id=drag" . $randome_no_3 . " draggable='true' ondragstart='drag(event)' name='unavailable[]' value='" . $ua->initials . " : " . $ua->fullname . "' >";
+                                        echo  "<li class='draggable-item form-control'><input type='hidden' value='" . $ua->initials . " : " . $ua->fullname . "' >" . $ua->initials . " : " . $ua->fullname . "</li>";
                                     }
                                 } else {
                                     echo "No UnAvailable Found";
                                 }
 
                                 ?>
-                            </div>
+                            </ul>
                         </div>
                     </div>
                     <div id="confirm_msg" class="alert alert-danger d-none mt-4"></div>
@@ -422,28 +433,127 @@
 
         </div>
 
+
     </div>
 
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <script>
 
 
+$(document).ready(function(){
+    var connected_sortable = '{{ $activity->archived }}';
+    console.log(connected_sortable);
+    setTimeout(() => {
+        if (connected_sortable != 'Y'){
+            $( init );
+        }
+    }, 2000);
 
 
+})
 
-    function allowDrop(ev, th) {
-        ev.preventDefault();
 
+function init() {
+    $(".droppable-area11, .droppable-area22, .droppable-area33").sortable({
+        connectWith: ".connected-sortable",
+        stack: '.connected-sortable',
+        revert: true,
+        stop: function(){
+            // console.log($(this).text().trim());
+            var targetname = $(this).closest('.connected-sortable').attr('target')
+            // console.log(targetname);
+
+            return dropconfirmedcheck($(this));
+            // return false;
+        },
+        update: function(){
+            // console.log("Updated");
+            updateafterdrop($(this));
+
+        }
+    }).disableSelection();
+}
+
+function updateafterdrop(value){
+    var targetname = value.closest('.connected-sortable').attr('target');
+
+    value.find('input[type=hidden]').attr('name', targetname+"[]");
+
+
+    if(targetname == "confirmed") {
+        $("#div2 li").removeClass('crewlead')
+        $("#div2 li.draggable-item:first").addClass('crewlead')
     }
+    // console.log(value.closest('.connected-sortable').attr('target'))
+}
 
-    function drag(ev, th) {
-        ev.dataTransfer.setData("text", ev.target.id);
 
-    }
 
-    function drop(ev, th) {
-        ev.preventDefault();
+
+
+    // function allowDrop(ev, th) {
+    //     ev.preventDefault();
+
+    // }
+
+    // function drag(ev, th) {
+    //     ev.dataTransfer.setData("text", ev.target.id);
+
+    // }
+
+    // function drop(ev, th) {
+    //     ev.preventDefault();
+
+
+    //     var original_crewcount = `{{ $activity->crewneeded }}`;
+
+    //     var NumberCrewNeeded = $("#NumberCrewNeeded").val();
+
+    //     // console.log(NumberCrewNeeded, crewcount);
+
+    //     var crewcount = (original_crewcount == NumberCrewNeeded) ? original_crewcount : NumberCrewNeeded;
+
+
+    //     console.log('drag drop');
+    //     var data = ev.dataTransfer.getData("text");
+
+    //     // get Current drop target to identify if this is confirmed it should restrict dropping
+    //     var targetval = th.getAttribute('target');
+    //     // console.log(data);
+
+
+
+    //     var confirm_count = 0;
+    //     $('#div2').find('input[type="text"]').each(function() {
+
+    //         confirm_count += 1;
+    //         // alert("Filled Value=" + $(this).val());
+
+    //     });
+    //     // alert("Total Input Count=" + $('#container').find('input[type="text"]').length + "//Filled Inputs Count=" + count);
+    //     console.log(confirm_count , crewcount);
+    //     if (confirm_count >= crewcount && targetval == 'confirmed') {
+    //         $("#confirm_msg").removeClass('d-none');
+
+    //         document.getElementById('confirm_msg').innerHTML='Limit Reached Of '+crewcount;
+    //         document.getElementById('div2').setAttribute('ondrop', ' ')
+
+    //     } else {
+    //         $("#confirm_msg").addClass('d-none');
+
+    //         document.getElementById('div2').setAttribute('ondrop', 'drop(event,this)')
+    //         document.getElementById('confirm_msg').innerHTML='';
+
+    //         ev.target.appendChild(document.getElementById(data));
+    //         document.getElementById(data).setAttribute('name', th.getAttribute('content'));
+    //     }
+    // }
+
+
+    function dropconfirmedcheck(checkval) {
 
 
         var original_crewcount = `{{ $activity->crewneeded }}`;
@@ -452,43 +562,47 @@
 
         // console.log(NumberCrewNeeded, crewcount);
 
-        var crewcount = (original_crewcount == NumberCrewNeeded) ? original_crewcount : NumberCrewNeeded;
-
-
-        console.log('drag drop');
-        var data = ev.dataTransfer.getData("text");
+        var crewcount = (original_crewcount == NumberCrewNeeded) ? parseInt(original_crewcount) : parseInt(NumberCrewNeeded);
 
         // get Current drop target to identify if this is confirmed it should restrict dropping
-        var targetval = th.getAttribute('target');
-        // console.log(data);
 
+        var targetval = checkval.closest('.connected-sortable').attr('target');
 
+        // checkval.closest('.connected-sortable li').removeClass('test');
+
+        checkval.closest('.connected-sortable li:first').addClass('test');
 
         var confirm_count = 0;
-        $('#div2').find('input[type="text"]').each(function() {
+
+        $(".droppable-area11 li, .droppable-area22 li").removeClass('crewlead');
+
+        if(targetval == "confirmed") {
+            $("#div2 li").removeClass('crewlead')
+            $("#div2 li.draggable-item:first").addClass('crewlead')
+        }
+
+        $('#div2').find('input[type="hidden"]').each(function() {
 
             confirm_count += 1;
             // alert("Filled Value=" + $(this).val());
 
         });
         // alert("Total Input Count=" + $('#container').find('input[type="text"]').length + "//Filled Inputs Count=" + count);
-        console.log(confirm_count , crewcount);
-        if (confirm_count >= crewcount && targetval == 'confirmed') {
+        if (confirm_count > crewcount) {
+            console.log(confirm_count , crewcount);
             $("#confirm_msg").removeClass('d-none');
 
-            document.getElementById('confirm_msg').innerHTML='Limit Reached Of '+crewcount;
-            document.getElementById('div2').setAttribute('ondrop', ' ')
+            $('#confirm_msg').html('Limit Reached Of '+crewcount);
+            return false;
 
         } else {
             $("#confirm_msg").addClass('d-none');
 
-            document.getElementById('div2').setAttribute('ondrop', 'drop(event,this)')
-            document.getElementById('confirm_msg').innerHTML='';
+            $('#confirm_msg').html('');
 
-            ev.target.appendChild(document.getElementById(data));
-            document.getElementById(data).setAttribute('name', th.getAttribute('content'));
         }
     }
+
 
     function checkNumberCrewNeeded(id){
         var crewneeded = parseInt($(id).val());
@@ -496,7 +610,7 @@
         var activity_seelcted_name = $('#ActivityItem').find('option:selected').text();
 
         var confirm_count = 0;
-        $('#div2').find('input[type="text"]').each(function() {
+        $('#div2').find('input[type="hidden"]').each(function() {
 
             confirm_count += 1;
             // alert("Filled Value=" + $(this).val());

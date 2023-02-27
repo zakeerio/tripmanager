@@ -36,6 +36,18 @@
         background-color: #2ecc71;
     }
 
+    .connected-sortable li.draggable-item {
+        cursor: move;
+        /* fallback: no `url()` support or images disabled */
+        cursor: url(images/grab.cur);
+        /* fallback: Internet Explorer */
+        cursor: -webkit-grab;
+        /* Chrome 1-21, Safari 4+ */
+        cursor: -moz-grab;
+        /* Firefox 1.5-26 */
+        cursor: grab;
+        /* W3C standards syntax, should come least */
+    }
 
 
     .unavailable_label {
@@ -55,7 +67,7 @@
     <div class="col-md-12 dashboard_Sec">
 <div class="row">
             <div class="col-xl-8 col-lg-12 teck-activities">
-                
+
             </div>
             <div class="col-xl-4 col-lg-12">
                 <div class="teck-btn justify-content-end" id="teck-btn-pag-3">
@@ -91,7 +103,7 @@
                         <p class="col-12-descrapction">Please the information for the activity below.</p>
                  </div>
             </div>
-            
+
          </div>
             <div class="col-md-12 dashboard-heading-desc">
                 <div class="row">
@@ -220,129 +232,144 @@
             <br>
 
             @if(Session::get('role') != 'crewmember')
-                <div class="row col-md-12">
+            <div class="row">
+
+                <?php
 
 
-                    <?php
+                // echo "<pre>";
+                // print_r($activity->tripcrews);
+                // exit;
 
+                // $unavailable = array();
+                $confirmed = array();
+                $avaiable = array();
 
-                    // echo "<pre>";
-                    // print_r($activity->tripcrews);
-                    // exit;
+                $available_member = array();
+                $crewlead = "";
 
-                    $unavailable = array();
-                    $confirmed = array();
-                    $available_member = array();
+                $counter = 0;
 
-                    foreach ($activity->tripcrews as $key => $crewmember) {
+                foreach ($activity->tripcrews as $key => $crewmember) {
+                    // dd($crewmember);
 
-                        $crew_name = \App\Models\Crew::where(['initials' => $crewmember->crewcode])->first();
+                    // $crew_name = \App\Models\Crew::where(['initials' => $crewmember->crewcode])->first();
 
-                        // if (isset($crew_name['fullname'])) {
-                        //     echo "<pre>";
-                        //     print_r($crew_name['fullname']);
-                        // }
+                    $crew_name = \App\Models\Crew::join('users','users.id','crews.user_id')
+                        ->where(['initials' => $crewmember->crewcode])
+                        ->select('crews.*')
+                        // ->orderBy('initials', 'ASC')
+                        ->first();
 
-                        // echo "<pre>";
-                        // print_r($crew_name['fullname']);
+                        // print_r($crew_name);
 
-                        if (!empty($crew_name) && isset($crew_name['fullname'])) {
-                            //  echo $crew_name[0] . "<br>";
+                    if (!empty($crew_name) && isset($crew_name['fullname'])) {
+                        //  echo $crew_name[0] . "<br>";
 
-                            $randome_no_1 = uniqid();
-                            $randome_no_2 = uniqid();
+                        $randome_no_1= uniqid();
+                        $randome_no_2= uniqid();
 
-                            $fullname = $crew_name["fullname"];
-                            if ($crewmember->confirmed == 'Y' && $crewmember->isskipper != 'Y') {
-
-                                $confirmed[] = "<input type='text' class='form-control' id=drag" . $randome_no_1 . " draggable='true' ondragstart='drag(event)' name='confirmed[]' value='" . $crewmember->crewcode . " : " . $fullname . "' disabled>";
-                                $available_member[] = $crew_name['initials'];
-
+                        $fullname = $crew_name["fullname"];
+                        if ($crewmember->confirmed == 'Y' && $crewmember->isskipper != 'Y') {
+                            if($counter !=1) {
+                                $crewlead = "crewlead";
+                                $counter = 1;
+                            } else {
+                                $crewlead = "";
                             }
 
-                            if ($crewmember->available == 'Y' && $crewmember->isskipper != 'Y') {
-                                $available[] = "<input type='text' class='form-control' id=drag" .  $randome_no_2 . " draggable='true' ondragstart='drag(event)' name='available[]' value='" . $crewmember->crewcode . " : " . $fullname . "' disabled>";
-                                $available_member[] = $crew_name['initials'];
-                            }
+                            $confirmed[] = "<li class='draggable-item form-control ".$crewlead."'><input type='hidden' name='confirmed[]' value='" . $crewmember->crewcode . " : " . $fullname . "' > ".$crewmember->crewcode . " : " . $fullname." </li>";
 
-
-                            // if ($crewmember->isskipper == 'Y') {
-                            //     $unavailable[] = "<input type='text' class='form-control' id=drag" . $crewmember->id . " draggable='true' ondragstart='drag(event)' name=''value='" . $crewmember->crewcode . " : " . $fullname . "' disabled>";
-                            // }
-                    ?>
-
-                    <?php
+                            $available_member[] = $crew_name['initials'];
                         }
+
+                        if ($crewmember->available == 'Y' && $crewmember->isskipper != 'Y') {
+                            $available[] = "<li class='draggable-item form-control'><input type='hidden' name='available[]' value='" . $crewmember->crewcode . " : " . $fullname . "' >" . $crewmember->crewcode . " : " . $fullname . "</li>";
+
+                            $available_member[] = $crew_name['initials'];
+                        }
+
+                        // if ($crewmember->isskipper == 'Y') {
+                        //     $unavailable[] = "<input type='text' class='form-control' id=drag" . $crewmember->id . " draggable='true' ondragstart='drag(event)' name=''value='" . $crewmember->crewcode . " : " . $fullname . "' disabled>";
+                        // }
+                ?>
+
+                <?php
                     }
+                }
 
-                    ?>
+                ?>
 
-                    <div class="col-sm-4">
-                        <label class="confirm_label">Confirmed Crew</label>
-                        <div id="div2" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="confirmed[]">
-                            <?php
+                @php
+                $connected_sortable = ($activity->archived !="Y" || $activity->archived =="" ) ? 'connected-sortable' : "";
+                @endphp
 
-                            if (!empty($confirmed)) {
-                                foreach ($confirmed as $c) {
-                                    echo $c;
-                                }
-                            } else {
-                                echo "No Confirmed Found";
+                <div class="col-sm-4">
+                    <label class="confirm_label">Confirmed Crew</label>
+                    <ul id="div2"  class="{{ $connected_sortable }} droppable-area33" target="confirmed" >
+                        <?php
+
+                        if (!empty($confirmed)) {
+                            foreach ($confirmed as $c) {
+                                echo $c;
                             }
+                        } else {
+                            echo "No Confirmed Found";
+                        }
 
-                            ?>
-                        </div>
-                    </div>
+                        ?>
 
-                    <div class="col-sm-4">
-                        <label class="available_label">Available Crew</label>
-                        <div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="available[]">
-                            <?php
-
-                            if (!empty($available)) {
-                                foreach ($available as $a) {
-                                    echo $a;
-                                }
-                            } else {
-                                echo "No Available Found";
-                            }
-
-                            ?>
-                        </div>
-                    </div>
-
-
-                    <div class="col-sm-4">
-                        <label class="unavailable_label">Un Available Crew</label>
-
-                        <div id="div1" ondrop="drop(event,this)" ondragover="allowDrop(event)" content="unavailable[]">
-                            <?php
-
-                            // $unavailable = DB::table('crews')->whereNotIn('initials', array_unique($available_member))->get();
-                            $unavailable = DB::table('crews')
-                                ->join('users','users.id','crews.user_id')
-                                // ->where('users.role_id', 2)
-                                ->whereNotIn('initials', array_unique($available_member))
-                                ->select('crews.*')
-                                ->orderBy('initials', 'ASC')
-                                ->get();
-                            // echo "<pre>";
-                            // print_r($unavailable);
-                            if (!empty($unavailable)) {
-                                foreach ($unavailable as $ua) {
-                                    $randome_no_3 = uniqid();
-                                    echo  "<input type='text' class='form-control' id=drag" . $randome_no_3 . " draggable='true' ondragstart='drag(event)' name='unavailable[]' value='" . $ua->initials . " : " . $ua->fullname . "' disabled>";
-                                }
-                            } else {
-                                echo "No UnAvailable Found";
-                            }
-                            ?>
-                        </div>
-
-                    </div>
-
-
+                    </ul>
                 </div>
+
+                <div class="col-sm-4">
+                    <label class="available_label">Available Crew</label>
+                    <ul id="div3"  class="{{ $connected_sortable }} droppable-area22" target="available" >
+                        <?php
+
+                        if (!empty($available)) {
+                            foreach ($available as $a) {
+                                echo $a;
+                            }
+                        } else {
+                            echo "No Available Found";
+                        }
+
+                        ?>
+                    </ul>
+                </div>
+
+
+                <div class="col-sm-4">
+                    <label class="unavailable_label">Un Available Crew</label>
+
+
+                    <ul id="div1" class="{{ $connected_sortable }} droppable-area11" target="unavailable" >
+                        <?php
+
+
+                        $unavailable = DB::table('crews')
+                        ->join('users','users.id','crews.user_id')
+                        // ->where('users.role_id', 2)
+                        ->whereNotIn('initials', array_unique($available_member))
+                        ->select('crews.*')
+                        ->orderBy('initials', 'ASC')
+                        ->get();
+                        // echo "<pre>";
+                        // print_r($unavailable);
+                        if (!empty($unavailable)) {
+                            foreach ($unavailable as $ua) {
+                                $randome_no_3= uniqid();
+                                echo  "<li class='draggable-item form-control'><input type='hidden' value='" . $ua->initials . " : " . $ua->fullname . "' >" . $ua->initials . " : " . $ua->fullname . "</li>";
+                            }
+                        } else {
+                            echo "No UnAvailable Found";
+                        }
+
+                        ?>
+                    </ul>
+                </div>
+            </div>
             @endif
             <div class="teck-btn mt-4 pl-3">
             {{-- @if(Session::get('role') == 'crewmember') --}}
