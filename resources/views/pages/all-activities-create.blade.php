@@ -229,7 +229,6 @@
 
                             <input type="number" name="crewneeded" onchange="checkNumberCrewNeeded(this)" value="{{ (old('crewneeded')) ? old('crewneeded') : 0 }}" min="1" class="form-control" id="NumberCrewNeeded">
                             <div class="crew-exceed alert alert-danger d-none"></div>
-                            {{ var_dump($errors->any()) }}
                             @if($errors->any())
                             <p style="color:Red">{{$errors->first('crewneeded') ? $errors->first('crewneeded')." Crew Need Can Not Be 0" : '' }}  </p>
                             @endif
