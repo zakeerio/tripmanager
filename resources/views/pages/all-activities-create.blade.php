@@ -227,8 +227,9 @@
                         <div class="form-group col-xl-4 col-lg-12">
                             <label for="NumberCrewNeeded">NUMBER OF CREW NEEDED</label>
 
-                            <input type="number" name="crewneeded" onchange="checkNumberCrewNeeded(this)" value="{{ (old('crewneeded')) ? old('crewneeded') : 0 }}" min="1" class="form-control" min="1" id="NumberCrewNeeded">
+                            <input type="number" name="crewneeded" onchange="checkNumberCrewNeeded(this)" value="{{ (old('crewneeded')) ? old('crewneeded') : 0 }}" min="1" class="form-control" id="NumberCrewNeeded">
                             <div class="crew-exceed alert alert-danger d-none"></div>
+                            {{ var_dump($errors->any()) }}
                             @if($errors->any())
                             <p style="color:Red">{{$errors->first('crewneeded') ? $errors->first('crewneeded')." Crew Need Can Not Be 0" : '' }}  </p>
                             @endif
@@ -262,7 +263,7 @@
                         <div class="form-group col-xl-7 col-lg-15">
                             <label for="PassengerCout">PASSENGER COUNT</label>
 
-                            <input type="number" name="passengers" value="{{ old('passengers') }}" class="form-control" id="PassengerCout" size="3">
+                            <input type="number" name="passengers" value="{{ (old('passengers')) ? old('passengers') : 0 }}" class="form-control" id="PassengerCout" size="3">
                             @if($errors->any())
                             <p style="color:Red">{{$errors->first('passengers')}}</p>
                             @endif
@@ -344,8 +345,11 @@
 
 
 
+
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+
 <script>
 
 
@@ -544,6 +548,8 @@ function updateafterdrop(value){
 
 </script>
 
+@stop
+
 <script>
     function ShowToast(msg, type) {
 
@@ -603,4 +609,4 @@ function updateafterdrop(value){
 </script>
 
 
-@stop
+

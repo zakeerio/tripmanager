@@ -35,10 +35,14 @@ class ActivityController extends Controller
             if($activitycheck > 0){
                 if (Session::get('role') == 'crewmember') {
                     $trips = Trip::orderBy('departuredate', 'ASC')
-                    ->where('archived', "=",  NULL)
-                    ->orWhere('archived', "=",  "")
+                    ->where(function ($query) {
+                        $query->where('archived', '=', null);
+                        $query->orWhere('archived', '');
+                    })
                     ->where('boatname',$request->filter)
                     ->paginate(50);
+                    // ->get();
+                    // echo "test";
                 } else {
 
                     if(isset($request->completed) && $request->completed == 'hide' ){
@@ -46,9 +50,12 @@ class ActivityController extends Controller
                         ->where('boatname',$request->filter)->paginate(50);
                     } else {
                         $trips = Trip::orderBy('departuredate', 'ASC')
-                        ->where('archived', "!=",  'Y')
-                        ->orWhere('archived', "=",  NULL)
-                        ->where('boatname',$request->filter)->paginate(50);
+                        ->where(function ($query) {
+                            $query->where('archived', '=', null);
+                            $query->orWhere('archived', '');
+                        })
+                        ->where('boatname',$request->filter)
+                        ->paginate(50);
                     }
                 }
             } else {
@@ -635,12 +642,13 @@ class ActivityController extends Controller
                                 'recordnumber'              => rand(10, 10000),
                                 'tripnumber'                => $this->tripnumber,
                                 'crewcode'                  => $crewcode,
-                                'available'                 => 'Y'
+                                'available'                 => 'Y',
+                                'confirmed'                 => NULL,
+                                'isskipper'                 => NULL,
                             ]);
                         }
                     }
                 }
-
 
 
                 if (!empty($request->confirmed)) {
@@ -654,7 +662,9 @@ class ActivityController extends Controller
                                 'recordnumber'              => rand(10, 10000),
                                 'tripnumber'                => $this->tripnumber,
                                 'crewcode'                  => $crewcode,
-                                'confirmed'                 => 'Y'
+                                'confirmed'                 => 'Y',
+                                'available'                 => NULL,
+                                'isskipper'                 => NULL,
                             ]);
                         }
                     }

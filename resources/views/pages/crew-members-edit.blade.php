@@ -227,7 +227,7 @@
                                             <label class="form-check-label" for="skipper">Skipper</label>
                                         </div>
                                         <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="optin" id="optin" {{ !empty($crew_member->optin) ? 'checked' : '' }} value="{{ $crew_member->optin }}">
+                                            <input type="checkbox" class="form-check-input" name="optin" id="optin" {{ !empty($crew_member->optin) ? 'checked' : '' }} >
                                             <label for="optin">Opted in for Details</label>
                                         </div>
 
