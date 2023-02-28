@@ -23,7 +23,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('update:archivetrips')->daily();
+        // $schedule->command('update:archivetrips')->daily();
+        $schedule->command('update:archivetrips')->everyMinute();
+
 
     }
 
