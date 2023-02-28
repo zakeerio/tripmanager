@@ -47,10 +47,7 @@ class ActivityController extends Controller
 
                     if(isset($request->completed) && $request->completed == 'hide' ){
                         $trips = Trip::orderBy('departuredate', 'ASC')
-                        ->where('boatname',$request->filter)
-                        ->where('archived', "=",  'Y')
-
-                        ->paginate(50);
+                        ->where('boatname',$request->filter)->paginate(50);
                     } else {
                         $trips = Trip::orderBy('departuredate', 'ASC')
                         ->where(function ($query) {
@@ -73,7 +70,6 @@ class ActivityController extends Controller
                     if(isset($request->completed) && $request->completed == 'hide' ){
                         // $trips = Trip::orderBy('departuredate', 'ASC')->paginate(50);
                         $trips = Trip::orderBy('departuredate', 'ASC')
-                        ->where('archived', "=",  'Y')
 
                         ->paginate(50);
                     } else {
@@ -101,8 +97,6 @@ class ActivityController extends Controller
                 if(isset($request->completed) && $request->completed == 'hide' ){
                     // $trips = Trip::orderBy('departuredate', 'ASC')->paginate(50);
                     $trips = Trip::orderBy('departuredate', 'ASC')
-                    ->where('archived', "=",  'Y')
-
                     ->paginate(50);
                     // ->toSql();
                     // dd($trips);
@@ -1061,7 +1055,6 @@ class ActivityController extends Controller
             ->select('tripcrews.*', 'trips.*')
             ->where('crewcode', '=', Session::get('initials'))
 
-            ->where('trips.archived', '=', 'Y')
 
             ->where('tripcrews.confirmed', '=', 'Y')
             // ->where('tripcrews.available', '=', 'Y')
