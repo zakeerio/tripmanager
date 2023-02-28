@@ -1055,6 +1055,7 @@ class ActivityController extends Controller
             ->select('tripcrews.*', 'trips.*')
             ->where('crewcode', '=', Session::get('initials'))
 
+            ->where('trips.archived', '=', 'Y')
 
             ->where('tripcrews.confirmed', '=', 'Y')
             // ->where('tripcrews.available', '=', 'Y')
