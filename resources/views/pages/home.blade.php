@@ -187,7 +187,8 @@
                                             </div>
 
                                         <td>{{ date('d-M-Y', strtotime($trip->departuredate)) }}<br>at
-                                            {{ date('h:i A', strtotime($trip->departuretime)) }}</td>
+                                            {{ date('g:i A', strtotime($trip->departuretime)) }}
+                                        </td>
                                         <td width="300" style="padding-right:30px">{!! $trip->crewnotes !!}</td>
                                         <td>
                                             @php
@@ -211,11 +212,15 @@
                                             $i = 0;
                                             $initials = Session::get('initials');
 
+                                            $crewlead = "!!";
+                                            $counter = 0;
+
                                             $members = \App\Models\Tripcrew::where(['tripnumber' => $trip->id])
                                                 ->where(function ($query) {
                                                     $query->where('confirmed', '=', 'Y')->orWhere('available', '=', 'Y');
                                                 })
                                                 ->orderBy('confirmed', 'desc') // confirmed members first
+                                                ->orderBy('crewlead', 'desc') // confirmed members first
                                                 ->get();
 
                                             $check_crewcount = 0;
@@ -225,12 +230,26 @@
 
                                             if (!empty($members)) {
                                                 foreach ($members as $index => $m) {
+                                                    // echo $crewlead."<br>";
+
                                                     $member = \App\Models\Crew::where(['initials' => $m->crewcode])->first();
                                                     $color = $m->confirmed == 'Y' ? '#2ecc71' : '#f39c12'; // color based on confirmed status
 
                                                     if ($member && $m->isskipper != 'Y' && $m->isskipper == '') {
+                                                        if($m->confirmed == "Y") {
+
+                                                            if(($m->crewlead == 'Y') || $counter !=1) {
+                                                                $crewlead = "crewlead";
+                                                                $counter = 1;
+                                                            } else {
+                                                                $crewlead = "";
+                                                            }
+                                                        } else {
+                                                            $crewlead = "";
+                                                        }
+
                                                         if ($m->confirmed == 'Y') {
-                                                            $confirmed_members[] = "<span style='color:" . $color . "'>" . $m->crewcode . '</span>';
+                                                            $confirmed_members[] = "<span class='{{ $crewlead }}' style='color:" . $color . "'>" . $m->crewcode . '</span>';
                                                         } elseif ($m->available == 'Y') {
                                                             $available_members[] = "<span style='color:" . $color . "'>" . $m->crewcode . '</span>';
                                                         }

@@ -274,6 +274,9 @@
                             <label for="NotesCrew">NOTES FOR CREW</label>
                             <textarea class="form-control" id="NotesCrew" rows="5" name="NotesCrew">{{ $activity->crewnotes}}</textarea>
 
+
+                            {{-- <input type="hidden" id="crewleadfield" name="crewlead" > --}}
+
                             @if($errors->any())
                                 <p style="color:Red">{{$errors->first('NotesCrew')}}</p>
                                 @endif
@@ -282,13 +285,69 @@
 
 
                     <br>
+
+                    @if ($activity->archived != "Y")
+
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @php
+                                    $lead = '';
+                                    $creleadname = "";
+                                    // dd($activity->tripcrews);
+                                    foreach($activity->tripcrews->where('crewlead', 'Y') as $leadmember){
+                                        $lead = $leadmember->crewcode;
+                                    }
+
+                                    if($lead) {
+                                        $crewlead = \App\Models\Crew::where('initials', "=", $lead)->first();
+
+                                        $creleadname = $crewlead->initials." : ".$crewlead->fullname;
+
+                                    }
+
+
+                                @endphp
+
+                                <label for="crewleadfield">Crew Lead</label>
+                                <input type="text" name="crewlead" class="form-control" id="crewleadfield" value="{{ ($creleadname) ? $creleadname : '' }}" readonly >
+                                {{-- <select name="crewlead" class="form-control" id="crewleadfield" readonly> --}}
+                                    <?php
+                                    /*$crewsdata = DB::table('crews')
+                                    ->join('users','users.id','crews.user_id')
+                                    // ->where('users.role_id', 2)
+                                    ->select('crews.*')
+                                    ->orderBy('initials', 'ASC')
+                                    ->get();
+
+                                    if (!empty($crewsdata)) {
+                                        $cntr=1;
+                                        foreach ($crewsdata as $ua) {
+
+                                            $selected = ((($lead) && $ua->initials == $lead)|| $cntr == 1 ) ? 'selected' : '';
+                                            echo  "<option ".$selected." disabled  value='" . trim($ua->initials) . " : " . trim($ua->fullname) . "' >" . $ua->initials . " : " . $ua->fullname . "</option>";
+                                            $cntr++;
+                                        }
+                                    }
+                                    */
+                                    ?>
+                                {{-- </select> --}}
+
+                            </div>
+                        </div>
+                    </div>
+
+                    @endif
+
+
                     <div class="row">
 
                         <?php
 
 
                         // echo "<pre>";
-                        // print_r($activity->tripcrews);
+                        // print_r($activity->tripcrews->orderBy('crewlead', 'ASC'));
                         // exit;
 
                         // $unavailable = array();
@@ -308,7 +367,7 @@
                             $crew_name = \App\Models\Crew::join('users','users.id','crews.user_id')
                                 ->where(['initials' => $crewmember->crewcode])
                                 ->select('crews.*')
-                                // ->orderBy('initials', 'ASC')
+                                ->orderBy('initials', 'ASC')
                                 ->first();
 
                                 // print_r($crew_name);
@@ -321,7 +380,10 @@
 
                                 $fullname = $crew_name["fullname"];
                                 if ($crewmember->confirmed == 'Y' && $crewmember->isskipper != 'Y') {
-                                    if($counter !=1) {
+
+                                    // print_r($crewmember);
+
+                                    if($crewmember->crewlead == "Y" || $counter != 1) {
                                         $crewlead = "crewlead";
                                         $counter = 1;
                                     } else {
@@ -410,7 +472,7 @@
                                 if (!empty($unavailable)) {
                                     foreach ($unavailable as $ua) {
                                         $randome_no_3= uniqid();
-                                        echo  "<li class='draggable-item form-control'><input type='hidden' value='" . $ua->initials . " : " . $ua->fullname . "' >" . $ua->initials . " : " . $ua->fullname . "</li>";
+                                        echo  "<li class='draggable-item form-control'><input type='hidden' value='" . trim($ua->initials) . " : " . trim($ua->fullname) . "' >" . $ua->initials . " : " . $ua->fullname . "</li>";
                                     }
                                 } else {
                                     echo "No UnAvailable Found";
@@ -452,7 +514,6 @@ $(document).ready(function(){
         }
     }, 2000);
 
-
 })
 
 
@@ -480,77 +541,61 @@ function init() {
 function updateafterdrop(value){
     var targetname = value.closest('.connected-sortable').attr('target');
 
-    value.find('input[type=hidden]').attr('name', targetname+"[]");
+    var checkval = value;
 
 
     if(targetname == "confirmed") {
-        $("#div2 li").removeClass('crewlead')
-        $("#div2 li.draggable-item:first").addClass('crewlead')
+
+        var original_crewcount = `{{ $activity->crewneeded }}`;
+
+        var NumberCrewNeeded = $("#NumberCrewNeeded").val();
+
+        // console.log(NumberCrewNeeded, crewcount);
+
+        var crewcount = (original_crewcount == NumberCrewNeeded) ? parseInt(original_crewcount) : parseInt(NumberCrewNeeded);
+
+        // get Current drop target to identify if this is confirmed it should restrict dropping
+
+        var targetval = checkval.closest('.connected-sortable').attr('target');
+
+        var confirm_count = 0;
+
+        $('#div2').find('input[type="hidden"]').each(function() {
+            confirm_count += 1;
+        });
+
+        setTimeout(function(){
+            value.find('input[type=hidden]').attr('name', targetname+"[]");
+        }, 500)
+
+        // console.log(targetname, targetval);
+
+        if (confirm_count > crewcount) {
+            return false;
+        } else {
+
+            $(".droppable-area11 li, .droppable-area22 li, .droppable-area33 li").removeClass('crewlead');
+
+            if(targetval == "confirmed") {
+
+                $("#div2 li").removeClass('crewlead')
+                $("#div2 li.draggable-item:first").addClass('crewlead')
+
+                var crewleadfield = $("#div2 li.draggable-item:first").find('input[type=hidden]').val();
+                $("#crewleadfield").val(crewleadfield);
+                // console.log(crewleadfield);
+            }
+
+        }
+
+    } else {
+        setTimeout(function(){
+            value.find('input[type=hidden]').attr('name', targetname+"[]");
+        }, 500)
     }
-    // console.log(value.closest('.connected-sortable').attr('target'))
 }
 
 
-
-
-
-    // function allowDrop(ev, th) {
-    //     ev.preventDefault();
-
-    // }
-
-    // function drag(ev, th) {
-    //     ev.dataTransfer.setData("text", ev.target.id);
-
-    // }
-
-    // function drop(ev, th) {
-    //     ev.preventDefault();
-
-
-    //     var original_crewcount = `{{ $activity->crewneeded }}`;
-
-    //     var NumberCrewNeeded = $("#NumberCrewNeeded").val();
-
-    //     // console.log(NumberCrewNeeded, crewcount);
-
-    //     var crewcount = (original_crewcount == NumberCrewNeeded) ? original_crewcount : NumberCrewNeeded;
-
-
-    //     console.log('drag drop');
-    //     var data = ev.dataTransfer.getData("text");
-
-    //     // get Current drop target to identify if this is confirmed it should restrict dropping
-    //     var targetval = th.getAttribute('target');
-    //     // console.log(data);
-
-
-
-    //     var confirm_count = 0;
-    //     $('#div2').find('input[type="text"]').each(function() {
-
-    //         confirm_count += 1;
-    //         // alert("Filled Value=" + $(this).val());
-
-    //     });
-    //     // alert("Total Input Count=" + $('#container').find('input[type="text"]').length + "//Filled Inputs Count=" + count);
-    //     console.log(confirm_count , crewcount);
-    //     if (confirm_count >= crewcount && targetval == 'confirmed') {
-    //         $("#confirm_msg").removeClass('d-none');
-
-    //         document.getElementById('confirm_msg').innerHTML='Limit Reached Of '+crewcount;
-    //         document.getElementById('div2').setAttribute('ondrop', ' ')
-
-    //     } else {
-    //         $("#confirm_msg").addClass('d-none');
-
-    //         document.getElementById('div2').setAttribute('ondrop', 'drop(event,this)')
-    //         document.getElementById('confirm_msg').innerHTML='';
-
-    //         ev.target.appendChild(document.getElementById(data));
-    //         document.getElementById(data).setAttribute('name', th.getAttribute('content'));
-    //     }
-    // }
 
 
     function dropconfirmedcheck(checkval) {
@@ -568,10 +613,6 @@ function updateafterdrop(value){
 
         var targetval = checkval.closest('.connected-sortable').attr('target');
 
-        // checkval.closest('.connected-sortable li').removeClass('test');
-
-        checkval.closest('.connected-sortable li:first').addClass('test');
-
         var confirm_count = 0;
 
         $(".droppable-area11 li, .droppable-area22 li").removeClass('crewlead');
@@ -581,15 +622,19 @@ function updateafterdrop(value){
             $("#div2 li.draggable-item:first").addClass('crewlead')
         }
 
+        $('#crewleadfield option').attr('disabled');
         $('#div2').find('input[type="hidden"]').each(function() {
+
 
             confirm_count += 1;
             // alert("Filled Value=" + $(this).val());
+            $('#crewleadfield option[value="'+$(this).val()+'"]').removeAttr('disabled');
+
 
         });
         // alert("Total Input Count=" + $('#container').find('input[type="text"]').length + "//Filled Inputs Count=" + count);
         if (confirm_count > crewcount) {
-            console.log(confirm_count , crewcount);
+            // console.log(confirm_count , crewcount);
             $("#confirm_msg").removeClass('d-none');
 
             $('#confirm_msg').html('Limit Reached Of '+crewcount);

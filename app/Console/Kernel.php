@@ -25,6 +25,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('update:archivetrips')->dailyAt('23:59');
         $schedule->command('update:archivetrips')->everyThreeHours();
+        $schedule->command('auto:confirmationmail')->everyMinute();
+
 
 
     }

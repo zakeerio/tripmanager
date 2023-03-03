@@ -22,11 +22,11 @@ class Trip extends Model
         'balance',
         'sent_notice',
         'passengers',
-       
+
     ];
     public function tripcrews()
     {
-        return $this->hasMany(Tripcrew::class,  'tripnumber');
+        return $this->hasMany(Tripcrew::class,  'tripnumber')->orderBy('crewlead', 'DESC');
     }
 
 

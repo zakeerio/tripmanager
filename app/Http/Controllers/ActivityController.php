@@ -20,6 +20,7 @@ class ActivityController extends Controller
     protected $check1;
     protected $check2;
     protected $check3;
+    protected $check4;
     protected $tripnumber;
 
 
@@ -645,6 +646,7 @@ class ActivityController extends Controller
                                 'available'                 => 'Y',
                                 'confirmed'                 => NULL,
                                 'isskipper'                 => NULL,
+                                'crewlead'                 => NULL,
                             ]);
                         }
                     }
@@ -665,6 +667,7 @@ class ActivityController extends Controller
                                 'confirmed'                 => 'Y',
                                 'available'                 => NULL,
                                 'isskipper'                 => NULL,
+                                'crewlead'                 => NULL,
                             ]);
                         }
                     }
@@ -690,6 +693,8 @@ class ActivityController extends Controller
                                     'isskipper'                 => 'Y',
                                     'available'                 => NULL,
                                     'confirmed'                 => NULL,
+                                    'crewlead'                 => NULL,
+
                                 ]);
                             }
 
@@ -716,12 +721,40 @@ class ActivityController extends Controller
                     }
                 }
 
+                if (isset($request->crewlead)) {
+                    $trim1_crewlead = $request->crewlead;
+                    $initials_crewlead = explode(':', $trim1_crewlead);
+                    $crewcode_crewlead = trim($initials_crewlead[0]);
+
+                    // echo $crewcode_crewlead;
+
+                    $check_crew_crewlead = DB::table('tripcrews')
+                    ->where('tripnumber', '=', $this->tripnumber)
+                    ->where('confirmed', '=', 'Y')
+                    ->where('crewcode', '=', $crewcode_crewlead)
+                    ->first();
+                    // dd($check_crew_crewlead);
+
+                    if($check_crew_crewlead){
+
+                        // dd($crewcode_crewlead);
+                        $this->check4 = DB::table('tripcrews')
+                        ->where('tripnumber', '=', $this->tripnumber)
+                        ->where('crewcode', '=', $crewcode_crewlead)->update([
+                            'isskipper'                 => NULL,
+                            'available'                 => NULL,
+                            'confirmed'                 => 'Y',
+                            'crewlead'                 => 'Y',
+                        ]);
+                    }
+                }
+
 
             });
 
             //   dd($this->tripnumber);
 
-            // dd( $this->check2, $this->check1, $this->check3);
+            // dd( $this->check2, $this->check1, $this->check3, $this->check4);
 
 
             if (isset($this->tripnumber) || $this->check1 || $this->check2 || $this->check3) {
@@ -892,12 +925,15 @@ class ActivityController extends Controller
                                 'isskipper'                 => 'Y',
                                 'available'                 => NULL,
                                 'confirmed'                 => NULL,
+                                'crewlead'                 => NULL,
+
                             ]);
                         }
                     }
 
                 }
             }
+
 
 
 
@@ -927,6 +963,8 @@ class ActivityController extends Controller
                                 'available'                 => 'Y',
                                 'confirmed'                 => NULL,
                                 'isskipper'                 => NULL,
+                                'crewlead'                 => NULL,
+
 
                             ]);
                         } else {
@@ -937,6 +975,7 @@ class ActivityController extends Controller
                                 'tripnumber'                => $request->id,
                                 'crewcode'                  => $crewcode2,
                                 'available'                 => 'Y',
+
                             ];
                             // dd($userData);
                             // $this->check2 = Tripcrew::create($userData);
@@ -975,6 +1014,8 @@ class ActivityController extends Controller
                                 'confirmed'                 => 'Y',
                                 'isskipper'                 => NULL,
                                 'available'                 => NULL,
+                                'crewlead'                 => NULL,
+
                             ]);
                         } else {
 
@@ -983,6 +1024,8 @@ class ActivityController extends Controller
                                 'tripnumber'                => $request->id,
                                 'crewcode'                  => $crewcode3,
                                 'confirmed'                 => 'Y',
+                                'crewlead'                 => NULL,
+
                             ];
                             // $this->check3 = Tripcrew::create($userData);
                             $this->check3  = DB::table('tripcrews')->insert($userData);
@@ -991,6 +1034,30 @@ class ActivityController extends Controller
                     }
                 }
             }
+
+            if (isset($request->crewlead)) {
+                $trim1_crewlead = $request->crewlead;
+                $initials_crewlead = explode(':', $trim1_crewlead);
+                $crewcode_crewlead = trim($initials_crewlead[0]);
+                // echo $crewcode;
+
+                $check_crew_crewlead = DB::table('tripcrews')->where('tripnumber', '=', $request->id)
+                    ->where('confirmed', '=', 'Y')
+
+                    ->where('crewcode', '=', $crewcode_crewlead)->first();
+                if($check_crew_crewlead){
+
+                    DB::table('tripcrews')
+                    ->where('tripnumber', '=', $request->id)
+                    ->where('crewcode', '=', $crewcode_crewlead)->update([
+                        'isskipper'                 => NULL,
+                        'available'                 => NULL,
+                        'confirmed'                 => 'Y',
+                        'crewlead'                 => 'Y',
+                    ]);
+                }
+            }
+
 
             // dd($this->check3);
 
@@ -1073,7 +1140,10 @@ class ActivityController extends Controller
             ->select('tripcrews.*', 'trips.*')
             ->where('crewcode', '=', Session::get('initials'))
 
-            ->where('trips.archived', '!=', 'Y')
+            ->where(function ($query) {
+                $query->where('trips.archived', '=', null);
+                $query->orWhere('trips.archived', '');
+            })
 
 
             ->where('tripcrews.confirmed', '=', 'Y')

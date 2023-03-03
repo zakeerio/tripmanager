@@ -7,11 +7,8 @@
     <div class="col-md-12 dashboard_Sec">
         <div class="row">
             <div class="col-xl-7 col-lg-12">
-                <h1>Crew Members</h1>
-                <p class="sub-pages-text">This is a list of all the scheduled activities in the
-                    Activity Manager system..</p>
 
-                    {{-- <div class="teck-btn justify-content-start">
+                {{-- <div class="teck-btn justify-content-start">
 
                         <a href="{{ URL::previous() }}" class="btn btn-primary"><img src="{{ asset('assets/images/go_back.png') }}" class="img-fluid" style="width:20px;"> Go Back</a>
                     </div> --}}
@@ -65,9 +62,9 @@
 
     <div class="col-md-12 activies_table">
         <div class="d-flex justify-content-between align-items-center">
-            <div class="font-weight-bold">{{ ($crew_members) ? $crew_members->total() : '0' }} Records found</div>
+
             <div class="btn-filter mt-3">
-                <form action="{{ route('crew-members') }}" method="GET">
+             <form action="{{ route('crew-members') }}" method="GET">
                     @csrf
                     <div class="form-group d-flex">
                         <input type="text" class="form-control" value="{{ (\Request()->s) ? \Request()->s : '' }}" name="s" placeholder="Search By name"> <input type="submit" class="btn btnsuccess" value="Search">
@@ -81,11 +78,22 @@
             </div>
 
             <div class="col-md-12">
-                <div class="teck-table">
+                    <div class="col-md-12 dashboard-heading-desc dashboard-heading-container">
+                        <div class="row">
+                            <div class="col-lg-8 col-md-12 upcoming_activities">
+                                <h1>Crew Members</h1>
+                                <p class="col-12-descrapction">This is a list of all the users within the Activity Manager system.</p>
+                                <div class="font-weight-bold mt-2" style="margin-bottom:10px">
+                                 {{ ($crew_members) ? $crew_members->total() : '0' }}   Records Found</div>
 
-                    <table class="rwd-table" id="datatables">
-                        <thead>
-                            <tr>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="teck-table">
+                        <table class="rwd-table" id="datatables">
+                            <thead class="list-table-heading">
+                                <tr>
                                 <th class="th-heading">Name</th>
                                 <th class="th-heading">Email</th>
                                 <th class="th-heading-brief">Phone</th>

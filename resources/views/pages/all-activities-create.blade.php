@@ -270,6 +270,17 @@
                     </div>
 
                     <br>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+
+                                <label for="crewleadfield">Crew Lead</label>
+                                <input type="text" name="crewlead" class="form-control" id="crewleadfield" readonly >
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
 
                         <div class="col-sm-4">
@@ -386,9 +397,54 @@ function updateafterdrop(value){
     value.find('input[type=hidden]').attr('name', targetname+"[]");
     // console.log(value.closest('.connected-sortable').attr('target'))
 
+    var checkval = value;
+
     if(targetname == "confirmed") {
-        $("#div2 li").removeClass('crewlead')
-        $("#div2 li.draggable-item:first").addClass('crewlead')
+
+        var NumberCrewNeeded = $("#NumberCrewNeeded").val();
+
+        // console.log(NumberCrewNeeded, crewcount);
+
+        var crewcount = (NumberCrewNeeded) ? parseInt(NumberCrewNeeded) : 0;
+
+        // get Current drop target to identify if this is confirmed it should restrict dropping
+
+        var targetval = checkval.closest('.connected-sortable').attr('target');
+
+        var confirm_count = 0;
+
+        $('#div2').find('input[type="hidden"]').each(function() {
+            confirm_count += 1;
+        });
+
+        setTimeout(function(){
+            value.find('input[type=hidden]').attr('name', targetname+"[]");
+        }, 500)
+
+        console.log(targetname, targetval);
+
+        if (confirm_count > crewcount) {
+            return false;
+        } else {
+
+            $(".droppable-area11 li, .droppable-area22 li, .droppable-area33 li").removeClass('crewlead');
+
+            if(targetval == "confirmed") {
+
+                $("#div2 li").removeClass('crewlead')
+                $("#div2 li.draggable-item:first").addClass('crewlead')
+
+                var crewleadfield = $("#div2 li.draggable-item:first").find('input[type=hidden]').val();
+                $("#crewleadfield").val(crewleadfield);
+                // console.log(crewleadfield);
+            }
+
+        }
+
+    } else {
+        setTimeout(function(){
+            value.find('input[type=hidden]').attr('name', targetname+"[]");
+        }, 500)
     }
 
 }
@@ -408,9 +464,6 @@ function updateafterdrop(value){
 
         var targetval = checkval.closest('.connected-sortable').attr('target');
 
-        // checkval.closest('.connected-sortable li').removeClass('test');
-
-        checkval.closest('.connected-sortable li:first').addClass('test');
 
         var confirm_count = 0;
 
@@ -429,7 +482,7 @@ function updateafterdrop(value){
         });
         // alert("Total Input Count=" + $('#container').find('input[type="text"]').length + "//Filled Inputs Count=" + count);
         if (confirm_count > crewcount) {
-            console.log(confirm_count , crewcount);
+            // console.log(confirm_count , crewcount);
             $("#confirm_msg").removeClass('d-none');
 
             $('#confirm_msg').html('Limit Reached Of '+crewcount);
@@ -469,81 +522,6 @@ function updateafterdrop(value){
         }
 
     }
-
-</script>
-
-<script>
-    // function allowDrop(ev) {
-    //     ev.preventDefault();
-
-    // }
-
-    // function drag(ev) {
-    //     ev.dataTransfer.setData("text", ev.target.id);
-    // }
-
-    // function drop(ev, th) {
-    //     ev.preventDefault();
-    //     var data = ev.dataTransfer.getData("text");
-    //     ev.target.appendChild(document.getElementById(data));
-    //     //console.log(data);
-    //     document.getElementById(data).setAttribute('name', th.getAttribute('content'))
-    // }
-
-
-    // function allowDrop(ev, th) {
-    //     ev.preventDefault();
-
-    // }
-
-    // function drag(ev, th) {
-    //     ev.dataTransfer.setData("text", ev.target.id);
-
-    // }
-
-    // function drop(ev, th) {
-    //     ev.preventDefault();
-    //     console.log('drag drop');
-
-    //     var crewcount = $("#NumberCrewNeeded").val();
-    //     crewcount = (crewcount!= "undefined") ? crewcount : 0;
-
-    //     var data = ev.dataTransfer.getData("text");
-
-    //     // get Current drop target to identify if this is confirmed it should restrict dropping
-    //     var targetval = th.getAttribute('target');
-    //     // console.log(data);
-
-
-
-    //     var confirm_count = 0;
-    //     $('#div2').find('input[type="text"]').each(function() {
-
-    //         confirm_count += 1;
-    //         // alert("Filled Value=" + $(this).val());
-
-    //     });
-    //     // alert("Total Input Count=" + $('#container').find('input[type="text"]').length + "//Filled Inputs Count=" + count);
-    //     console.log(confirm_count , crewcount);
-    //     if (confirm_count >= crewcount && targetval == 'confirmed') {
-    //         $("#confirm_msg").removeClass('d-none');
-
-    //         console.log("test");
-
-    //         document.getElementById('confirm_msg').innerHTML='Limit Reached Of '+crewcount;
-    //         document.getElementById('div2').setAttribute('ondrop', ' ')
-
-    //     } else {
-    //         $("#confirm_msg").addClass('d-none');
-
-    //         document.getElementById('div2').setAttribute('ondrop', 'drop(event,this)')
-    //         document.getElementById('confirm_msg').innerHTML='';
-
-    //         ev.target.appendChild(document.getElementById(data));
-    //         document.getElementById(data).setAttribute('name', th.getAttribute('content'));
-    //     }
-    // }
-
 
 </script>
 

@@ -6,8 +6,6 @@
         <div class="col-md-12 dashboard_Sec">
             <div class="row">
                 <div class="col-xl-8 col-lg-12 main-heading-desc all-activites-colum">
-                    <h1>All Activities</h1>
-                    <p>This is a list of all the scheduled activities in the Activity Manager system..</p>
 
                     <div class="teck-btn justify-content-start">
                         @php
@@ -100,27 +98,35 @@
 
             <div class="col-md-12 activies_table">
 
-                <div class="font-weight-bold mt-2">{{ $trips ? $trips->total() : '0' }} Records</div>
-
                 <div class="row activity_col">
                     <div class="col-lg-8 col-md-12 upcoming_activities">
 
                     </div>
 
-                    <div class="col-md-12">
-                        <div class="teck-table">
-                            <table class="rwd-table">
+                <div class="col-md-12">
+                    <div class="col-md-12 dashboard-heading-desc dashboard-heading-container">
+                        <div class="row">
+                            <div class="col-lg-8 col-md-12 upcoming_activities">
+                                <h1>All Activities</h1>
+                                <p class="col-12-descrapction">This is a list of all the upcoming activities.</p>
+                                <div class="font-weight-bold mt-2" style="margin-bottom:10px">
+                                    {{ $trips ? $trips->total() : '0' }} Records Found</div>
+                            </div>
 
-                                <thead>
-                                    <tr>
-                                        <th class="th-heading">Activity</th>
-                                        <th class="th-heading">Activity Date</th>
-                                        <th class="th-heading-brief">Brief</th>
-                                        <th class="th-heading">Duration</th>
-                                        <th class="th-heading">Crew Needed</th>
-                                        <th class="th-heading">Crew</th>
-                                        <th class="th-heading">Status</th>
-                                        <th class="th-heading">Action</th>
+                        </div>
+                    </div>
+                    <div class="teck-table">
+                        <table class="rwd-table" @if ($trips->count() > 0) id="datatables" @endif>
+                            <thead class="list-table-heading">
+                                <tr>
+                                    <th class="th-heading">Activity</th>
+                                    <th class="th-heading">Date / Time</th>
+                                    <th class="th-heading-brief">Crew Notes</th>
+                                    <th class="th-heading">Duration</th>
+                                    <th class="th-heading">Crew Needed</th>
+                                    <th class="th-heading">Crew</th>
+                                    <th class="th-heading">Status</th>
+                                    <th class="th-heading">Action</th>
                                     </tr>
                                 </thead>
 
@@ -141,7 +147,7 @@
 
                                         <tr class="{{ $check_crewcount == false ? 'teck-danger' : '' }}">
 
-                                            <td width="300">
+                                            <td width="250">
                                                 <div class="table-div">
                                                     {{-- {{ $crewneeded." ___ ". $tripcrewscount }} --}}
                                                     <?php
@@ -167,13 +173,15 @@
                                                     }
 
                                                     ?>
-                                                    <p> <b>{{ $trip->boatname }}</b> <br>
+                                                     <p> <b>{{ $trip->boatname }}</b> <br>{{ $trip->destination }}<br>
                                                         #{{ $trip->id }}
                                                     </p>
 
                                                 </div>
                                             </td>
-                                            <td>{{ $trip->departuredate }}</td>
+                                            <td>{{ date('d-M-Y', strtotime($trip->departuredate)) }}<br>at
+                                                {{ date('g:i A', strtotime($trip->departuretime)) }}
+                                            </td>
                                             <td width="300" style="word-break: break-word;">{!! $trip->crewnotes !!}</td>
                                             <td>
                                                 @php
@@ -192,6 +200,11 @@
                                                 {{ $durationfinal }} hours</td>
                                             <td>{{ $crewneeded }} Crew Members</td>
                                             <td width="250">
+
+                                                @php
+                                                    $crewlead = "";
+                                                    $counter = 0;
+                                                @endphp
                                                 @if ($tripcrewscount > 0)
                                                     @php
                                                         $members = $trip->tripcrews
@@ -202,15 +215,31 @@
                                                     @endphp
                                                     @foreach ($members as $m)
                                                         @php
+
+
                                                             $member = \App\Models\Crew::where(['initials' => $m->crewcode])->first();
                                                             $color = $m->confirmed == 'Y' ? '#2ecc71' : '#f39c12'; // color based on confirmed status
                                                         @endphp
+                                                        {{-- {{ $m->crewlead." ".$crewlead." ".$counter }} --}}
 
                                                         @if ($member && $m->isskipper != 'Y' && $m->isskipper == '')
                                                             @php
+
+                                                                if($m->confirmed == "Y") {
+
+                                                                    if(($m->crewlead == 'Y') || $counter !=1) {
+                                                                        $crewlead = "crewlead";
+                                                                        $counter = 1;
+                                                                    } else {
+                                                                        $crewlead = "";
+                                                                    }
+                                                                } else {
+                                                                    $crewlead = "";
+                                                                }
+
                                                                 $check_crewcount++;
                                                             @endphp
-                                                            <span
+                                                            <span class="{{ $crewlead }}"
                                                                 style='color: {{ $color }}'>{{ $m->crewcode }}</span>
                                                             @if (!$loop->last)
                                                                 ,
@@ -232,14 +261,14 @@
                                                     $isReady = 'completed';
                                                 @endphp
 
-                                                <td width="200" data-th="Net Amount">
+                                                <td width="180" data-th="Net Amount">
                                                     <span class="active-btn"><img
                                                             src="{{ asset('assets/images/Activity-Ready-Button.png') }}"
                                                             class="img-fluid" alt=""> Completed</span>
                                                 </td>
                                             @else
                                                 @if ($check_crewcount >= $trip->crewneeded ? 'teck-danger' : '')
-                                                    <td width="200" data-th="Net Amount">
+                                                    <td width="180" data-th="Net Amount">
                                                         <span class="active-btn"><img
                                                                 src="{{ asset('assets/images/Activity-Ready-Button.png') }}"
                                                                 class="img-fluid" alt=""> Activity Ready</span>
@@ -251,7 +280,7 @@
                                                     @php
                                                         $isReady = 'Needed';
                                                     @endphp
-                                                    <td width="240" data-th="Net Amount" class="crew_btn">
+                                                    <td width="180" data-th="Net Amount" class="crew_btn">
                                                         <span class="active-btn-2"><img
                                                                 src="{{ asset('assets/images/Button-Crew-Needed.png') }}"
                                                                 class="alrt-image" alt=""> Crew Needed</span>
